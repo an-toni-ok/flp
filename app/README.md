@@ -1,7 +1,23 @@
-# Vue 3 + Vite
+<!-- omit from toc -->
+# Frontend
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This directory contains the source code for the flp frontend.
+It is the frontend of a webapplication written in the Javascript
+Vue Framework.
 
-## Recommended IDE Setup
+- [Development setup](#development-setup)
+- [Production setup](#production-setup)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Development setup
+
+This application is written in a JavaScript framework and the node package manager was chosen for dependency installation and management. If you do not have node installed, you can install it by following the [official installation instruction](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs).
+
+The node version used during development was v21.2.0. If you have problems installing the dependencies with node, make sure you're using a similar major release.
+
+To install the dependencies for this project you have to open a terminal and execute the following command in it:
+
+```bash
+npm install
+```
+
+## Production setup
