@@ -1,0 +1,105 @@
+{
+    "$schema": "http://json-schema.org/draft/2019-09/schema",
+    "title": "Input",
+    "type": "object",
+    "description": "Input for the layout recalculation after user changes",
+    "properties": {
+        "areas": {
+            "description": "Available areas for production line",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/area"
+            }
+        },
+        "restricted_areas": {
+            "description": "Restricted areas within the available areas",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/area"
+            }
+        },
+        "technologies": {
+            "description": "Defined production technologies",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/technology"
+            }
+        },
+        "production_steps": {
+            "description": "Defined order of production steps with assigned technolgy and times",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "technology": {
+                        "$ref": "#/$defs/technolgy"
+                    },
+                    "work_content": "number",
+                    "machine_time": "number"
+                }
+            }
+        },
+        "machines": {
+            "description": "user-defined machines",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": "string",
+                    "technologies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/technology"
+                        }
+                    },
+                    "hourly_rate": "number",
+                    "investment_cost": "number",
+                    "additional_machine_time": "number",
+                    "x_dimension": "number",
+                    "y_dimension": "number",
+                    "x_position": "number",
+                    "y_position": "number",
+                    "rotation": "number"
+                }
+            }
+        },
+        "objectives": {
+            "description": "Choosen optimization objectives",
+            "type": "object",
+            "properties": {
+                "invest": "boolean",
+                "cost_per_part": "boolean",
+                "used_area": "boolean",
+                "number_operators": "boolean"
+            }
+        },
+        "target_cycle_time": {
+            "type": "number"
+        },
+        "hourly_operator_cost": {
+            "type": "number"
+        }
+    },
+    "$defs": {
+        "area": {
+            "type": "object",
+            "properties": {
+                "x_position": {
+                    "type": "number"
+                },
+                "y_position": {
+                    "type": "number"
+                },
+                "x_dimension": {
+                    "type": "number"
+                },
+                "y_dimension": {
+                    "type": "number"
+                }
+            }
+        },
+        "technology": {
+            "type": "string"
+        }
+    }
+}

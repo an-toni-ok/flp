@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft/2019-09/schema",
+    "title": "Input",
+    "type": "array",
+    "description": "Output of the layout optimization",
+    "items":{
+        "type": "object",
+        "properties": {
+            "machines": {
+                "description": "Used machines",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": "string",
+                        "id": "integer",
+                        "production_steps": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        },
+                        "x_position": "number",
+                        "y_position": "number",
+                        "rotation": "integer",
+                        "machine_time": "number",
+                        "work_content": "number",
+                        "cycle_time": "number",
+                        "assigned_operator": "integer"
+                    }
+                }
+            },
+            "operators": {
+                "description": "Assigned operators and the corresponding machine IDs",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "assigned_machines": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        },
+                        "work_content": "number",
+                        "cycle_time": "number"
+                    }
+                }
+            },
+            "objectives": {
+                "description": "Calculated objective values",
+                "type": "object",
+                "properties": {
+                    "invest": "number",
+                    "cost_per_part": "number",
+                    "used_area": "number",
+                    "number_operators": "number"
+                }
+            },
+            "line_cycle_time": {
+                "type": "number"
+            }
+        }
+    }
+}
