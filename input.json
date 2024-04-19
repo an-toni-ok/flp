@@ -74,9 +74,11 @@
             }
         },
         "target_cycle_time": {
+            "description": "Maximum amount of time until completion of an item in the production line",
             "type": "number"
         },
         "hourly_operator_cost": {
+            "description": "Hourly cost of an operator",
             "type": "number"
         }
     },
