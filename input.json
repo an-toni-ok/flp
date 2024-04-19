@@ -59,7 +59,7 @@
                     "y_dimension": "number",
                     "x_position": "number",
                     "y_position": "number",
-                    "rotation": "number"
+                    "rotation": "integer"
                 }
             }
         },
