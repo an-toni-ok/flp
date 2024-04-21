@@ -1,7 +1,5 @@
 from celery import Celery, Task
-from celery.result import AsyncResult
 from flask import Flask
-from flask import request
 
 def celery_init_app(app: Flask) -> Celery:
     """Initializes Celery based of the flask app instance.
@@ -48,20 +46,8 @@ def create_app() -> Flask:
     app.config.from_prefixed_env()
     celery_init_app(app)
 
-    from .celery_tasks import add_together
+    from server.routes import routes
 
-    @app.get("/add/<num1>/<num2>")
-    def add_route(num1: str, num2: str) -> dict[str, object]:
-        result = add_together.delay(int(num1), int(num2))
-        return {"result_id": result.id}
-
-    @app.get("/result/<id>")
-    def get_result(id: str) -> dict[str, object]:
-        result = AsyncResult(id)
-        return {
-            "ready": result.ready(),
-            "successful": result.successful(),
-            "value": result.result if result.ready() else None,
-        }
+    app.register_blueprint(routes)
 
     return app
