@@ -1,5 +1,5 @@
 from celery import Celery, Task
-from flask import Flask
+from flask import Flask, jsonify
 
 def celery_init_app(app: Flask) -> Celery:
     """Initializes Celery based of the flask app instance.
@@ -45,6 +45,10 @@ def create_app() -> Flask:
     )
     app.config.from_prefixed_env()
     celery_init_app(app)
+
+    @app.errorhandler(400)
+    def invalid_request_data(e):
+        return jsonify(error=str(e)), 400
 
     from server.routes import routes
 
