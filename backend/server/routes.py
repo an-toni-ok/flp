@@ -1,8 +1,56 @@
-from flask import Blueprint
+from flask import Blueprint, request, abort
 from celery.result import AsyncResult
+
 from server.celery_tasks import add_together
+from server.decorators import validate
+from server.schemas import SCHEMA
 
 routes = Blueprint('routes', __name__)
+
+@routes.post("/area")
+@validate(SCHEMA.AREAS)
+def area():
+    areas = request.get_json()
+
+    return areas
+
+
+@routes.post("/process")
+@validate(SCHEMA.PRODUCTION_STEPS)
+def process():
+    process = request.get_json()
+
+    return process
+
+
+@routes.post("/machines")
+@validate(SCHEMA.MACHINES)
+def machines():
+    process = request.get_json()
+
+    return process
+
+
+@routes.post("/optimization_data")
+@validate(SCHEMA.OBJECTIVES)
+def optimization_data():
+    process = request.get_json()
+
+    return process
+
+
+@routes.post("/optimize")
+def optimize_start():
+    process = request.get_json()
+
+    return process
+
+
+@routes.get("/optimize")
+def optimize_status():
+    process = request.get_json()
+
+    return process
 
 @routes.get("/add/<num1>/<num2>")
 def add_route(num1: str, num2: str) -> dict[str, object]:
