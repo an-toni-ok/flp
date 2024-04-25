@@ -1,0 +1,176 @@
+openapi: 3.0.2
+info:
+  title: The FLP backend
+  description: |
+    This API allows uploading data for a layout optimization
+    programm, starting the program in a Celery background thread, 
+    checking it's progress status and getting the result of
+    the layout optimization.
+  version: 0.0.1
+servers:
+  - url: http://localhost:5000
+    description: local development server
+paths: 
+  /area:
+    post:
+      summary: Add an array of areas.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/areas'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /process:
+    post:
+      summary: Add a process.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/production_steps'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /machines:
+    post:
+      summary: Add an array of machines.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/machines'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /optimization_data:
+    post:
+      summary: Add the optimization data.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/objectives'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /optimize:
+    post:
+      summary: Start the optimization process.
+      # description:
+      # parameters:
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Failure"
+    get:
+      summary: Get the status of the optimization process (and it's result if completed).
+      # description:
+      # parameters:
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Failure"
+components:
+  schemas:
+    areas:
+      type: object
+      properties:
+        area:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              x_position:
+                type: number
+              y_position:
+                type: number
+              x_dimension:
+                type: number
+              y_dimension:
+                type: number
+        restricted_area:
+          type: array
+          minItems: 0
+          items:
+            type: object
+            properties:
+              x_position:
+                type: number
+              y_position:
+                type: number
+              x_dimension:
+                type: number
+              y_dimension:
+                type: number
+    production_steps:
+      type: array
+      minItems: 1
+      items:
+        type: object
+        properties:
+          technology:
+            type: string
+          work_content: 
+            type: number
+          machine_time:
+            type: string
+    machines:
+      type: array
+      minItems: 1
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          technologies:
+            type: array
+            items:
+              type: string
+          hourly_rate:
+            type: number
+          investment_cost:
+            type: number
+          additional_machine_time:
+            type: number
+          x_dimension:
+            type: number
+          y_dimension:
+            type: number
+          x_position:
+            type: number
+          y_position:
+            type: number
+          rotation:
+            type: integer
+    objectives:
+      type: object
+      properties:
+        invest: 
+          type: boolean
+        cost_per_part: 
+          type: boolean
+        used_area: 
+          type: boolean
+        number_operators: 
+          type: boolean
+        taget_cycle_time:
+          type: number
+        hourly_operator_cost:
+          type: number
