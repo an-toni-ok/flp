@@ -170,7 +170,7 @@ components:
           type: boolean
         number_operators: 
           type: boolean
-        taget_cycle_time:
+        target_cycle_time:
           type: number
         hourly_operator_cost:
           type: number
