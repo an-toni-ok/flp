@@ -5,52 +5,46 @@ from server.celery_tasks import add_together
 from server.decorators import validate
 from server.schemas import SCHEMA
 
+from redis import Redis
+
 routes = Blueprint('routes', __name__)
+redis = Redis("redis", 6379, 0, decode_responses=True)
 
 @routes.post("/area")
 @validate(SCHEMA.AREAS)
 def area():
     areas = request.get_json()
-
+    redis.json().set('areas', '$', areas)
     return areas
-
 
 @routes.post("/process")
 @validate(SCHEMA.PRODUCTION_STEPS)
 def process():
     process = request.get_json()
-
+    redis.json().set('process', '$', process)
     return process
-
 
 @routes.post("/machines")
 @validate(SCHEMA.MACHINES)
 def machines():
-    process = request.get_json()
-
-    return process
-
+    machines = request.get_json()
+    redis.json().set('machines', '$', machines)
+    return machines
 
 @routes.post("/objectives")
 @validate(SCHEMA.OBJECTIVES)
 def objectives():
-    process = request.get_json()
-
-    return process
-
+    objectives = request.get_json()
+    redis.json().set('objectives', '$', objectives)
+    return objectives
 
 @routes.post("/optimize")
 def optimize_start():
-    process = request.get_json()
-
-    return process
-
+    return {}
 
 @routes.get("/optimize")
 def optimize_status():
-    process = request.get_json()
-
-    return process
+    return {}
 
 @routes.get("/add/<num1>/<num2>")
 def add_route(num1: str, num2: str) -> dict[str, object]:
