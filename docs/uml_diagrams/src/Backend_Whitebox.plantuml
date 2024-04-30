@@ -1,4 +1,4 @@
-@startuml BackendWhitebox
+@startuml Backend_Whitebox
 component Backend <<Subsystem>> {
     component "Flask Webapplication" as Flask
     component Redis
