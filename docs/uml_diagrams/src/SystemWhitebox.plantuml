@@ -1,0 +1,16 @@
+@startuml System_Whitebox
+component FLP <<System>> {
+    port "User Input" as user_input
+    portout Display
+
+    component Frontend <<Subsystem>>
+    interface "HTTP API" as HTTP_API
+    component Backend <<Subsystem>>
+
+    user_input ..> Frontend
+    Frontend ..> HTTP_API
+    HTTP_API ..> Backend
+    Backend ..> Frontend
+    Frontend ..> Display
+}
+@enduml

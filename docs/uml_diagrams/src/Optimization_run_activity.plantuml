@@ -1,0 +1,56 @@
+@startuml Optimization_run_activity
+skinparam sequenceMessageAlign center
+
+participant Client
+participant Server
+activate Redis
+activate Celery
+
+group Run Optimization
+    alt Data invalid or missing
+        Client -> Server ++ : Start optimization
+        activate Client
+        Server -> Server : Check if data is valid
+        return Failure
+        deactivate Client
+    else Data valid 
+        Client -> Server ++ : Start optimization
+        activate Client
+        Server -> Server : Check if data is valid
+        Server --> Client : Success
+        deactivate Client
+
+        Server -> Redis : Store data to be optimized
+        Server -> Redis -- : Create Celery Task
+
+        Celery -> Redis ++ : Get Task
+        activate Celery
+        Redis --> Celery -- : Task
+        Celery -> Redis : Set Task status
+
+        ref over Client, Server, Redis : Get Task Result
+
+        Celery -> Redis -- : Set Task complete and store result
+
+        ref over Client, Server, Redis : Get Task Result
+    end 
+end
+
+== References ==
+
+group Get Task Result
+    Client -> Server ++ : Get Task result
+    activate Client
+    Server -> Redis ++ : Get Task result
+    return Result
+    note over Server
+    Result is not the result of the operation.
+    Result can be used to check if the task 
+    is completed and what the value of a 
+    completed task is.
+    endnote
+    Server --> Client -- : Result
+    deactivate Client
+end
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml Data_setting_activity
+skinparam sequenceMessageAlign center
+
+group Set inputs
+    ref over Client, Server : **Set data area**
+    ref over Client, Server : **Set data production_process**
+    ref over Client, Server : **Set data machines**
+    ref over Client, Server : **Set data optimation_parameters**
+end
+
+== References ==
+
+group Set data $data
+
+    alt Valid data
+        Client -> Server ++ : Set $data
+        Server -> Server : Validate $data
+        Server -> Server : Store data
+        Server --> Client -- : Confirmation
+    else Invalid Data
+        Client -> Server ++ : Set $data
+        Server -> Server : Validate $data
+        Server --> Client -- : Failure
+    end
+end
+@enduml

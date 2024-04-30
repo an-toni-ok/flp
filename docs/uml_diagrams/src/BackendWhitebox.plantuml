@@ -1,0 +1,11 @@
+@startuml BackendWhitebox
+component Backend <<Subsystem>> {
+    component "Flask Webapplication" as Flask
+    component Redis
+    component Celery
+
+    Flask ..> Redis
+    Celery .up.> Redis
+}
+
+@enduml

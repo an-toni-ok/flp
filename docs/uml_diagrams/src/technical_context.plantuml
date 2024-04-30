@@ -1,0 +1,30 @@
+@startuml Technical_context
+artifact optimization <<Executable>>
+
+node UserComputer
+
+node Docker <<System>> {
+    port "Port 5000" as p1
+    port "Port 8001" as p3
+
+    node webapp <<Docker Container>> {
+        port "Port 5000" as p4
+    }
+    node Redis <<Docker Container>> {
+        port "Port 6379" as p5
+        port "Port 8001" as p6
+    }
+    node Celery <<Docker Container>>
+
+    webapp -- p5 : http(s)
+    Celery -- p5 : http(s)
+
+    p1 -- p4 : port forwarding
+    p3 -- p6 : port forwarding
+}
+
+
+p1 -up- UserComputer : http(s)
+p3 -up- UserComputer : http(s)
+Celery -left- optimization : File System
+@enduml

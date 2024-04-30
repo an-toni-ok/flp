@@ -1,0 +1,39 @@
+@startuml Infrastruktur
+node "Server" <<OS>> as HostServer {
+    node "Docker" <<Executable>> {
+        node "Flask" <<Docker Container>> {
+            package backend {
+                package server {
+                    artifact "~__init__.py" <<Executable>> as flaskapp
+                }
+            } 
+            artifact "frontend" <<Executable>> as frontend
+        }
+        node "Celery" <<Docker Container>> {
+            package backend as back2 {
+                package server as serv2 {
+                    artifact "celery_tasks.py" <<Executable>> as celery
+                }
+            }
+        }
+        node "Redis" <<Docker Container>> {
+            queue Queue
+            stack Stack
+        }
+
+        flaskapp --> Queue : set task
+        Stack --> flaskapp : get result
+        Queue --> celery : get task
+        celery --> Stack : set result
+    }
+}
+
+node "Client" <<OS>> as Client {
+    node "Browser" {
+        artifact "frontend" <<Executable>> as clientFrontend
+    }
+}
+
+flaskapp -right--> clientFrontend : provide
+
+@enduml
