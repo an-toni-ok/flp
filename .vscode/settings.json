@@ -3,4 +3,5 @@
     "plantuml.diagramsRoot": "docs/uml_diagrams/src/",
     "plantuml.exportOutDir": "docs/uml_diagrams/images",
     "plantuml.exportSubFolder": false,
+    "python.defaultInterpreterPath": "${workspaceFolder}/backend/venv/"
 }
