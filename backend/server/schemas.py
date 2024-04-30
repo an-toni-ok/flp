@@ -5,20 +5,36 @@ area_properties = {
     "y_dimension": { "type": "number"}
 }
 
+area_required_properties = [
+    "x_position", 
+    "y_position", 
+    "x_dimension", 
+    "y_dimension"
+]
+
 areas = {
     "type": "object",
     "properties": {
         "area": {
             "type": "array",
             "minItems": 1,
-            "properties": area_properties
+            "items": {
+                "properties": area_properties,
+                "required": area_required_properties,
+                "additionalProperties": False
+            }
         },
         "restricted_area": {
             "type": "array",
             "minItems": 0,
-            "properties": area_properties
+            "items": {
+                "properties": area_properties,
+                "required": area_required_properties,
+                "additionalProperties": False
+            }
         }
-    }
+    },
+    "additionalProperties": False
 }
 
 production_steps = {
@@ -30,7 +46,13 @@ production_steps = {
             "technology": { "type": "string" },
             "work_content": { "type": "number" },
             "machine_time": { "type": "string" },
-        }
+        },
+        "required": [ 
+            "technology", 
+            "work_content", 
+            "machine_time" 
+        ],
+        "additionalProperties": False
     }
 }
 
@@ -43,6 +65,7 @@ machines = {
             "name": { "type": "string" },
             "technologies": { 
                 "type": "array",
+                "minItems": 1,
                 "items": { "type": "string" }
             },
             "hourly_rate": { "type": "number" },
@@ -53,7 +76,20 @@ machines = {
             "x_dimension": { "type": "number" },
             "y_dimension": { "type": "number" },
             "rotation": { "type": "integer" },
-        }
+        },
+        "required": [
+            "name",
+            "technologies",
+            "hourly_rate",
+            "investment_cost",
+            "additional_machine_time",
+            "x_position",
+            "y_position",
+            "x_dimension",
+            "y_dimension",
+            "rotation",
+        ],
+        "additionalProperties": False
     }
 }
 
@@ -66,7 +102,16 @@ objectives = {
         "number_operators": { "type": "boolean" },
         "target_cycle_time": { "type": "number" },
         "hourly_operator_cost": { "type": "number" }
-    }
+    },
+    "required": [
+        "invest",
+        "cost_per_part",
+        "used_area",
+        "number_operators",
+        "target_cycle_time",
+        "hourly_operator_cost"
+    ],
+    "additionalProperties": False
 }
 
 class SCHEMA:

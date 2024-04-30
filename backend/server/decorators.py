@@ -51,8 +51,8 @@ def validate(schema: SCHEMA):
                 validators.validate(data, schema)
             except SchemaError:
                 abort(500)
-            except ValidationError:
-                abort(400)
+            except ValidationError as val_err:
+                abort(400, val_err)
             else:
                 return func(*args, **kwargs)
         return wrapper
