@@ -53,7 +53,7 @@ paths:
           description: "OK"
         400:
           description: "Invalid data supplied"
-  /optimization_data:
+  /objectives:
     post:
       summary: Add the optimization data.
       # description:

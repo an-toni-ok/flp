@@ -31,9 +31,9 @@ def machines():
     return process
 
 
-@routes.post("/optimization_data")
+@routes.post("/objectives")
 @validate(SCHEMA.OBJECTIVES)
-def optimization_data():
+def objectives():
     process = request.get_json()
 
     return process
