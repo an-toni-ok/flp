@@ -57,7 +57,7 @@
                     "number_operators": "number"
                 }
             },
-            "line_cycle_time": {
+            "cycle_time": {
                 "type": "number"
             }
         }

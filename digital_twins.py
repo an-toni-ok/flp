@@ -1,8 +1,6 @@
 # Definition of digital twins for operator, sequence, machine, areas and production line
 
-import math
 import numpy as np
-import pandas as pd
 from dataclasses import dataclass
 
 @dataclass
@@ -17,7 +15,7 @@ class MStep:
         :return: Class representation
         """
         return f"{self.__class__.__name__} (order='{self.order}')"
-
+    
 @dataclass
 class MachineType:
     """
@@ -80,7 +78,6 @@ class Machine:
         """
         return f"{self.__class__.__name__} (id='{self.id}')"
 
-
 @dataclass
 class Operator:
     """
@@ -88,8 +85,8 @@ class Operator:
     """
     id: int
     hourly_cost: float
-    walking_speed: float = 1.
     machine_list: list = None
+    walking_speed: float = 1.
     work_content: float = 0.
     cycle_time: float = 0.
 
@@ -147,7 +144,18 @@ class Operator:
         :return: Class representation
         """
         return f"{self.__class__.__name__} (id='{self.id}')"
+    
 
+@dataclass
+class Area():
+    """
+    Class to represent parts of the shopfloor area by a rectangle.
+    """
+    x_position: float
+    y_position: float
+    x_dimension: float
+    y_dimension: float
+    restricted: bool
 
 @dataclass
 class ProductionSystem():
@@ -157,7 +165,6 @@ class ProductionSystem():
     target_cycle_time: float 
     objectives: list
     areas: list
-    restricted_areas: list
     machine_list: list = None
     operator_list: list = None
     cycle_time: float = 0.
@@ -285,6 +292,7 @@ class ProductionSystem():
         self.cost_per_part = self._calc_cost_per_part()
         self.investment_cost = self._calc_invest()
         self.number_operators = self._num_operators()
+        self.used_area = round(self.x_dimension * self.y_dimension, 2)
 
     def _do_operators_cross(self) -> bool:
         """

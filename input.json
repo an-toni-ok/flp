@@ -32,7 +32,7 @@
                 "type": "object",
                 "properties": {
                     "technology": {
-                        "$ref": "#/$defs/technolgy"
+                        "$ref": "#/$defs/technology"
                     },
                     "work_content": "number",
                     "machine_time": "number"
