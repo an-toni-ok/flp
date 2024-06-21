@@ -1,3 +1,5 @@
+from celery import Celery, Task
+from flask import Flask
 from redis import Redis
 
 redis_client = None
@@ -11,3 +13,31 @@ def init_redis(app):
         password=app.config['REDIS_PASSWORD'],
         decode_responses=True
     )
+
+def celery_init_app(app: Flask) -> Celery:
+    """Initializes Celery based of the flask app instance.
+
+    This creates and returns a Celery app object. Celery 
+    configuration is taken from the CELERY key in the Flask 
+    configuration. The Celery app is set as the default, so 
+    that it is seen during each request. The Task subclass 
+    automatically runs task functions with a Flask app 
+    context active, so that services like your database 
+    connections are available.
+
+    Args:
+        app (Flask): Flask app instance
+
+    Returns:
+        Celery: Initialized Celery Instance
+    """
+    class FlaskTask(Task):
+        def __call__(self, *args: object, **kwargs: object) -> object:
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery_app = Celery(app.name, task_cls=FlaskTask)
+    celery_app.config_from_object(app.config["CELERY"])
+    celery_app.set_default()
+    app.extensions["celery"] = celery_app
+    return celery_app
