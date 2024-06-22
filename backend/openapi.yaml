@@ -91,7 +91,7 @@ components:
     areas:
       type: object
       properties:
-        area:
+        areas:
           type: array
           minItems: 1
           items:
@@ -105,7 +105,7 @@ components:
                 type: number
               y_dimension:
                 type: number
-        restricted_area:
+        restricted_areas:
           type: array
           minItems: 0
           items:

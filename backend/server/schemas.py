@@ -15,7 +15,7 @@ area_required_properties = [
 areas = {
     "type": "object",
     "properties": {
-        "area": {
+        "areas": {
             "type": "array",
             "minItems": 1,
             "items": {
@@ -24,7 +24,7 @@ areas = {
                 "additionalProperties": False
             }
         },
-        "restricted_area": {
+        "restricted_areas": {
             "type": "array",
             "minItems": 0,
             "items": {
