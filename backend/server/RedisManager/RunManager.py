@@ -103,4 +103,4 @@ class RunManager:
 
     def get_run_status(self, redis: Redis):
         # Another connection by the same user to the server or a Run completing might change the Status in the Redis server instance. Therefore it's best to query the value whenever needing it.
-        return RunStatus[redis.json(self.run_id)["status"]]
+        return RunStatus[redis.json().get(self.run_id)["status"]]
