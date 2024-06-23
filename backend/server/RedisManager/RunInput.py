@@ -80,24 +80,24 @@ class RunInputData:
                 unique_technologies.add(technology)
 
         self._technologies = list(unique_technologies)
-        redis.json().set(self.run_id, "$.technologies", self._technologies)
+        redis.json().set(self.run_id, "$.input.technologies", self._technologies)
 
     def _set_area(self, data: Dict, redis: Redis):
         self._areas = data["areas"]
-        redis.json().set(self.run_id, "$.areas", self._areas)
+        redis.json().set(self.run_id, "$.input.areas", self._areas)
 
         self._restricted_areas = data["restricted_areas"]
-        redis.json().set(self.run_id, "$.restricted_areas", self._restricted_areas)
+        redis.json().set(self.run_id, "$.input.restricted_areas", self._restricted_areas)
 
     def _set_steps(self, data: Dict, redis: Redis):
         self._production_steps = data
-        redis.json().set(self.run_id, "$.production_steps", self._production_steps)
+        redis.json().set(self.run_id, "$.input.production_steps", self._production_steps)
 
         self._update_technologies(redis=redis)
 
     def _set_machines(self, data: Dict, redis: Redis):
         self._machines = data
-        redis.json().set(self.run_id, "$.machines", self._machines)
+        redis.json().set(self.run_id, "$.input.machines", self._machines)
 
         self._update_technologies(redis=redis)
 
@@ -108,10 +108,10 @@ class RunInputData:
             "used_area": data["used_area"],
             "number_operators": data["number_operators"]
         }
-        redis.json().set(self.run_id, "$.objectives", self._objectives)
+        redis.json().set(self.run_id, "$.input.objectives", self._objectives)
 
         self._target_cycle_time = data["target_cycle_time"]
-        redis.json().set(self.run_id, "$.target_cycle_time", self._target_cycle_time)
+        redis.json().set(self.run_id, "$.input.target_cycle_time", self._target_cycle_time)
 
         self._hourly_operator_cost = data["hourly_operator_cost"]
-        redis.json().set(self.run_id, "$.hourly_operator_cost", self._hourly_operator_cost)
+        redis.json().set(self.run_id, "$.input.hourly_operator_cost", self._hourly_operator_cost)
