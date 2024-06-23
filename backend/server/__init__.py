@@ -33,38 +33,25 @@ def create_app() -> Flask:
     # and reassignment on requests
     @app.before_request
     def assign_session_token():
-        from server.redis_util import ensure_data_settable
         from server.extensions import redis_client
 
         if "id" in session:
-            try:
-                # The tokens are in an integer format, if the conversion
-                # to int throws an error the token isn't valid
-                session_id = str(int(session['id']))
-                
-                if not bool(redis_client.sismember("session_ids", session_id)):
-                    # Token not yet saved, but valid
-                    redis_client.sadd("session_ids", session_id)
-                ensure_data_settable(session_id)
-                return
-            except:
-                # Invalid token
-                pass
+            app.logger.debug(f"Attempting to log in session id \"{session['id']}\".")
+            sm = SessionManager(
+                session_id=session["id"], 
+                redis=redis_client, 
+                logger=app.logger
+            )
+        else:
+            app.logger.debug(f"Creating new session id.")
+            sm: SessionManager = SessionManager.init_new_session(
+                redis_client, 
+                logger=app.logger
+            )
+            session["id"] = sm.session_id
+        app.logger.info(f"Session id \"{session['id']}\" was logged in.")
 
-        # Generate a new token
-        counter = 0
-        while True:
-            session_id = str(hash(request.origin + str(counter)))
-            if not bool(redis_client.sismember("session_ids", session_id)):
-                # Store the session_id in redis before the session, so
-                # that the same id cannot be used twice because of
-                # network errors when writing it to redis. 
-                redis_client.sadd("session_ids", session_id)
-                ensure_data_settable(session_id)
-                session["id"] = session_id
-                break
-            counter += 1
-
+    # register the blueprint routes
     from server.routes import routes
 
     app.register_blueprint(routes)

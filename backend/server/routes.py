@@ -1,50 +1,108 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, Response, session, current_app
 from celery.result import AsyncResult
 
 from server.celery_tasks import add_together
 from server.decorators import validate
 from server.schemas import SCHEMA
+from server.extensions import redis_client
 
-from redis import Redis
+from server.RedisManager.RunManager import RunManager
+from server.RedisManager.SessionManager import SessionManager
+from server.RedisManager.util import RunInputType
+
 
 routes = Blueprint('routes', __name__)
-redis = Redis("redis", 6379, 0, decode_responses=True)
 
 @routes.post("/area")
 @validate(SCHEMA.AREAS)
 def area():
-    areas = request.get_json()
-    redis.json().set('areas', '$', areas)
-    return areas
+    input_data = request.get_json()
+    sm = SessionManager(
+        session_id=session["id"], 
+        redis=redis_client,
+        logger=current_app.logger
+    )
+    current_app.logger.debug(f"Recieved input data on endpoint /area in session {sm.session_id}. Data is {input_data}.")
+    rm: RunManager = sm.load_run(
+        redis=redis_client, 
+        logger=current_app.logger
+    )
+    rm.set_input(input_data, RunInputType.AREA, redis_client)
+    
+    return Response(status=200)
 
 @routes.post("/process")
 @validate(SCHEMA.PRODUCTION_STEPS)
 def process():
-    process = request.get_json()
-    redis.json().set('process', '$', process)
-    return process
+    input_data = request.get_json()
+    sm = SessionManager(
+        session_id=session["id"], 
+        redis=redis_client,
+        logger=current_app.logger
+    )
+    current_app.logger.debug(f"Recieved input data on endpoint /process in session {sm.session_id}. Data is {input_data}.")
+    rm: RunManager = sm.load_run(
+        redis=redis_client, 
+        logger=current_app.logger
+    )
+    rm.set_input(input_data, RunInputType.STEPS, redis_client)
+    
+    return Response(status=200)
 
 @routes.post("/machines")
 @validate(SCHEMA.MACHINES)
 def machines():
-    machines = request.get_json()
-    redis.json().set('machines', '$', machines)
-    return machines
+    input_data = request.get_json()
+    sm = SessionManager(
+        session_id=session["id"], 
+        redis=redis_client,
+        logger=current_app.logger
+    )
+    current_app.logger.debug(f"Recieved input data on endpoint /area in session {sm.session_id}. Data is {input_data}.")
+    rm: RunManager = sm.load_run(
+        redis=redis_client, 
+        logger=current_app.logger
+    )
+    rm.set_input(input_data, RunInputType.MACHINES, redis_client)
+    
+    return Response(status=200)
 
 @routes.post("/objectives")
 @validate(SCHEMA.OBJECTIVES)
 def objectives():
-    objectives = request.get_json()
-    redis.json().set('objectives', '$', objectives)
-    return objectives
+    input_data = request.get_json()
+    sm = SessionManager(
+        session_id=session["id"], 
+        redis=redis_client,
+        logger=current_app.logger
+    )
+    current_app.logger.debug(f"Recieved input data on endpoint /area in session {sm.session_id}. Data is {input_data}.")
+    rm: RunManager = sm.load_run(
+        redis=redis_client, 
+        logger=current_app.logger
+    )
+    rm.set_input(input_data, RunInputType.OBJECTIVES, redis_client)
+    
+    return Response(status=200)
 
 @routes.post("/optimize")
 def optimize_start():
-    return {}
+    sm = SessionManager(
+        session_id=session["id"], 
+        redis=redis_client,
+        logger=current_app.logger
+    )
+    rm: RunManager = sm.load_run(
+        redis=redis_client, 
+        logger=current_app.logger
+    )
+    rm.start_run(redis=redis_client)
+
+    return Response(status=200)
 
 @routes.get("/optimize")
 def optimize_status():
-    return {}
+    return Response(status=200)
 
 @routes.get("/add/<num1>/<num2>")
 def add_route(num1: str, num2: str) -> dict[str, object]:
