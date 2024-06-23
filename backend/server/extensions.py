@@ -1,3 +1,5 @@
+import logging
+import sys
 from celery import Celery, Task
 from flask import Flask
 from redis import Redis
@@ -41,3 +43,16 @@ def celery_init_app(app: Flask) -> Celery:
     celery_app.set_default()
     app.extensions["celery"] = celery_app
     return celery_app
+
+def setup_logger(app: Flask):
+    logger = logging.getLogger()
+    logger.setLevel(app.config['LOG_LEVEL'])
+
+    if app.config['LOG_TO_STDOUT']:
+        handler = logging.StreamHandler(sys.stdout)
+    else:
+        handler = logging.FileHandler(app.config['LOG_FILE'])
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
