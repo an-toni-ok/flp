@@ -1,16 +1,4 @@
 services:
-  web:
-    container_name: backend
-    build: 
-      context: .
-      dockerfile: Dockerfiles/Flask/Dockerfile
-    ports:
-      - "5000:5000"
-    links:
-      - redis
-    depends_on:
-      - redis
-
   redis:
     container_name: redis-stack
     image: redis/redis-stack:latest
@@ -18,13 +6,48 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001"
+    profiles:
+      - app
+      - test
 
   celery:
     container_name: celery
     build: 
       context: .
-      dockerfile: Dockerfiles/Celery/Dockerfile
+      dockerfile: Docker/Celery/Dockerfile
     links:
       - redis
     depends_on:
       - redis
+    profiles:
+      - app
+      - test
+
+  web:
+    container_name: backend
+    build: 
+      context: .
+      dockerfile: Docker/Flask/Dockerfile
+    ports:
+      - "5000:5000"
+    links:
+      - redis
+    depends_on:
+      - redis
+    profiles:
+      - app
+
+  test:
+    container_name: test
+    build: 
+      context: .
+      dockerfile: Docker/Test/Dockerfile
+    command: ["pytest"]
+    links:
+      - redis
+      - celery
+    depends_on:
+      - redis
+      - celery
+    profiles:
+      - test
