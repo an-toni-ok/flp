@@ -1,0 +1,11 @@
+[project]
+name = "server"
+version = "1.0.0"
+description = "The backend of the flask application."
+dependencies = [
+    "server",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
