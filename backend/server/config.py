@@ -13,4 +13,4 @@ class Config:
     )
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT') or True
     LOG_FILE = os.environ.get('LOG_FILE') or 'app.log'
-    LOG_LEVEL = logging.DEBUG
+    LOG_LEVEL = logging.WARN
