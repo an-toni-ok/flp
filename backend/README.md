@@ -8,6 +8,7 @@ It consists of a Flask web application, a Celery instance for running background
 - [Setup](#setup)
 - [Start server](#start-server)
   - [Update the server code](#update-the-server-code)
+  - [Run the tests](#run-the-tests)
 - [Documentation](#documentation)
 
 ## Setup
@@ -20,7 +21,7 @@ You also need to install docker compose, to do so you can follow the [official i
 To start the backend applications for the production server, simply execute the following command in this directory and wait a few seconds.
 
 ```bash
-docker compose up
+docker compose --profile app up
 ```
 
 The executed command now automatically starts the containers for Flask, Celery in Redis in the correct sequence. As soon as the start of the containers is completed will you be able to access the Flask web application at http://localhost:5000 (and at http://172.0.0.1:5000) and the Redis Insights at http://localhost:8001 (and at http://172.0.0.1:8001).
@@ -32,7 +33,15 @@ To update the code used in the production server (either the Flask code or the C
 Simply execute the following command if the code has changed:
 
 ```bash
-docker compose up --build
+docker compose --profile app up --build
+```
+
+### Run the tests
+
+To run the test suite the following command needs to be executed:
+
+```bash
+docker compose --profile test up --build
 ```
 
 ## Documentation
