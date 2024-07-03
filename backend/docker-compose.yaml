@@ -6,6 +6,8 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001"
+    volumes:
+      - redis-data:/data
     profiles:
       - app
       - test
@@ -51,3 +53,6 @@ services:
       - celery
     profiles:
       - test
+
+volumes:
+  redis-data:
