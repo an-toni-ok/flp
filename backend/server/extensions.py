@@ -4,11 +4,19 @@ from celery import Celery, Task
 from flask import Flask
 from redis import Redis
 
-redis_client = None
+from server.config import Config
+
+redis = Redis(
+    host=Config.REDIS_HOST,
+    port=Config.REDIS_PORT,
+    db=Config.REDIS_DB,
+    password=Config.REDIS_PASSWORD,
+    decode_responses=True
+)
 
 def init_redis(app):
-    global redis_client
-    redis_client = Redis(
+    global redis
+    redis = Redis(
         host=app.config['REDIS_HOST'],
         port=app.config['REDIS_PORT'],
         db=app.config['REDIS_DB'],
