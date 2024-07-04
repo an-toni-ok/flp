@@ -1,11 +1,9 @@
 from enum import Enum
 from typing import Dict
 
-from redis import Redis
-
-from server.RedisManager.util import RunStatus
 from server.extensions import redis
-from server.RedisManager.Errors import InvalidChangeMethod, RunAlreadyExists, RunNotCreated, SessionIdNotSet
+from .util import RunStatus
+from .Errors import InvalidChangeMethod, RunAlreadyExists, RunNotCreated, SessionIdNotSet
 
 class RedisInput(Enum):
     ALL = "all"
@@ -131,7 +129,7 @@ class RedisSession:
         return run_id
 
 class RedisIdCounter:
-    def incr(redis_client: Redis=None):
+    def incr():
         global redis
 
         return redis.incr("session_id_counter")
