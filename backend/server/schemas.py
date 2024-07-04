@@ -96,10 +96,15 @@ machines = {
 objectives = {
     "type": "object",
     "properties": {
-        "invest": { "type": "boolean" },
-        "cost_per_part": { "type": "boolean" },
-        "used_area": { "type": "boolean" },
-        "number_operators": { "type": "boolean" },
+        "objectives": {
+            "type": "object",
+            "properties": {
+                "invest": { "type": "boolean" },
+                "cost_per_part": { "type": "boolean" },
+                "used_area": { "type": "boolean" },
+                "number_operators": { "type": "boolean" }
+            }
+        },
         "target_cycle_time": { "type": "number" },
         "hourly_operator_cost": { "type": "number" }
     },

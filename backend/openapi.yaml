@@ -61,7 +61,7 @@ paths:
         content:
             application/json:
               schema:
-                $ref: '#/components/schemas/objectives'
+                $ref: '#/components/schemas/settings'
       responses:
         200:
           description: "OK"
@@ -159,17 +159,20 @@ components:
             type: number
           rotation:
             type: integer
-    objectives:
+    settings:
       type: object
       properties:
-        invest: 
-          type: boolean
-        cost_per_part: 
-          type: boolean
-        used_area: 
-          type: boolean
-        number_operators: 
-          type: boolean
+        objectives:
+          type: object
+          properties:
+            invest: 
+              type: boolean
+            cost_per_part: 
+              type: boolean
+            used_area: 
+              type: boolean
+            number_operators: 
+              type: boolean
         target_cycle_time:
           type: number
         hourly_operator_cost:
