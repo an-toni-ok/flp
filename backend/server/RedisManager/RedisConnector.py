@@ -50,7 +50,7 @@ class RedisRunConfig(Enum):
         try:
             run_input = redis.json().get(run_id)["input"]
         except:
-            raise RunNotCreated()
+            raise RunNotCreated(run_id)
 
         if self.value == RedisRunConfig.ALL.value:
             if data.get("input") is None:
@@ -68,7 +68,7 @@ class RedisRunConfig(Enum):
  
         if redis.json().get(run_id, "$"):
             # do not allow overwriting existing data
-            raise RunAlreadyExists()
+            raise RunAlreadyExists(run_id)
 
         redis.json().set(run_id, "$", {
             'input': {
@@ -124,7 +124,7 @@ class RedisSession:
             run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
             run_id = f"{session_id}_{run_nr}"
         except TypeError:
-            raise SessionIdNotSet(f"Session { session_id } not set.")
+            raise SessionIdNotSet(session_id)
         
         redis.json().set(session_id, "$.current_run_nr", run_nr + 1)
         redis.json().arrappend(session_id, "$.run_ids", run_id)
