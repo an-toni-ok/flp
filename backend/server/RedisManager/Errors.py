@@ -15,5 +15,5 @@ class SessionIdNotSet(Exception):
         super().__init__(f"Session (session_id: { session_id }) not set.")
 
 class InputNotSettable(Exception):
-    def __init__(self, message="Input can not be set"):
-        super().__init__(message)
+    def __init__(self, status=""):
+        super().__init__(f"Run status (status: { status }) doesn't allow changing the input.")
