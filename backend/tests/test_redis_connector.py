@@ -4,6 +4,7 @@ from redis import Redis
 
 from server.RedisManagerOld.util import RunStatus
 from server.RedisManager.RedisConnector import RedisInput, RedisRunConfig, RedisSession, RedisIdCounter
+from server.RedisManager.Errors import InvalidChangeMethod, RunAlreadyExists, RunNotCreated, SessionIdNotSet
 
 class TestRedisIdCounter:
     def unset_session_id_counter(self, redis: Redis):
@@ -70,7 +71,7 @@ class TestRedisSession:
     def test_creating_run_without_session_existing_raises_error(self, redis: Redis):
         session_id = "test_session_id"
         redis.delete(session_id) # Make sure it doesn't exist
-        with pytest.raises(Exception, match=f"Session { session_id } not set."):
+        with pytest.raises(SessionIdNotSet) as err:
             RedisSession.create_run(session_id)
 
 class TestRedisRunConfig:
@@ -134,7 +135,8 @@ class TestRedisRunConfig:
         self.reset_test_run(redis, run_id=run_id, delete_only=True)
 
         RedisRunConfig.create(run_id)
-        with pytest.raises(Exception, match="Run id already set."):
+
+        with pytest.raises(RunAlreadyExists):
             RedisRunConfig.create(run_id)
 
     def test_setting_option_of_non_existant_run_raises_error(self, redis: Redis):
@@ -148,7 +150,7 @@ class TestRedisRunConfig:
             'status': RunStatus.COMPLETED.value
         }
 
-        with pytest.raises(Exception, match="Run is not created"):
+        with pytest.raises(RunNotCreated) as err:
             RedisRunConfig.ALL.set(run_id, test_data)
 
     def test_setting_all_option_with_new_input_raises_error(self, redis: Redis):
@@ -164,7 +166,7 @@ class TestRedisRunConfig:
         }
 
         RedisRunConfig.create(run_id)
-        with pytest.raises(Exception, match="Invalid method for changing input data."):
+        with pytest.raises(InvalidChangeMethod) as err:
             RedisRunConfig.ALL.set(run_id, test_data)
 
         redis_test_data = redis.json().get(run_id)
@@ -256,11 +258,9 @@ class TestRedisRunConfig:
 
 class TestRedisInput:
     def reset_test_run_input(self, redis: Redis, run_id="test_run"):
-        try:
+        if redis.json().get(run_id) is None:
             RedisRunConfig.create(run_id)
-        except Exception as e:
-            if str(e) != "Run id already set.":
-                raise Exception("Error during run creation")
+        
         redis.json().set(run_id, "$.input", {
             'areas': {}, 
             'restricted_areas': {}, 
@@ -307,10 +307,6 @@ class TestRedisInput:
         field.set(run_id, field_value)
         real_data = field.query(run_id)
         return { "expected": field_value, "real": real_data }
-    
-    # special: 
-    # technologies: array
-    # cycle_time + operator_cost: int
 
     def test_setting_all_option(self, redis: Redis):
         test_data = {

@@ -5,6 +5,7 @@ from redis import Redis
 
 from server.RedisManager.util import RunStatus
 from server.extensions import redis
+from server.RedisManager.Errors import InvalidChangeMethod, RunAlreadyExists, RunNotCreated, SessionIdNotSet
 
 class RedisInput(Enum):
     ALL = "all"
@@ -49,7 +50,7 @@ class RedisRunConfig(Enum):
         try:
             run_input = redis.json().get(run_id)["input"]
         except:
-            raise Exception("Run is not created")
+            raise RunNotCreated()
 
         if self.value == RedisRunConfig.ALL.value:
             if data.get("input") is None:
@@ -58,7 +59,7 @@ class RedisRunConfig(Enum):
                 # the input data remaining unchanged
                 data["input"] = run_input
             elif data["input"] != run_input:
-                raise Exception("Invalid method for changing input data.")
+                raise InvalidChangeMethod()
 
         redis.json().set(run_id, str(self), data)
 
@@ -67,7 +68,7 @@ class RedisRunConfig(Enum):
  
         if redis.json().get(run_id, "$"):
             # do not allow overwriting existing data
-            raise Exception("Run id already set.")
+            raise RunAlreadyExists()
 
         redis.json().set(run_id, "$", {
             'input': {
@@ -123,7 +124,7 @@ class RedisSession:
             run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
             run_id = f"{session_id}_{run_nr}"
         except TypeError:
-            raise Exception(f"Session { session_id } not set.")
+            raise SessionIdNotSet(f"Session { session_id } not set.")
         
         redis.json().set(session_id, "$.current_run_nr", run_nr + 1)
         redis.json().arrappend(session_id, "$.run_ids", run_id)
