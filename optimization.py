@@ -12,14 +12,14 @@ from digital_twins import Area, MStep, MachineType, Machine, Operator, Productio
 warnings.filterwarnings('ignore')
 
 def decode_json(file):
-    data = json.loads(file)
-    areas = [Area(**kwargs, restricted=False) for area in data['areas'] for kwargs in area]
-    areas.extend = [Area(**kwargs, restricted=True) for area in data['restricted_areas'] for kwargs in area]
-    step_list = [MStep(order=i, **kwargs) for i, step in enumerate(data['production_steps']) for kwargs in step]
+    with open(file, 'r') as j:
+        data = json.load(j)
+    areas = [Area(**area, restricted=False) for area in data['areas']]
+    areas.extend([Area(**area, restricted=True) for area in data['restricted_areas']])
+    step_list = [MStep(order=i, **step) for i, step in enumerate(data['production_steps'])]
     machine_list = []
     for machine in data['machines']:
-        technologies = [t.type for t in machine['technologies']]
-        machine_type = MachineType(machine['name'], technologies, machine['hourly_rate'], machine['investment_cost'],
+        machine_type = MachineType(machine['name'], machine['technologies'], machine['hourly_rate'], machine['investment_cost'],
                                    machine['additional_machine_time'], machine['x_dimension'], machine['y_dimension'])
         machine_list.append(machine_type)
     return step_list, machine_list, data['hourly_operator_cost'], data['target_cycle_time'], areas
@@ -33,7 +33,7 @@ def encode_json(systems):
             machine_dict['production_steps'] = machine_dict.pop('mstep_list')
             machine_dict['production_steps'] = [mstep['order'] for mstep in machine_dict['production_steps']]
             machine_dict['assigned_operator'] = machine_dict.pop('operator')
-            machine_dict['assigned_operator'] = machine_dict['assigned_operator']['id']
+            machine_dict['assigned_operator'] = machine_dict['assigned_operator']
             system_dict['machines'].append(machine_dict)
         for operator in system.operator_list:
             operator_dict = {}
@@ -50,7 +50,7 @@ def encode_json(systems):
 
 def optimization(step_list: list, machine_list: list, hourly_rate_operators: float, target_cycle_time: int,
                  areas: list, max_operators: int = 5,
-                 hyperparameters: dict = {'generations': 250, 'pop_size': 200, 'prob_mutation': 0.3}) -> list[list]:
+                 hyperparameters: dict = {'generations': 250, 'pop_size': 200, 'prob_mutation': 0.3, 'prob_crossover': 1.}) -> list[list]:
 
     print('START OPTIMIZATION')
     # Define global variables
@@ -65,12 +65,14 @@ def optimization(step_list: list, machine_list: list, hourly_rate_operators: flo
     def create_system(individual):
         machine_list = []
         operator_list = []
-        for index, machine_type_index, operator in enumerate(zip(individual[0], individual[1])):
+        index = 0
+        for machine_type_index, operator in zip(individual[0], individual[1]):
             machine_type = MACHINE_TYPES[machine_type_index]
             machine = Machine(machine_type.name, index, machine_type)
             machine.mstep_list = [PRODUCTION_STEPS[index]]
             machine.operator = operator
             machine_list.append(machine)
+            index += 1
         
         # Create operator objects
         operators = individual[1]
@@ -85,7 +87,8 @@ def optimization(step_list: list, machine_list: list, hourly_rate_operators: flo
                 operator_machines.append(machine_list[index])
             operator_list.append(Operator(i, HOURLY_RATE_OPERATORS, operator_machines))
 
-        system = ProductionSystem(CYCLE_TIME, None, AREAS, machine_list, operator_list)
+        system = ProductionSystem(CYCLE_TIME, None, AREAS, machine_list, operator_list,
+                                  first_corner=individual[2][0], second_corner=individual[2][1])
         return system
 
     def genetic_algorithm(generations: int, pop_size: int,
@@ -120,15 +123,12 @@ def optimization(step_list: list, machine_list: list, hourly_rate_operators: flo
                 Change the type of one machine.
                 """
                 index = random.choice(range(len(individual[0])))
-                old_type = individual[0][index]
-                new_type = old_type
-                while old_type == new_type:
-                    new_type = random.choice(range(len(MACHINE_TYPES)))
+                new_type = random.choice(range(len(MACHINE_TYPES)))
                 individual[0][index] = new_type
                 return individual
             
             def mutate_operators(individual):
-                operator = random.choice(range(0, len(individual[4])))
+                operator = random.choice(range(0, len(individual[1])))
                 if individual[1][operator] == 0:
                     individual[1][operator] = 1
                 elif individual[1][operator] == MAX_OPERATORS:
@@ -178,7 +178,13 @@ def optimization(step_list: list, machine_list: list, hourly_rate_operators: flo
             new_corners1.sort()
             new_corners2 = ind1[2][:1] + ind2[2][1:]
             new_corners2.sort()
-            return ([new_machines1, new_operators1, new_corners1], [new_machines2, new_operators2, new_corners2])
+            ind1[0] = new_machines1
+            ind1[1] = new_operators1
+            ind1[2] = new_corners1
+            ind1[0] = new_machines2
+            ind2[1] = new_operators2
+            ind2[2] = new_corners2
+            return (ind1, ind2)
 
         def evaluate(individual, system: object = None) -> tuple[float]:
             """
@@ -355,7 +361,7 @@ def optimization(step_list: list, machine_list: list, hourly_rate_operators: flo
         population = toolbox.create_population(n=pop_size) # create start population
         pop, log = customMuPlusLambda(population, toolbox, pop_size,
                                       prob_mutation, generations, stats=stats, verbose=True)
-        return pop, log
+        return pop
 
     solutions = []
     solutions.extend(genetic_algorithm(**hyperparameters))

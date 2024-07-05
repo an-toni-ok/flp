@@ -52,7 +52,7 @@ class Machine:
     work_content: float = 0.
     cycle_time: float = 0.
     
-    def _sum_work_content(self) -> float:
+    def sum_work_content(self) -> float:
         """
         Calculate the work content of the operator.
         :return: operator work content for this station in seconds
@@ -67,7 +67,7 @@ class Machine:
         return round(sum([step.machine_time for step in self.mstep_list]), 2)
     
     def calc_cycle_time(self) -> float:
-        self.work_content = self._sum_work_content()
+        self.work_content = self.sum_work_content()
         self.machine_time = self._sum_machine_time()
         self.cycle_time = self.work_content + self.machine_time + self.type.additional_machine_time
         return self.cycle_time
@@ -174,6 +174,8 @@ class ProductionSystem():
     number_operators: int = 0
     x_dimension: float = 0.
     y_dimension: float = 0.
+    first_corner: int = 0
+    second_corner: int = 0
 
     def _calc_cycle_time(self) -> float:
         """
@@ -293,6 +295,7 @@ class ProductionSystem():
         self.investment_cost = self._calc_invest()
         self.number_operators = self._num_operators()
         self.used_area = round(self.x_dimension * self.y_dimension, 2)
+        self.crossing_operators = self._do_operators_cross()
 
     def _do_operators_cross(self) -> bool:
         """
@@ -427,12 +430,6 @@ class ProductionSystem():
         Check if all restrictions for the line are met.
         :return: True if all restrictions are fulfilled, False otherwise
         """
-        if self.space_requirement > 0.:
-            return False
-        if self.excess_payload > 0.:
-            return False
-        if self.ergonomics > 0.:
-            return False
         if self.crossing_operators:
             return False
         if self.cycle_time > self.plant.target_cycle_time:
