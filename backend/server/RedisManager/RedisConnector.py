@@ -70,11 +70,11 @@ class RedisRunConfig(Enum):
 
         redis.json().set(run_id, "$", {
             'input': {
-                'areas': {}, 
-                'restricted_areas': {}, 
+                'areas': [], 
+                'restricted_areas': [], 
                 'technologies': [], 
-                'production_steps': {}, 
-                'machines': {}, 
+                'production_steps': [], 
+                'machines': [], 
                 'objectives': {}, 
                 'target_cycle_time': None, 
                 'hourly_operator_cost': None

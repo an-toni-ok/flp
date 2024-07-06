@@ -112,11 +112,11 @@ class TestRedisRunConfig:
         self.reset_test_run(redis, run_id=run_id, delete_only=True)
         init_data = {
             'input': {
-                'areas': {}, 
-                'restricted_areas': {}, 
+                'areas': [], 
+                'restricted_areas': [], 
                 'technologies': [], 
-                'production_steps': {}, 
-                'machines': {}, 
+                'production_steps': [], 
+                'machines': [], 
                 'objectives': {}, 
                 'target_cycle_time': None, 
                 'hourly_operator_cost': None
