@@ -1,117 +1,127 @@
-from logging import Logger
-from typing import Dict, List
-from redis import Redis
+from typing import Dict, List, Tuple
 
-from .util import RunInputType, RunStatus
+from .RedisConnector import RedisInput, RedisRunConfig
+from .Errors import InputNotSettable
+from .util import RunStatus
 
-class RunInputData:
-    """Manages the Input Data for a run. 
-    
-    Input data from the endpoints added into this class will automatically stored within redis in the correct format so that a generation of an input file for running the optimization is unnecessary.
-
-    It is assumed that Redis already contains the entry at run_id, therefore the class starts by setting all the internal values to their equivalent in the Redis server. An exception will be thrown if the entry does not exist.
-
-    Methods:
-    - set(...): Sets the data of the specified Endpoint internally and on the Redis server.
-    - file(): Generates the current input file, if all options are set.
-    """
-    def __init__(self, run_id, redis: Redis, logger: Logger):
-        self.logger = logger
-
+class RunInput:
+    def __init__(self, run_id):
         self.run_id: str = run_id
-        input_data = redis.json().get(run_id, '$.input')[0]
 
-        self._areas: Dict = input_data["areas"]
-        self._restricted_areas: Dict = input_data["restricted_areas"]
-        self._technologies: List[str] = input_data["technologies"]
-        self._production_steps: Dict = input_data["production_steps"]
-        self._machines: Dict = input_data["machines"]
-        self._objectives: Dict = input_data["objectives"]
-        self._target_cycle_time: int = input_data["target_cycle_time"]
-        self._hourly_operator_cost: int = input_data["hourly_operator_cost"]
+        self._areas = None
+        self._steps = None
+        self._machines = None
+        self._objectives = None
 
-    def set_input(self, data: Dict, data_type: RunInputType, redis: Redis):
-        # Another connection by the same user to the server or a Run completing might change the Status in the Redis server instance. Therefore it's best to query the value whenever needing it.
-        status = RunStatus[redis.json().get(self.run_id)["status"]]
-        if status is not RunStatus.INPUT:
-            raise Exception("Input data not changable anymore.")
-        
-        match data_type:
-            case RunInputType.AREA:
-                self._set_area(data=data, redis=redis)
-            case RunInputType.STEPS:
-                self._set_steps(data=data, redis=redis)
-            case RunInputType.MACHINES:
-                self._set_machines(data=data, redis=redis)
-            case RunInputType.OBJECTIVES:
-                self._set_objectives(data=data, redis=redis)
-    
-    def get_input_file(self):
-        if not self.check_all_inputs_set():
-            raise Exception("Not all input's are set")
-        
+    def json(self):
+        return RedisInput.ALL.query(self.run_id)
+
+    def _assure_input_settable(self):
+        status = RunStatus[RedisRunConfig.STATUS.query(self.run_id)]
+        if not status == RunStatus.INPUT:
+            raise InputNotSettable(status.value)
+
+    @property
+    def areas(self):
         return {
-            "areas": self._areas,
-            "restricted_areas": self._restricted_areas,
-            "technologies": self._technologies,
-            "production_steps": self._production_steps,
-            "machines": self._machines,
-            "objectives": self._objectives,
-            "target_cycle_time": self._target_cycle_time,
-            "hourly_operator_cost": self._hourly_operator_cost
+            "areas": RedisInput.AREAS.query(self.run_id),
+            "restricted_areas": RedisInput.R_AREAS.query(self.run_id)
         }
-    
-    def check_all_inputs_set(self):
-        """Helper function determining if all inputs are set.
+
+    @property
+    def steps(self):
+        return RedisInput.STEPS.query(self.run_id)
+
+    @property
+    def machines(self):
+        return RedisInput.MACHINES.query(self.run_id)
+
+    @property
+    def objectives(self):
+        return {
+            "objectives": RedisInput.OBJECTIVES.query(self.run_id),
+            "target_cycle_time": RedisInput.CYCLE_TIME.query(self.run_id),
+            "hourly_operator_cost": RedisInput.OPERATOR_COST.query(self.run_id)
+        }
+
+    def _set_technologies(self):
+        machines = self.machines
+        steps = self.steps
+        
+        unique_technologies = set()
+        if steps:
+            for step in steps:
+                step_tech = step.get("technology")
+                if step_tech is not None:
+                    unique_technologies.add(step_tech)
+
+        if machines:
+            for machine in machines:
+                machine_tech = machine.get("technologies")
+                if machine_tech is not None:
+                    for technology in machine_tech:
+                        unique_technologies.add(technology)
+
+        technologies = list(unique_technologies)
+        RedisInput.TECHNOLOGIES.set(self.run_id, technologies)
+
+    @areas.setter
+    def areas(self, data: Dict):
+        self._assure_input_settable()
+        
+        if data == self.areas:
+            return
+
+        RedisInput.AREAS.set(self.run_id, data["areas"])
+        RedisInput.R_AREAS.set(self.run_id, data["restricted_areas"])
+
+    @steps.setter
+    def steps(self, data: List):
+        self._assure_input_settable()
+        
+        if data == self.steps:
+            return
+
+        # Update steps
+        RedisInput.STEPS.set(self.run_id, data)
+        # Update technologies
+        self._set_technologies()
+
+    @machines.setter
+    def machines(self, data: List):
+        self._assure_input_settable()
+        
+        if data == self.machines:
+            return 
+
+        # Update Machines
+        RedisInput.MACHINES.set(self.run_id, data)
+        # Update technologies
+        self._set_technologies()
+
+    @objectives.setter
+    def objectives(self, data: Dict):
+        self._assure_input_settable()
+
+        if data == self.objectives:
+            return
+        
+        RedisInput.OBJECTIVES.set(self.run_id, data["objectives"])
+        RedisInput.CYCLE_TIME.set(self.run_id, data["target_cycle_time"])
+        RedisInput.OPERATOR_COST.set(self.run_id, data["hourly_operator_cost"])
+        
+    def __eq__(self, other) -> bool:
+        """Comparison method for class instances.
+
+        Args:
+            other (_type_): comparison object
 
         Returns:
-            bool: True if all fields are set.
+            bool: Comparison result
         """
-        return (self._areas and self._restricted_areas and self._production_steps and self._machines and self._technologies and self._objectives and self._target_cycle_time and self._hourly_operator_cost)
-
-    def _update_technologies(self, redis: Redis):
-        unique_technologies = set()
-
-        for step in self._production_steps:
-            unique_technologies.add(step["technology"])
-
-        for machine in self._machines:
-            for technology in machine:
-                unique_technologies.add(technology)
-
-        self._technologies = list(unique_technologies)
-        redis.json().set(self.run_id, "$.input.technologies", self._technologies)
-
-    def _set_area(self, data: Dict, redis: Redis):
-        self._areas = data["areas"]
-        redis.json().set(self.run_id, "$.input.areas", self._areas)
-
-        self._restricted_areas = data["restricted_areas"]
-        redis.json().set(self.run_id, "$.input.restricted_areas", self._restricted_areas)
-
-    def _set_steps(self, data: Dict, redis: Redis):
-        self._production_steps = data
-        redis.json().set(self.run_id, "$.input.production_steps", self._production_steps)
-
-        self._update_technologies(redis=redis)
-
-    def _set_machines(self, data: Dict, redis: Redis):
-        self._machines = data
-        redis.json().set(self.run_id, "$.input.machines", self._machines)
-
-        self._update_technologies(redis=redis)
-
-    def _set_objectives(self, data: Dict, redis: Redis):
-        self._objectives = {
-            "invest": data["invest"],
-            "cost_per_part": data["cost_per_part"],
-            "used_area": data["used_area"],
-            "number_operators": data["number_operators"]
-        }
-        redis.json().set(self.run_id, "$.input.objectives", self._objectives)
-
-        self._target_cycle_time = data["target_cycle_time"]
-        redis.json().set(self.run_id, "$.input.target_cycle_time", self._target_cycle_time)
-
-        self._hourly_operator_cost = data["hourly_operator_cost"]
-        redis.json().set(self.run_id, "$.input.hourly_operator_cost", self._hourly_operator_cost)
+        # This method needs to be implemented in order for
+        # comparisons to work. If it is not implemented the 
+        # comparison is done by memory addresses.
+        if not isinstance(other, RunInput):
+            return False
+        return self.run_id == other.run_id
