@@ -1,4 +1,4 @@
-/* Used colors */
+/* Variables for colors and more */
 :root {
   --color-background: #FFFFFF;
   --color-border: #CCCCCC;
@@ -8,6 +8,9 @@
   --color-text-primary: #212121;
   --color-text-secondary: #757575;
   --color-brand: #F30147;
+
+  --font-size: 15px;
+  --line-height: 1.6;
 }
 
 /* General styling */
@@ -15,7 +18,7 @@ body {
   color: var(--color-text-primary);
   background: var(--color-background);
   box-sizing: border-box;
-  line-height: 1.6;
+  line-height: var(--line-height);
   font-family:
     Inter,
     -apple-system,
@@ -29,8 +32,10 @@ body {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 15px;
+  font-size: var(--font-size);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
