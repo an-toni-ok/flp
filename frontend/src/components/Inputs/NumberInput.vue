@@ -47,24 +47,24 @@ const handleBlur = () => {
             :name="name" 
             :id="name" 
             v-model="value" >
-        <input 
+        <button
             @click="add()"
             @focus="handleFocus" 
             @blur="handleBlur"
             :class="isFocused ? 'focus' : ''"
             class="input-button" 
-            type="button" 
-            value="+"
             :aria-label="'Increment the number input ' + name + ' by one'" >
-        <input 
+            +
+        </button>
+        <button
             @click="subtract()"
             @focus="handleFocus" 
             @blur="handleBlur"
             :class="isFocused ? 'focus' : ''"
-            class="input-button" 
-            type="button" 
-            value="-"
+            class="input-button"
             :aria-label="'Decrement the number input ' + name + ' by one'" >
+            -
+        </button>
     </div>
     <p v-if="error" class="error">{{ error }}</p>
 </template>
@@ -83,7 +83,7 @@ const handleBlur = () => {
     color: var(--color-error)
 }
 
-input {
+input, button {
     height: 30px;
     border: 1px solid var(--color-border);
     margin: 0;
