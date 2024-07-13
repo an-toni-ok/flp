@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import IconButton from './IconButton.vue';
+import IconPlus from '../icons/IconPlus.vue';
+import IconMinus from '../icons/IconMinus.vue';
 
 const props = defineProps({
     name: {
@@ -31,42 +34,42 @@ const handleBlur = () => {
 </script>
 
 <template>
-    <label 
-        class="input-label"
-        :class="isFocused ? 'focus' : ''"
-        :for="name">
-        {{ name }}
-    </label>
-    <div class="custom-number-input">
-        <input 
-            @focus="handleFocus" 
-            @blur="handleBlur" 
+    <div class="number-input">
+        <label 
+            class="input-label"
             :class="isFocused ? 'focus' : ''"
-            class="input-field"
-            type="number" 
-            :name="name" 
-            :id="name" 
-            v-model="value" >
-        <button
-            @click="add()"
-            @focus="handleFocus" 
-            @blur="handleBlur"
-            :class="isFocused ? 'focus' : ''"
-            class="input-button" 
-            :aria-label="'Increment the number input ' + name + ' by one'" >
-            +
-        </button>
-        <button
-            @click="subtract()"
-            @focus="handleFocus" 
-            @blur="handleBlur"
-            :class="isFocused ? 'focus' : ''"
-            class="input-button"
-            :aria-label="'Decrement the number input ' + name + ' by one'" >
-            -
-        </button>
+            :for="name">
+            {{ name }}
+        </label>
+        <div class="custom-number-input">
+            <input 
+                @focus="handleFocus" 
+                @blur="handleBlur" 
+                :class="isFocused ? 'focus' : ''"
+                class="input-field"
+                type="number" 
+                :name="name" 
+                :id="name" 
+                v-model="value" >
+            <IconButton 
+                @click="add()"
+                @focus="handleFocus" 
+                @blur="handleBlur"
+                :is-focused="isFocused"
+                :help_text="'Increment the number input ' + name + ' by one'" >
+                <IconPlus />
+            </IconButton>
+            <IconButton 
+                @click="subtract()"
+                @focus="handleFocus" 
+                @blur="handleBlur"
+                :is-focused="isFocused"
+                :help_text="'Increment the number input ' + name + ' by one'" >
+                <IconMinus />
+            </IconButton>
+        </div>
+        <p v-if="error" class="error">{{ error }}</p>
     </div>
-    <p v-if="error" class="error">{{ error }}</p>
 </template>
 
 <style scoped>
@@ -83,13 +86,8 @@ const handleBlur = () => {
     color: var(--color-error)
 }
 
-input, button {
-    height: 30px;
-    border: 1px solid var(--color-border);
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: var(--color-background);
+.custom-number-input {
+    display: flex;
 }
 
 /* Remove standart mini buttons*/
@@ -104,6 +102,12 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .input-field {
+    box-sizing: border-box;
+    height: 30px;
+    border: 1px solid var(--color-border);
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-background);
     text-align: right;
     padding-right: 10px;
     width: 150px;
@@ -116,10 +120,5 @@ input[type=number]::-webkit-outer-spin-button {
 .focus {
     border-color: var(--color-text-primary);
     color: var(--color-text-primary);
-}
-
-.input-button {
-    border-left: none;
-    width: 30px;
 }
 </style>

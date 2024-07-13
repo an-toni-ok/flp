@@ -3,6 +3,10 @@ const props = defineProps({
     help_text: {
         type: String,
         required: true
+    },
+    isFocused: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -15,6 +19,7 @@ defineEmits(['click', 'focus', 'blur']);
         @focus="$emit('focus')" 
         @blur="$emit('blur')"
         class="input-button" 
+        :class="isFocused ? 'focus' : ''"
         :aria-label="help_text" >
         <slot></slot>
     </button>
@@ -22,18 +27,24 @@ defineEmits(['click', 'focus', 'blur']);
 
 <style scoped>
 .input-button {
-    border-left: none;
     width: 30px;
     height: 30px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     border: 1px solid var(--color-border);
+    border-left: none;
     box-sizing: border-box;
     background-color: var(--color-background);
 }
 
-.input-button > svg {
+.input-button > * {
     width: 15px;
+    height: 15px;
+}
+
+.focus {
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
 }
 </style>
