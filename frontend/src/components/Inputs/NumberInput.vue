@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import IconButton from './IconButton.vue';
+import InputLabel from './InputLabel.vue';
 import IconPlus from '../icons/IconPlus.vue';
 import IconMinus from '../icons/IconMinus.vue';
 
@@ -35,12 +36,10 @@ const handleBlur = () => {
 
 <template>
     <div class="number-input">
-        <label 
-            class="input-label"
-            :class="isFocused ? 'focus' : ''"
-            :for="name">
-            {{ name }}
-        </label>
+        <InputLabel 
+            :is-focused="isFocused"
+            :name="name"
+            :id="name" />
         <div class="custom-number-input">
             <input 
                 @focus="handleFocus" 
