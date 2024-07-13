@@ -9,7 +9,8 @@ const props = defineProps({
     preset: {
         type: Number,
         default: 0,
-    }
+    },
+    error: String
 })
 
 const value = ref(props.preset);
@@ -65,17 +66,21 @@ const handleBlur = () => {
             value="-"
             :aria-label="'Decrement the number input ' + name + ' by one'" >
     </div>
+    <p v-if="error" class="error">{{ error }}</p>
 </template>
 
 <style scoped>
-.movement {
-    margin-top: 20px;
-    margin-left: 20px;
-}
-
 .input-label {
     padding-left: 8px;
     color: var(--color-text-secondary)
+}
+
+.error {
+    margin: 5px 0;
+    padding: 5px 8px 0 8px;
+    width: 210px;
+    line-height: 1.2;
+    color: var(--color-error)
 }
 
 input {
