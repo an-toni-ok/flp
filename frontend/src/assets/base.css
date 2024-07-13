@@ -17,7 +17,6 @@
 body {
   color: var(--color-text-primary);
   background: var(--color-background);
-  box-sizing: border-box;
   line-height: var(--line-height);
   font-family:
     Inter,
@@ -38,4 +37,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+}
+
+* {
+  box-sizing: border-box;
 }
