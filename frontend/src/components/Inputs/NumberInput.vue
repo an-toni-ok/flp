@@ -13,6 +13,7 @@ const props = defineProps({
 })
 
 const value = ref(props.preset);
+const isFocused = ref(false)
 
 const add = () => {
     value.value += 1;
@@ -20,29 +21,45 @@ const add = () => {
 const subtract = () => {
     value.value -= 1;
 }
+const handleFocus = () => {
+    isFocused.value = true
+}
+const handleBlur = () => {
+    isFocused.value = false
+}
 </script>
 
 <template>
     <label 
         class="input-label"
+        :class="isFocused ? 'focus' : ''"
         :for="name">
         {{ name }}
     </label>
     <div class="custom-number-input">
         <input 
-            class="input-field" 
+            @focus="handleFocus" 
+            @blur="handleBlur" 
+            :class="isFocused ? 'focus' : ''"
+            class="input-field"
             type="number" 
             :name="name" 
             :id="name" 
             v-model="value" >
         <input 
             @click="add()"
+            @focus="handleFocus" 
+            @blur="handleBlur"
+            :class="isFocused ? 'focus' : ''"
             class="input-button" 
             type="button" 
             value="+"
             :aria-label="'Increment the number input ' + name + ' by one'" >
         <input 
             @click="subtract()"
+            @focus="handleFocus" 
+            @blur="handleBlur"
+            :class="isFocused ? 'focus' : ''"
             class="input-button" 
             type="button" 
             value="-"
@@ -85,6 +102,15 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: right;
     padding-right: 10px;
     width: 150px;
+}
+
+.input-field:focus {
+    outline: none;
+}
+
+.focus {
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
 }
 
 .input-button {
