@@ -1,14 +1,8 @@
 <script setup>
-import { computed } from 'vue';
-
 const props = defineProps({
     help_text: {
         type: String,
         required: true
-    },
-    isFocused: {
-        type: Boolean,
-        default: false
     },
     hasBorderTop: {
         type: Boolean,
@@ -20,18 +14,14 @@ const props = defineProps({
     }
 })
 
-defineEmits(['click', 'focus', 'blur']);
+defineEmits(['click']);
 </script>
 
 <template>
     <button
         @click="$emit('click')"
         class="icon-button" 
-        :class="{ 
-            'focus': isFocused, 
-            'no-top': !hasBorderTop, 
-            'no-left': !hasBorderLeft 
-        }"
+        :class="{ 'no-top': !hasBorderTop, 'no-left': !hasBorderLeft }"
         :aria-label="help_text" >
         <slot></slot>
     </button>
