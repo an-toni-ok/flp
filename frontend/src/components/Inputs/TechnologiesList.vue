@@ -47,7 +47,11 @@ const technologiesStore = useTechnologiesStore();
 <style scoped>
 .tech-option-list {
     all: unset;
-    width: var(--input-width);
+    display: block;
+    max-height: calc(var(--input-height) * 7);
+    overflow: scroll;
+    /* Space for scrollbar */
+    width: calc(var(--input-width) + 8px); 
 }
 
 .tech-option {
