@@ -1,10 +1,16 @@
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
     help_text: {
         type: String,
         required: true
     },
     isFocused: {
+        type: Boolean,
+        default: false
+    },
+    withoutTopBorder: {
         type: Boolean,
         default: false
     }
@@ -19,7 +25,7 @@ defineEmits(['click', 'focus', 'blur']);
         @focus="$emit('focus')" 
         @blur="$emit('blur')"
         class="input-button" 
-        :class="isFocused ? 'focus' : ''"
+        :class="{ 'focus': isFocused, 'top-border': withoutTopBorder }"
         :aria-label="help_text" >
         <slot></slot>
     </button>
@@ -46,5 +52,9 @@ defineEmits(['click', 'focus', 'blur']);
 .focus {
     border-color: var(--color-text-primary);
     color: var(--color-text-primary);
+}
+
+.top-border {
+    border-top: none;
 }
 </style>
