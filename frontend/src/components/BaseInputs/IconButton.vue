@@ -55,10 +55,10 @@ buttons is in src/assets/main.css.
 }
 
 .no-top {
-    border-top: none;
+    margin-top: -1px;
 }
 
 .no-left {
-    border-left: none;
+    margin-left: -1px;
 }
 </style>

@@ -15,6 +15,7 @@ input:focus {
     outline: none;
     border-color: var(--color-text-primary);
     color: var(--color-text-primary);
+    z-index: 1;
 }
 
 input:-webkit-autofill {
@@ -49,4 +50,5 @@ button:focus {
     outline: none;
     border-color: var(--color-text-primary);
     color: var(--color-text-primary);
+    z-index: 1;
 }
