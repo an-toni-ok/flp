@@ -4,13 +4,13 @@ const props = defineProps({
         type: String,
         required: true
     },
-    hasBorderTop: {
-        type: Boolean,
-        default: true
-    },
-    hasBorderLeft: {
+    overlapTopBorder: {
         type: Boolean,
         default: false
+    },
+    overlapLeftBorder: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -21,7 +21,7 @@ defineEmits(['click']);
     <button
         @click="$emit('click')"
         class="icon-button" 
-        :class="{ 'no-top': !hasBorderTop, 'no-left': !hasBorderLeft }"
+        :class="{ 'no-top': overlapTopBorder, 'no-left': overlapLeftBorder }"
         :aria-label="help_text" >
         <slot></slot>
     </button>

@@ -34,7 +34,6 @@ defineEmits(['selected', 'delete'])
             <IconButton 
                 v-if="deleteable"
                 @click="$emit('delete', option)"
-                :without-top-border="false"
                 :help_text="'Remove the option ' + option" >
                 <IconRemove />
             </IconButton>           
