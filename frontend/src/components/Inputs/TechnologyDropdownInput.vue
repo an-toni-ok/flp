@@ -59,23 +59,32 @@ const deleteHandler = (value) => {
     <InputLabel 
         :id=id
         :name=name />
-    <InputDropdownHeader 
-        :id="id"
-        :name="name"
-        :is-changeable="props.isChangeable"
-        v-model:value="value"
-        @add="addHandler"
-        @toggle="toggleOptions" />
-    <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
-        <InputDropdownOptionList 
-            :base-id="id"
-            :deleteable="areTechnologiesDeleteable"
-            :filtered-options="filteredTechnologies"
-            @selected="optionClicked"
-            @delete="deleteHandler" />
+    <div class="scrollable-content">
+        <InputDropdownHeader 
+            :id="id"
+            :name="name"
+            :is-changeable="props.isChangeable"
+            v-model:value="value"
+            @add="addHandler"
+            @toggle="toggleOptions" />
+        <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
+            <InputDropdownOptionList 
+                :base-id="id"
+                :deleteable="areTechnologiesDeleteable"
+                :filtered-options="filteredTechnologies"
+                @selected="optionClicked"
+                @delete="deleteHandler" />
+        </div>
     </div>
     <InputError :error="error" />
 </template>
 
 <style scoped>
+.scrollable-content {
+    display: block;
+    max-height: calc(var(--input-height) * 7);
+    overflow-x: scroll;
+    /* Space for scrollbar */
+    width: calc(var(--input-width) + 8px); 
+}
 </style>

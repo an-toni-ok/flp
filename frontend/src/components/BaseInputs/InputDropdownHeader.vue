@@ -51,5 +51,7 @@ const value = defineModel('value', { required: true })
 .dropdown-input {
     display: flex;
     width: var(--input-width);
+    position: sticky;
+    top: 0;
 }
 </style>

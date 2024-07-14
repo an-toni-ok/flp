@@ -44,11 +44,7 @@ defineEmits(['selected', 'delete'])
 <style scoped>
 .option-list {
     all: unset;
-    display: block;
-    max-height: calc(var(--input-height) * 7);
-    overflow: scroll;
-    /* Space for scrollbar */
-    width: calc(var(--input-width) + 8px); 
+    width: var(--input-width);
 }
 
 .option-container {

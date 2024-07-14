@@ -43,21 +43,30 @@ const toggleOptions = () => {
     <InputLabel 
         :id=id
         :name=name />
-    <InputDropdownHeader 
-        :id="id"
-        :name="name"
-        :is-changeable="false"
-        v-model:value="value"
-        @toggle="toggleOptions" />
-    <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
-        <InputDropdownOptionList 
-            :base-id="id"
-            :deleteable="false"
-            :filtered-options="filteredMachines"
-            @selected="optionClicked" />
+    <div class="scrollable-content">
+        <InputDropdownHeader 
+            :id="id"
+            :name="name"
+            :is-changeable="false"
+            v-model:value="value"
+            @toggle="toggleOptions" />
+        <div v-show="areOptionsShown"><!-- div is needed for the v-show here -->
+            <InputDropdownOptionList 
+                :base-id="id"
+                :deleteable="false"
+                :filtered-options="filteredMachines"
+                @selected="optionClicked" />
+        </div>
     </div>
     <InputError :error="error" />
 </template>
 
 <style scoped>
+.scrollable-content {
+    display: block;
+    max-height: calc(var(--input-height) * 7);
+    overflow-x: scroll;
+    /* Space for scrollbar */
+    width: calc(var(--input-width) + 8px); 
+}
 </style>
