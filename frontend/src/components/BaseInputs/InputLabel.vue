@@ -1,9 +1,5 @@
 <script setup>
 const props = defineProps({
-    isFocused: {
-        type: Boolean,
-        required: true,
-    },
     name: {
         type: String,
         required: true,
@@ -18,7 +14,6 @@ const props = defineProps({
 <template>
     <label 
         class="input-label"
-        :class="isFocused ? 'focus' : ''"
         :for="id">
         {{ name }}
     </label>
