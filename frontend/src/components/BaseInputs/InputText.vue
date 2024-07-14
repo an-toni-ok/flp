@@ -8,10 +8,7 @@ const props = defineProps({
         type: String,
         required: true
     },
-    isFocused: Boolean
 })
-
-defineEmits(['focus', 'blur'])
 
 // Model: https://vuejs.org/guide/components/v-model.html
 const input_value = defineModel('value', { required: true }) 
@@ -19,10 +16,7 @@ const input_value = defineModel('value', { required: true })
 
 <template>
     <input 
-        @focus="$emit('focus')" 
-        @blur="$emit('blur')" 
         class="text-input"
-        :class="{'focus': isFocused}"
         type="text" 
         :name="name" 
         :id="id"
