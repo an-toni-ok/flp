@@ -1,2 +1,52 @@
 @import './base.css';
 
+/** Input styling */
+input {
+    width: 100%;
+    height: var(--input-height);
+    font-size: var(--font-size);
+    line-height: 1;
+    padding: 0 calc((var(--input-height) - var(--font-size)) / 2);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
+}
+
+input:-webkit-autofill {
+    transition: background-color 5000s;
+}
+
+/* Number inputs */
+/* Remove standart mini buttons*/
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+}
+
+/** Button styling
+*/
+button {
+    width: 100%;
+    height: var(--input-height);
+    font-size: var(--font-size);
+    line-height: 1;
+    padding: 0 calc((var(--input-height) - var(--font-size)) / 2);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);    
+}
+
+button:focus {
+    outline: none;
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
+}
