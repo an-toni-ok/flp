@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { useTechnologiesStore } from '@/stores/technologies';
 
 import IconButton from '../BaseInputs/IconButton.vue';
@@ -12,12 +13,22 @@ const props = defineProps({
     deleteable: {
         type: Boolean,
         default: true,
+    },
+    value: {
+        type: String,
+        required: true
     }
 })
 
 defineEmits(['selected'])
 
 const technologiesStore = useTechnologiesStore();
+const filteredTechnologies = computed(() => {
+    if (!props.value) {
+      return technologiesStore.technologies
+    }
+    return technologiesStore.technologies.filter((tech) => tech.includes(props.value))
+  })
 </script>
 
 <template>
@@ -26,7 +37,7 @@ const technologiesStore = useTechnologiesStore();
         role="listbox" 
         aria-label="List of already set technologies" >
         <li 
-            v-for="tech in technologiesStore.technologies"
+            v-for="tech in filteredTechnologies"
             class="tech-option"
             @click="$emit('selected', tech)"
             role="option" >

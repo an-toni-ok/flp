@@ -61,6 +61,7 @@ const addHandler = (value) => {
         <TechnologiesList 
             :base-id="id"
             :deleteable="areTechnologiesDeleteable"
+            :value="value"
             @selected="optionClicked" />
     </div>
     <InputError :error="error" />
