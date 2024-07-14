@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import IconButton from './IconButton.vue';
-import InputLabel from './InputLabel.vue';
-import InputError from './InputError.vue';
+import InputLabel from '../BaseInputs/InputLabel.vue';
+import InputError from '../BaseInputs/InputError.vue';
 
 import IconPlus from '../icons/IconPlus.vue';
 import IconMinus from '../icons/IconMinus.vue';

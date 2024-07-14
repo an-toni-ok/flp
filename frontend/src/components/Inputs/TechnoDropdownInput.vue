@@ -3,9 +3,9 @@ import { ref } from 'vue';
 import { useTechnologiesStore } from '@/stores/technologies';
 
 import TechnologiesList from './TechnologiesList.vue';
-import InputLabel from './InputLabel.vue';
+import InputLabel from '../BaseInputs/InputLabel.vue';
 import IconButton from './IconButton.vue';
-import InputError from './InputError.vue';
+import InputError from '../BaseInputs/InputError.vue';
 
 import IconPlus from '../icons/IconPlus.vue';
 import IconArrowDown from '../icons/IconArrowDown.vue';
