@@ -1,12 +1,12 @@
 <script setup>
 import { useTechnologiesStore } from '@/stores/technologies';
 
-import IconButton from './IconButton.vue';
+import IconButton from '../BaseInputs/IconButton.vue';
 import IconRemove from '../icons/IconRemove.vue';
 
 const props = defineProps({
-    isFocused: {
-        type: Boolean,
+    baseId: {
+        type: String,
         required: true,
     },
     deleteable: {
@@ -15,29 +15,29 @@ const props = defineProps({
     }
 })
 
-defineEmits(['selected', 'focus', 'blur'])
+defineEmits(['selected'])
 
 const technologiesStore = useTechnologiesStore();
 </script>
 
 <template>
-    <ul class="tech-option-list" role="listbox" aria-label="Already set technologies">
+    <ul :id="baseId + 'options'"
+        class="tech-option-list" 
+        role="listbox" 
+        aria-label="List of already set technologies" >
         <li 
             v-for="tech in technologiesStore.technologies"
             class="tech-option"
             @click="$emit('selected', tech)"
             role="option" >
-            <div 
-                class="tech-display"
-                :class="{ 'focus': isFocused, 'non-deleteable': !deleteable }">
+            <div class="list-option" >
                 <p>{{ tech }}</p>
             </div> 
             <IconButton 
                 v-if="deleteable"
                 @click="technologiesStore.remove(tech)"
-                help_text="Remove the technology."
-                :without-top-border="true"
-                :is-focused="isFocused" >
+                :help_text="'Remove the technology ' + tech"
+                :without-top-border="false" >
                 <IconRemove />
             </IconButton>           
         </li>
@@ -47,35 +47,26 @@ const technologiesStore = useTechnologiesStore();
 <style scoped>
 .tech-option-list {
     all: unset;
-    width: 210px;
+    width: var(--input-width);
 }
 
 .tech-option {
     display: flex;
+    width: var(--input-width);
+    margin-top: -1px;
 }
 
-.tech-display {
-    box-sizing: border-box;
-    height: 30px;
-    border: 1px solid var(--color-border);
-    border-top: none;
-    margin: 0;
-    padding: 0;
-    background-color: var(--color-background);
-    text-align: right;
-    padding-right: 10px;
-    width: 180px;
+.list-option {
+    width: 100%;
+    height: var(--input-height);
     display: flex;
     align-items: center;
     justify-content: flex-end;
-}
-
-.non-deleteable {
-    width: 210px;
-}
-
-.focus {
-    border-color: var(--color-text-primary);
-    color: var(--color-text-primary);
+    font-size: var(--font-size);
+    line-height: 1;
+    padding-right: calc((var(--input-height) - var(--font-size)) / 2);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    text-align: right;
 }
 </style>

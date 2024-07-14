@@ -2,15 +2,16 @@
 import { ref } from 'vue';
 import { useTechnologiesStore } from '@/stores/technologies';
 
-import TechnologiesList from './TechnologiesList.vue';
 import InputLabel from '../BaseInputs/InputLabel.vue';
-import IconButton from './IconButton.vue';
 import InputError from '../BaseInputs/InputError.vue';
-
-import IconPlus from '../icons/IconPlus.vue';
-import IconArrowDown from '../icons/IconArrowDown.vue';
+import DropdownInputHeader from './DropdownInputHeader.vue';
+import TechnologiesList from './TechnologiesList.vue';
 
 const props = defineProps({
+    id: {
+        type: String,
+        default: "technology-dropdown",
+    },
     preset: {
         type: String,
         default: "",
@@ -26,64 +27,39 @@ const props = defineProps({
     error: String,
 })
 
-const isFocused = ref(false);
 const areOptionsShown = ref(false);
 const value = ref(props.preset);
 let name = "Technologie"
 
 const technologiesStore = useTechnologiesStore()
 
-const handleFocus = () => {
-    isFocused.value = true
-}
-const handleBlur = () => {
-    isFocused.value = false
-}
 const optionClicked = (option) => {
     value.value = option
 }
 const toggleOptions = () => {
     areOptionsShown.value = !areOptionsShown.value
-    isFocused.value = true
+}
+const addHandler = (value) => {
+    if (props.isChangeable) {
+        technologiesStore.add(value)
+    }
 }
 </script>
 
 <template>
     <InputLabel 
-        :is-focused="isFocused"
-        :name=name
-        :id=name />
-    <div class="dropdown-input">
-        <input 
-            @focus="handleFocus" 
-            @blur="handleBlur" 
-            :class="{'focus': isFocused, 'not-changeable': !isChangeable }"
-            class="input-field"
-            type="text" 
-            :name="name" 
-            :id="name" 
-            v-model="value" >
-        <IconButton 
-            v-if="isChangeable"
-            @click="technologiesStore.add(value)"
-            @focus="handleFocus" 
-            @blur="handleBlur" 
-            :is-focused="isFocused"
-            help_text="Save the technology.">
-            <IconPlus />
-        </IconButton>
-        <IconButton
-            @click="toggleOptions"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            :is-focused="isFocused"
-            help_text="Toggle a list of currently set technology options.">
-            <IconArrowDown />
-        </IconButton>
-    </div>
-    <div v-show="areOptionsShown" >
+        :id=id
+        :name=name />
+    <DropdownInputHeader 
+        :id="id"
+        :name="name"
+        :is-changeable="props.isChangeable"
+        v-model:value="value"
+        @add="addHandler"
+        @toggle="toggleOptions" />
+    <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
         <TechnologiesList 
-            :is-focused="false"
+            :base-id="id"
             :deleteable="areTechnologiesDeleteable"
             @selected="optionClicked" />
     </div>
@@ -91,33 +67,4 @@ const toggleOptions = () => {
 </template>
 
 <style scoped>
-.dropdown-input {
-    display: flex;
-}
-
-.input-field {
-    box-sizing: border-box;
-    height: 30px;
-    border: 1px solid var(--color-border);
-    margin: 0;
-    padding: 0;
-    background-color: var(--color-background);
-    text-align: right;
-    padding-right: 10px;
-    width: 150px;
-    font-size: var(--font-size);
-}
-
-.input-field:focus {
-    outline: none;
-}
-
-.not-changeable {
-    width: 180px;
-}
-
-.focus {
-    border-color: var(--color-text-primary);
-    color: var(--color-text-primary);
-}
 </style>
