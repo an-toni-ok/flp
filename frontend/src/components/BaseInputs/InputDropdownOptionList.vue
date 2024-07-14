@@ -1,7 +1,4 @@
 <script setup>
-import { computed } from 'vue';
-import { useTechnologiesStore } from '@/stores/technologies';
-
 import IconButton from '../BaseInputs/IconButton.vue';
 import IconRemove from '../icons/IconRemove.vue';
 
@@ -14,41 +11,31 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
-    value: {
-        type: String,
+    filteredOptions: {
+        type: Array,
         required: true
     }
 })
 
-defineEmits(['selected'])
-
-const technologiesStore = useTechnologiesStore();
-const filteredTechnologies = computed(() => {
-    if (!props.value) {
-      return technologiesStore.technologies
-    }
-    return technologiesStore.technologies.filter((tech) => tech.includes(props.value))
-  })
+defineEmits(['selected', 'delete'])
 </script>
 
 <template>
     <ul :id="baseId + 'options'"
-        class="tech-option-list" 
-        role="listbox" 
-        aria-label="List of already set technologies" >
+        class="option-list" >
         <li 
-            v-for="tech in filteredTechnologies"
-            class="tech-option"
-            @click="$emit('selected', tech)"
-            role="option" >
-            <div class="list-option" >
-                <p>{{ tech }}</p>
+            v-for="option in filteredOptions"
+            class="option-container" >
+            <div 
+                class="option-text"
+                @click="$emit('selected', option)" >
+                <p>{{ option }}</p>
             </div> 
             <IconButton 
                 v-if="deleteable"
-                @click="technologiesStore.remove(tech)"
-                :help_text="'Remove the technology ' + tech"
-                :without-top-border="false" >
+                @click="$emit('delete', option)"
+                :without-top-border="false"
+                :help_text="'Remove the option ' + option" >
                 <IconRemove />
             </IconButton>           
         </li>
@@ -56,7 +43,7 @@ const filteredTechnologies = computed(() => {
 </template>
 
 <style scoped>
-.tech-option-list {
+.option-list {
     all: unset;
     display: block;
     max-height: calc(var(--input-height) * 7);
@@ -65,13 +52,13 @@ const filteredTechnologies = computed(() => {
     width: calc(var(--input-width) + 8px); 
 }
 
-.tech-option {
+.option-container {
     display: flex;
     width: var(--input-width);
     margin-top: -1px;
 }
 
-.list-option {
+.option-text {
     width: 100%;
     height: var(--input-height);
     display: flex;
