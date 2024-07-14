@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { useTechnologiesStore } from '@/stores/technologies';
 import { useMachinesStore } from '@/stores/machines';
 
 import InputLabel from '../BaseInputs/InputLabel.vue';
