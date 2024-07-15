@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { useMachinesStore } from '@/stores/machines';
 
 import InputDropdownHeader from '../BaseInputs/InputDropdownHeader.vue';
-import InputDropdownOptionList from '../BaseInputs/InputDropdownOptionList.vue';
+import InputDropdownOptionList from '../BaseInputs/InputOptionList.vue';
 import InputDropdown from '../BaseInputs/InputDropdown.vue';
 
 const props = defineProps({
