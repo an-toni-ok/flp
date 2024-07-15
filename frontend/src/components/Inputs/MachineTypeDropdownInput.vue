@@ -2,8 +2,6 @@
 import { ref, computed } from 'vue';
 import { useMachinesStore } from '@/stores/machines';
 
-import InputLabel from '../BaseInputs/InputLabel.vue';
-import InputError from '../BaseInputs/InputError.vue';
 import InputDropdownHeader from '../BaseInputs/InputDropdownHeader.vue';
 import InputDropdownOptionList from '../BaseInputs/InputDropdownOptionList.vue';
 import InputDropdown from '../BaseInputs/InputDropdown.vue';
