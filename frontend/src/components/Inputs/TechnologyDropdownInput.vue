@@ -12,10 +12,6 @@ const props = defineProps({
         type: String,
         default: "technology-dropdown",
     },
-    preset: {
-        type: String,
-        default: "",
-    },
     isChangeable: {
         type: Boolean,
         default: false,
@@ -27,8 +23,10 @@ const props = defineProps({
     error: String,
 })
 
+// Model: https://vuejs.org/guide/components/v-model.html
+const value = defineModel('value', { required: true }) 
+
 const areOptionsShown = ref(false);
-const value = ref(props.preset);
 let name = "Technologie"
 
 const technologiesStore = useTechnologiesStore();

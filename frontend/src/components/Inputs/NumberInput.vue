@@ -17,14 +17,11 @@ const props = defineProps({
         type: String,
         required: true
     },
-    preset: {
-        type: Number,
-        default: 0,
-    },
     error: String
 })
 
-const value = ref(props.preset);
+// Model: https://vuejs.org/guide/components/v-model.html
+const value = defineModel('value', { required: true }) 
 
 const add = () => {
     value.value += 1;

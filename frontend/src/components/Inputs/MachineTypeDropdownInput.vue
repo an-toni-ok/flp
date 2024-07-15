@@ -12,15 +12,13 @@ const props = defineProps({
         type: String,
         default: "machine-type-dropdown",
     },
-    preset: {
-        type: String,
-        default: "",
-    },
     error: String,
 })
 
+// Model: https://vuejs.org/guide/components/v-model.html
+const value = defineModel('value', { required: true }) 
+
 const areOptionsShown = ref(false);
-const value = ref(props.preset);
 let name = "Maschinentypen"
 
 const machinesStore = useMachinesStore();
@@ -40,25 +38,27 @@ const toggleOptions = () => {
 </script>
 
 <template>
-    <InputLabel 
-        :id=id
-        :name=name />
-    <div class="scrollable-content">
-        <InputDropdownHeader 
-            :id="id"
-            :name="name"
-            :is-changeable="false"
-            v-model:value="value"
-            @toggle="toggleOptions" />
-        <div v-show="areOptionsShown"><!-- div is needed for the v-show here -->
-            <InputDropdownOptionList 
-                :base-id="id"
-                :deleteable="false"
-                :filtered-options="filteredMachines"
-                @selected="optionClicked" />
+    <div class="dropdown-wrapper">
+        <InputLabel 
+            :id=id
+            :name=name />
+        <div class="scrollable-content">
+            <InputDropdownHeader 
+                :id="id"
+                :name="name"
+                :is-changeable="false"
+                v-model:value="value"
+                @toggle="toggleOptions" />
+            <div v-show="areOptionsShown"><!-- div is needed for the v-show here -->
+                <InputDropdownOptionList 
+                    :base-id="id"
+                    :deleteable="false"
+                    :filtered-options="filteredMachines"
+                    @selected="optionClicked" />
+            </div>
         </div>
+        <InputError :error="error" />
     </div>
-    <InputError :error="error" />
 </template>
 
 <style scoped>
