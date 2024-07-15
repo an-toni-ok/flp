@@ -2,10 +2,9 @@
 import { ref, computed } from 'vue';
 import { useTechnologiesStore } from '@/stores/technologies';
 
-import InputLabel from '../BaseInputs/InputLabel.vue';
-import InputError from '../BaseInputs/InputError.vue';
 import InputDropdownHeader from '../BaseInputs/InputDropdownHeader.vue';
 import InputDropdownOptionList from '../BaseInputs/InputDropdownOptionList.vue';
+import InputDropdown from '../BaseInputs/InputDropdown.vue';
 
 const props = defineProps({
     id: {
@@ -16,7 +15,7 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
-    areTechnologiesDeleteable: {
+    isDeletable: {
         type: Boolean,
         default: false,
     },
@@ -54,35 +53,30 @@ const deleteHandler = (value) => {
 </script>
 
 <template>
-    <InputLabel 
-        :id=id
-        :name=name />
-    <div class="scrollable-content">
-        <InputDropdownHeader 
-            :id="id"
-            :name="name"
-            :is-changeable="props.isChangeable"
-            v-model:value="value"
-            @add="addHandler"
-            @toggle="toggleOptions" />
-        <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
+    <InputDropdown 
+        :id="id"
+        :name="name"
+        :are-options-shown="areOptionsShown"
+        :error="error" >
+        <template v-slot:header>
+            <InputDropdownHeader 
+                :id="id"
+                :name="name"
+                :is-changeable="props.isChangeable"
+                v-model:value="value"
+                @add="addHandler"
+                @toggle="toggleOptions" />
+        </template>
+        <template v-slot:options>
             <InputDropdownOptionList 
                 :base-id="id"
-                :deleteable="areTechnologiesDeleteable"
+                :deleteable="isDeletable"
                 :filtered-options="filteredTechnologies"
                 @selected="optionClicked"
                 @delete="deleteHandler" />
-        </div>
-    </div>
-    <InputError :error="error" />
+        </template>
+    </InputDropdown>
 </template>
 
 <style scoped>
-.scrollable-content {
-    display: block;
-    max-height: calc(var(--input-height) * 7);
-    overflow-x: scroll;
-    /* Space for scrollbar */
-    width: calc(var(--input-width) + 8px); 
-}
 </style>
