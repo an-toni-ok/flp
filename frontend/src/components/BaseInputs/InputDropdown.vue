@@ -36,10 +36,20 @@ const props = defineProps({
 
 <style scoped>
 .scrollable-content {
+    --scrollbar-width: 6px;
     display: block;
-    max-height: calc(var(--input-height) * 7);
-    overflow-x: scroll;
-    /* Space for scrollbar */
-    width: calc(var(--input-width) + 8px); 
+    width: calc(var(--input-width) + var(--scrollbar-width) * 1.5); 
+    max-height: calc(var(--input-height) * 7 - 6px);
+    overflow-y: auto;
+}
+
+.scrollable-content::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+    width: var(--scrollbar-width);
+    border-radius: 50px;
+    background-color: var(--color-border);
 }
 </style>
