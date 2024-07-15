@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 import IconArrowsRight from '../icons/IconArrowsRight.vue';
-import IconButton from '../BaseInputs/IconButton.vue';
+import OverlayIconButton from '../BaseInputs/OverlayIconButton.vue';
 
 const props = defineProps({
     title: {
@@ -15,20 +15,31 @@ const opened = ref(true)
 </script>
 
 <template>
-    <div class="overlay" :class="{ 'overlay-closed': !opened }">
-        <div class="overlay-header" :class="{ 'close': !opened }">
-            <h1 class="overlay-title">{{ title }}</h1>
-            <IconButton 
-                @click="opened = !opened"
-                help_text="Open/Close the overlay.">
-                <IconArrowsRight />
-            </IconButton>
+    <div class="var-wrapper">
+        <div class="overlay" :class="{ 'overlay-closed': !opened }">
+            <div class="overlay-header" :class="{ 'close': !opened }">
+                <h1 class="overlay-title">{{ title }}</h1>
+                <OverlayIconButton 
+                    @click="opened = !opened"
+                    help_text="Open/Close the overlay.">
+                    <IconArrowsRight />
+                </OverlayIconButton>
+            </div>
+            <div class="min-size-container">
+                <slot></slot>
+            </div>
         </div>
-        <slot></slot>
     </div>
 </template>
 
 <style scoped>
+.var-wrapper {
+    --base-padding-width: 1rem;
+    --top-padding-width: calc(2 * var(--base-padding-width));
+    --overlay-width: var(--font-size-h2);
+    --overlay-closed-width: calc(2 * var(--base-padding-width) + var(--overlay-width));
+}
+
 .overlay {
     height: 100vh;
     border-left: 1px solid var(--color-border);
@@ -36,7 +47,11 @@ const opened = ref(true)
     position: fixed;
     top: 0;
     right: 0;
-    padding: 2.5rem 1.5rem 2.5rem 2.5rem;
+    padding: 
+        var(--top-padding-width)
+        var(--top-padding-width)
+        var(--top-padding-width)
+        calc(3 * var(--base-padding-width));
 }
 
 .overlay-header {
@@ -45,22 +60,24 @@ const opened = ref(true)
     justify-content: space-between;
     align-items: center;
     transition: all 0.3s ease;
-    gap: 3rem;
+    gap: 4rem;
 }
 
 .overlay-title {
+    font-size: var(--font-size-h2);
     line-height: 1;
     /* transition: transform 0.3s ease, opacity 0.3s ease; */
     white-space: nowrap;
 }
 
 .overlay-closed {
-    width: 5rem;
-    padding: 2.5rem 1.5rem;
+    width: var(--overlay-closed-width);
+    padding: var(--top-padding-width) var(--base-padding-width);
 }
 
 .close > .overlay-title {
     writing-mode: vertical-lr;
+    font-size: var(--font-size-h2);
     transform: rotate(180deg);
 }
 
@@ -72,6 +89,10 @@ const opened = ref(true)
     height: 100%;
     width: fit-content;
     flex-direction: column-reverse;
-    align-items: flex-start;
+    align-items: center;
+}
+
+.min-size-container {
+    min-width: 17.842rem;
 }
 </style>
