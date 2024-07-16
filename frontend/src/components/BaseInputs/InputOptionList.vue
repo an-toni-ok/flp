@@ -21,27 +21,47 @@ defineEmits(['selected', 'delete'])
 </script>
 
 <template>
-    <ul :id="baseId + 'options'"
-        class="option-list" >
-        <li 
-            v-for="option in filteredOptions"
-            class="option-container" >
-            <div 
-                class="option-text"
-                @click="$emit('selected', option)" >
-                <p>{{ option }}</p>
-            </div> 
-            <IconButton 
-                v-if="deleteable"
-                @click="$emit('delete', option)"
-                :help_text="'Remove the option ' + option" >
-                <IconRemove />
-            </IconButton>           
-        </li>
-    </ul>
+    <div class="scrollable-content">
+        <ul :id="baseId + 'options'"
+            class="option-list" >
+            <li 
+                v-for="option in filteredOptions"
+                class="option-container" >
+                <div 
+                    class="option-text"
+                    @click="$emit('selected', option)" >
+                    <p>{{ option }}</p>
+                </div> 
+                <IconButton 
+                    v-if="deleteable"
+                    @click="$emit('delete', option)"
+                    :help_text="'Remove the option ' + option" >
+                    <IconRemove />
+                </IconButton>           
+            </li>
+        </ul>
+    </div>
 </template>
 
 <style scoped>
+.scrollable-content {
+    --scrollbar-width: 6px;
+    display: block;
+    width: calc(var(--input-width) + var(--scrollbar-width) * 1.5); 
+    max-height: calc(var(--input-height) * 7 - 6px);
+    overflow-y: auto;
+}
+
+.scrollable-content::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+    width: var(--scrollbar-width);
+    border-radius: 50px;
+    background-color: var(--color-border);
+}
+
 .option-list {
     all: unset;
     width: var(--input-width);
@@ -51,6 +71,10 @@ defineEmits(['selected', 'delete'])
     display: flex;
     width: var(--input-width);
     margin-top: -1px;
+}
+
+.option-list > .option-container:first-child {
+    margin-top: 0;
 }
 
 .option-text {

@@ -24,32 +24,13 @@ const props = defineProps({
         <InputLabel 
             :id=id
             :name=name />
-        <div class="scrollable-content">
-            <slot name="header"></slot>
-            <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
-                <slot name="options"></slot>
-            </div>
+        <slot name="header"></slot>
+        <div v-show="areOptionsShown" ><!-- div is needed for the v-show here -->
+            <slot name="options"></slot>
         </div>
         <InputError :error="error" />
     </div>
 </template>
 
 <style scoped>
-.scrollable-content {
-    --scrollbar-width: 6px;
-    display: block;
-    width: calc(var(--input-width) + var(--scrollbar-width) * 1.5); 
-    max-height: calc(var(--input-height) * 7 - 6px);
-    overflow-y: auto;
-}
-
-.scrollable-content::-webkit-scrollbar {
-    width: var(--scrollbar-width);
-}
-
-.scrollable-content::-webkit-scrollbar-thumb {
-    width: var(--scrollbar-width);
-    border-radius: 50px;
-    background-color: var(--color-border);
-}
 </style>
