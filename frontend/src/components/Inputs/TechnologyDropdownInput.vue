@@ -26,7 +26,7 @@ const props = defineProps({
     error: String,
 })
 
-defineEmits(['set'])
+const emit = defineEmits(['set'])
 
 // Model: https://vuejs.org/guide/components/v-model.html
 const value = defineModel('value', { required: true }) 
