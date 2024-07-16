@@ -19,8 +19,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    isMultiInput: {
+        type: Boolean,
+        default: false,
+    },
     error: String,
 })
+
+defineEmits(['set'])
 
 // Model: https://vuejs.org/guide/components/v-model.html
 const value = defineModel('value', { required: true }) 
@@ -42,9 +48,13 @@ const optionClicked = (option) => {
 const toggleOptions = () => {
     areOptionsShown.value = !areOptionsShown.value
 }
-const addHandler = (value) => {
+const addHandler = (current_value) => {
     if (props.isChangeable) {
-        technologiesStore.add(value)
+        technologiesStore.add(current_value)
+    }
+    if (props.isMultiInput) {
+        emit('set', current_value)
+        value.value = ""
     }
 }
 const deleteHandler = (value) => {
