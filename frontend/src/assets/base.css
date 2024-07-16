@@ -4,15 +4,23 @@
   --color-border: #CCCCCC;
   --color-error: #D32F2F;
   --color-area: #4CAF50;
-  --color-restricted-area: #FF9800;
+  --color-restricted-area: #D32F2F;
   --color-text-primary: #212121;
   --color-text-secondary: #757575;
-  --color-brand: #F30147;
+  --color-brand: #f30147;
+  --color-brand-rgb: 243, 1, 71;
 
   --font-size: 15px;
+  --font-size-h1: 2rem;
+  --font-size-h2: 1.5rem;
+  --font-size-h3: 1.25rem;
   --line-height: 1.6;
   --input-height: 2rem;
   --input-width: 15rem;
+  --site-margin-lr: 1rem;
+  --site-margin-tb: 1rem;
+  --tool-area-padding: 0.725rem;
+  --tool-area-height: 1rem;
 }
 
 /* General styling */
