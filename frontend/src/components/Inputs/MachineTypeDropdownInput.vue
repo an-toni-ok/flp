@@ -18,7 +18,7 @@ const props = defineProps({
 const value = defineModel('value', { required: true }) 
 
 const areOptionsShown = ref(false);
-let name = "Maschinentypen"
+let name = "Maschinentyp"
 
 const machinesStore = useMachinesStore();
 const filteredMachines = computed(() => {
