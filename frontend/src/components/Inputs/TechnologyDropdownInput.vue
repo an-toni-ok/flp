@@ -23,6 +23,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    hasLabel: {
+        type: Boolean,
+        default: true
+    },
     error: String,
 })
 
@@ -67,7 +71,8 @@ const deleteHandler = (value) => {
         :id="id"
         :name="name"
         :are-options-shown="areOptionsShown"
-        :error="error" >
+        :error="error"
+        :has-label="hasLabel" >
         <template v-slot:header>
             <InputDropdownHeader 
                 :id="id"

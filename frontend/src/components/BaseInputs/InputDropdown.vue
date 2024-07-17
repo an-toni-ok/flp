@@ -15,13 +15,18 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
+    hasLabel: {
+        type: Boolean,
+        default: true
+    },
     error: String,
 })
 </script>
 
 <template>
     <div>
-        <InputLabel 
+        <InputLabel
+            v-if="hasLabel"
             :id=id
             :name=name />
         <slot name="header"></slot>
