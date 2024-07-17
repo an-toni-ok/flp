@@ -17,8 +17,12 @@
   --line-height: 1.6;
   --input-height: 2rem;
   --input-width: 15rem;
-  --site-margin-lr: 1rem;
-  --site-margin-tb: 1rem;
+  --site-margin-lr: 2rem;
+  --site-margin-tb: 2rem;
+
+  --default-padding: 0.725rem;
+  --base-padding-width: 1rem;
+  --top-padding-width: calc(2 * var(--base-padding-width));
   --tool-area-padding: 0.725rem;
   --tool-area-height: 1rem;
 }

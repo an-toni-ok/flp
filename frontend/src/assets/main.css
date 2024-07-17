@@ -34,6 +34,12 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
 }
 
+/** Link styling 
+*/
+a:focus {
+    outline: none;
+}
+
 /** Button styling
 */
 button {

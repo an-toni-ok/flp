@@ -1,6 +1,10 @@
 <script setup>
 defineProps(['active'])
 
+import { ref } from 'vue';
+
+import NavLink from './Navbar/NavLink.vue';
+
 import IconLogo from './icons/IconLogo.vue';
 import IconArrowsRight from './icons/IconArrowsRight.vue';
 import IconHistory from './icons/IconHistory.vue';
@@ -8,7 +12,7 @@ import IconInformation from './icons/IconInformation.vue';
 import IconPlanning from './icons/IconPlanning.vue';
 import IconMethods from './icons/IconMethods.vue';
 import IconContact from './icons/IconContact.vue';
-import { ref } from 'vue';
+import IconButtonNav from './Buttons/IconButtonNav.vue';
 
 const opened = ref(false);
 
@@ -17,42 +21,31 @@ const opened = ref(false);
 <template>
     <nav class="nav-spacing">
         <ul class="links">
-            <li>
-                <a class="nav-link" href="">
-                    <IconPlanning />
-                    <span v-show="opened">Planung</span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link" href="">
-                    <IconHistory />
-                    <span v-show="opened">Verlauf</span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link" href="">
-                    <IconInformation />
-                    <span v-show="opened">Informationen</span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link" href="">
-                    <IconMethods />
-                    <span v-show="opened">Methodik</span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link" href="">
-                    <IconContact />
-                    <span v-show="opened">Kontakt</span>
-                </a>
-            </li>
+            <NavLink name="Planung" :opened="opened">
+                <IconPlanning />
+            </NavLink>
+            <NavLink name="Verlauf" :opened="opened">
+                <IconHistory />
+            </NavLink>
+            <NavLink name="Informationen" :opened="opened">
+                <IconInformation />
+            </NavLink>
+            <NavLink name="Methodik" :opened="opened">
+                <IconMethods />
+            </NavLink>
+            <NavLink name="Kontakt" :opened="opened">
+                <IconContact />
+            </NavLink>
         </ul>
         <div class="interaction">
             <IconLogo />
-            <IconArrowsRight 
+            <IconButtonNav
                 @click="opened = !opened" 
-                :class="opened ? 'rotate' : ''" />
+                :class="opened ? 'rotate' : ''"
+                :no-border="true"
+                help_text="Expand the navigation.">
+                <IconArrowsRight />
+            </IconButtonNav>
         </div>
     </nav>
 </template>
@@ -70,9 +63,9 @@ nav {
     flex-direction: column;
     justify-content: space-between;
     --nav-padding: 25px;
-    padding: 0 var(--nav-padding);
     border-right: 1px solid var(--color-border);
     align-self: flex-start;
+    padding: var(--top-padding-width) 0;
 }
 
 .links {
@@ -84,39 +77,14 @@ nav {
     list-style-type: none;
 }
 
-.nav-link {
-    text-decoration: none;
-    color: var(--color-text-primary);
-    display: inline-flex;
-    justify-content: flex-start;
-    gap: 15px;
-    align-items: center;
-    margin-top: var(--nav-padding);
-}
-
-.nav-link > svg {
-    height: 20px;
-}
-
-.nav-link > span {
-    line-height: 1;
-    padding-right: calc(0.5 * var(--nav-padding));
-}
-
-.nav-link:hover > span {
-    border-bottom: 1px solid var(--color-brand);
-}
-
-.nav-link:hover > svg {
-    fill: var(--color-brand);
-}
-
 .interaction {
     display: inline-flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: var(--nav-padding);
-    margin-bottom: var(--nav-padding);
+    /* padding: 0 calc(var(--default-padding) * 2); */
+
+    padding: 0 var(--base-padding-width);
     align-self: flex-start;
 }
 
