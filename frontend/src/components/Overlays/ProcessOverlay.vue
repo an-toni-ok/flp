@@ -31,10 +31,8 @@ const manual_time = ref(0)
 </template>
 
 <style scoped>
-.overlay-content {
-    margin: 2rem 0;
-}
 .overlay-content > * {
-    margin: 1rem 0;
+    margin: 0 0 0.5rem 0;
+
 }
 </style>

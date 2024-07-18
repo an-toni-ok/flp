@@ -44,15 +44,16 @@ const y_pos = ref(0)
 
 <style scoped>
 .overlay-content {
-    margin: 2em 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .input-split > * {
-    margin: 0.5rem 0 0 0;
+    margin: 0 0 0.5rem 0;
 }
 
 .input-split > h2 {
-    margin: 2rem 0 0 0;
     font-size: var(--font-size-h3);
 }
 </style>

@@ -36,53 +36,68 @@ const del_tech = (tech) => {
 <template>
     <OverlayBase title="Maschine erstellen">
         <div class="overlay-content" v-show="opened">
-            <h2>Maße</h2>
-            <NumberInput 
-                name="Breite"
-                id="machine-breite"
-                v-model:value="breite" />
-            <NumberInput 
-                name="Länge"
-                id="machine-laenge"
-                v-model:value="laenge" />
-
-            <h2>Daten</h2>
-            <NumberInput 
-                name="Maschinenstundensatz"
-                id="machine-hourly-rate"
-                v-model:value="machine_hourly_cost" />
-            <NumberInput 
-                name="Investionskosten"
-                id="investion-cost"
-                v-model:value="investion_cost" />
-            <NumberInput 
-                name="Zusätzliche Maschinenzeit"
-                id="additional-machine-time"
-                v-model:value="additional_machine_time" />
-            <MachineTypeDropdownInput 
-                v-model:value="machine_type" />
-
-            <h2>Technologie</h2>
-            <TechnologyDropdownInput 
-                v-model:value="technology_value"
-                :is-changeable="true"
-                :is-deletable="true"
-                :is-multi-input="true"
-                @set="set_tech" />
-            <InputOptionList 
-                base-id="chosen-tech-"
-                :deleteable="true"
-                :filtered-options="set_technologies"
-                @delete="del_tech" />
+            <div class="input-split">
+                <div class="form-part">
+                    <h2>Maße</h2>
+                    <NumberInput 
+                        name="Breite"
+                        id="machine-breite"
+                        v-model:value="breite" />
+                    <NumberInput 
+                        name="Länge"
+                        id="machine-laenge"
+                        v-model:value="laenge" />
+                </div>
+                <div class="form-part">
+                    <h2>Technologie</h2>
+                    <TechnologyDropdownInput 
+                        v-model:value="technology_value"
+                        :is-changeable="true"
+                        :is-deletable="true"
+                        :is-multi-input="true"
+                        :has-label="false"
+                        @set="set_tech" />
+                    <InputOptionList 
+                        base-id="chosen-tech-"
+                        :deleteable="true"
+                        :filtered-options="set_technologies"
+                        @delete="del_tech" />
+                </div>
+            </div>
+            <div class="form-part">
+                <h2>Daten</h2>
+                <NumberInput 
+                    name="Maschinenstundensatz"
+                    id="machine-hourly-rate"
+                    v-model:value="machine_hourly_cost" />
+                <NumberInput 
+                    name="Investionskosten"
+                    id="investion-cost"
+                    v-model:value="investion_cost" />
+                <NumberInput 
+                    name="Zusätzliche Maschinenzeit"
+                    id="additional-machine-time"
+                    v-model:value="additional_machine_time" />
+                <MachineTypeDropdownInput 
+                    v-model:value="machine_type" />
+            </div>
         </div>
     </OverlayBase>
 </template>
 
 <style scoped>
 .overlay-content {
-    margin: 2rem 0;
+    display: flex;
+    gap: 2rem;
 }
-.overlay-content > * {
-    margin: 1rem 0;
+
+.input-split {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-part > * {
+    margin: 0 0 0.5rem 0;
 }
 </style>

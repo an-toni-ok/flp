@@ -17,7 +17,7 @@ const opened = ref(true)
 <template>
     <div class="var-wrapper">
         <div class="overlay" :class="{ 'overlay-closed': !opened }">
-            <div class="overlay-header" :class="{ 'close': !opened }">
+            <div class="overlay-header" :class="{ 'close': !opened, 'open': opened }">
                 <h1 class="overlay-title">{{ title }}</h1>
                 <OverlayIconButton 
                     @click="opened = !opened"
@@ -47,6 +47,7 @@ const opened = ref(true)
     position: fixed;
     top: 0;
     right: 0;
+    background-color: var(--color-background);
     padding: 
         var(--top-padding-width)
         var(--top-padding-width)
@@ -75,6 +76,16 @@ const opened = ref(true)
     padding: var(--top-padding-width) var(--base-padding-width);
 }
 
+.open {
+    height: 9rem;
+    align-items: flex-start;
+}
+
+.open > .overlay-title {
+    align-self: flex-end;
+    padding-bottom: 2rem;
+}
+
 .close > .overlay-title {
     writing-mode: vertical-lr;
     font-size: var(--font-size-h2);
@@ -94,5 +105,7 @@ const opened = ref(true)
 
 .min-size-container {
     min-width: 17.842rem;
+    padding: 2rem;
+    border: 1px solid var(--color-border)
 }
 </style>
