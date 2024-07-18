@@ -34,8 +34,9 @@ const emit = defineEmits(['set'])
 
 // Model: https://vuejs.org/guide/components/v-model.html
 const value = defineModel('value', { required: true }) 
+// Model: https://vuejs.org/guide/components/v-model.html
+const areOptionsShown = defineModel('options', { default: false }) 
 
-const areOptionsShown = ref(false);
 let name = "Technologie"
 
 const technologiesStore = useTechnologiesStore();
