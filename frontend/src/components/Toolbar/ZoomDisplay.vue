@@ -28,6 +28,7 @@ const toolbar = useToolbarStore();
 .zoom {
     display: flex;
     align-items: center;
+    background-color: var(--color-background);
 }
 
 .zoom > p {

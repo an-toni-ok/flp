@@ -51,6 +51,7 @@ const toolbar = useToolbarStore();
 <style scoped>
 .icons {
     display: flex;
+    background-color: var(--color-background);
 }
 
 .selected > button {

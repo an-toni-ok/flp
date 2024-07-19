@@ -28,6 +28,7 @@ import IconsDisplay from './Toolbar/IconsDisplay.vue';
 .tool-area-name {
     display: flex;
     align-items: center;
+    background-color: var(--color-background);
     border: 1px solid var(--color-border);
     gap: 2rem;
     padding: var(--tool-area-padding) 1.5rem;
