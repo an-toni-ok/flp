@@ -108,4 +108,8 @@ const opened = ref(true)
     padding: 2rem;
     border: 1px solid var(--color-border)
 }
+
+.overlay-closed > .min-size-container {
+    display: none;
+}
 </style>
