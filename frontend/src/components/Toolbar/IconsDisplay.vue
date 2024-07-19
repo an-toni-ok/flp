@@ -2,10 +2,12 @@
 import { useToolbarStore } from '@/stores/toolbar';
 import { Tool } from '@/util';
 
-import ToolIconButton from '@/components/Buttons/ToolIconButton.vue';
+import ToolIconButton from '@/components/Toolbar/ToolIconButton.vue';
 import IconArea from '@/components/icons/IconArea.vue';
 import IconRestrictedArea from '@/components/icons/IconRestrictedArea.vue';
 import IconMove from '@/components/icons/IconMove.vue';
+import IconQuestion from '@/components/icons/IconQuestion.vue';
+
 
 const toolbar = useToolbarStore();
 </script>
@@ -34,6 +36,13 @@ const toolbar = useToolbarStore();
                 @click="toolbar.setTool(Tool.Move)"
                 help_text="Tool to move the plan around." >
                 <IconMove />
+            </ToolIconButton>
+        </div>
+        <div>
+            <ToolIconButton
+                @click="help_expanded = !help_expanded"
+                help_text="Expand the tool help" >
+                <IconQuestion />
             </ToolIconButton>
         </div>
     </div>

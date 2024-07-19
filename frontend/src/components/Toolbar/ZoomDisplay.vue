@@ -1,7 +1,7 @@
 <script setup>
 import { useToolbarStore } from '@/stores/toolbar';
 
-import ToolIconButton from '@/components/Buttons/ToolIconButton.vue';
+import ToolIconButton from '@/components/Toolbar/ToolIconButton.vue';
 import IconZoomMinus from '@/components/icons/IconZoomMinus.vue';
 import IconZoomPlus from '@/components/icons/IconZoomPlus.vue';
 
