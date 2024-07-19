@@ -1,16 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import { useToolbarStore } from '@/stores/toolbar';
-import { Tool } from '@/util';
 import ToolIconButton from './Buttons/ToolIconButton.vue';
-import IconArea from './icons/IconArea.vue';
-import IconRestrictedArea from './icons/IconRestrictedArea.vue';
-import IconMove from './icons/IconMove.vue';
 import IconQuestion from './icons/IconQuestion.vue';
-import IconZoomMinus from './icons/IconZoomMinus.vue';
-import IconZoomPlus from './icons/IconZoomPlus.vue';
+import ZoomDisplay from './Toolbar/ZoomDisplay.vue';
+import IconsDisplay from './Toolbar/IconsDisplay.vue';
 
-const toolbar = useToolbarStore();
 const help_expanded = ref(false);
 </script>
 
@@ -31,50 +25,16 @@ const help_expanded = ref(false);
                 </p>
             </div>
         </div>
-        <div class="icons">
-            <div class="area" 
-                :class="{ 'selected': toolbar.isActive(Tool.Area) }" >
-                <ToolIconButton 
-                    @click="toolbar.setTool(Tool.Area)"
-                    help_text="Tool to draw an area." >
-                    <IconArea />
-                </ToolIconButton>
-            </div>
-            <div class="r-area"
-                :class="{ 'selected': toolbar.isActive(Tool.RestrictedArea) }" >
-                <ToolIconButton 
-                    @click="toolbar.setTool(Tool.RestrictedArea)"
-                    help_text="Tool to draw a restricted area." >
-                    <IconRestrictedArea />
-                </ToolIconButton>
-            </div>
-            <div class="move"
-                :class="{ 'selected': toolbar.isActive(Tool.Move) }" >
-                <ToolIconButton 
-                    @click="toolbar.setTool(Tool.Move)"
-                    help_text="Tool to move the plan around." >
-                    <IconMove />
-                </ToolIconButton>
-            </div>
-        </div>
-        <div class="zoom">
-            <ToolIconButton 
-                help_text="Lower the zoom level."
-                    @click="toolbar.lowerZoom()" >
-                <IconZoomMinus />
-            </ToolIconButton>
-            <p><span class="zoom-display">{{ toolbar.zoom }}</span> %</p>
-            <ToolIconButton 
-                help_text="Raise the zoom level."
-                    @click="toolbar.raiseZoom()" >
-                <IconZoomPlus />
-            </ToolIconButton>
-        </div>
+        <IconsDisplay />
+        <ZoomDisplay />
     </div>
 </template>
 
 <style scoped>
 .tool-area {
+    position: absolute;
+    top: var(--site-margin-tb);
+    left: var(--site-margin-lr);
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -86,8 +46,7 @@ const help_expanded = ref(false);
     align-items: center;
 }
 
-.tool-area-name > h3,
-.zoom > p {
+.tool-area-name > h3 {
     line-height: 1;
     font-size: var(--tool-area-height);
     font-weight: 500;
@@ -132,22 +91,5 @@ const help_expanded = ref(false);
 
 .r-area > button > svg {
     stroke: var(--color-restricted-area);
-}
-
-.zoom {
-    display: flex;
-    align-items: center;
-}
-
-.zoom > p {
-    border-left: none;
-    border-right: none;
-}
-
-.zoom-display {
-    /* Make sure the zoom display doesn't change size. */
-    display: inline-block;
-    width: 3ch;
-    text-align: right;
 }
 </style>
