@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Canvas, Rect } from 'fabric';
 import { useToolbarStore } from '@/stores/toolbar';
+import { Tool } from '@/util';
 
 // Only has value after mount, use onMounted
 const can_ref = ref(null)
@@ -46,13 +47,56 @@ onMounted(() => {
     })
     resizeObserver.observe(can_cont_ref.value);
 
+    // Zoom
+    // Button inputs
     watch(
         () => toolbarStore.zoom,
         (zoom) => {
             canvas.setZoom(zoom / 100)
         }
     );
+    // Mouse wheels
+    // Based on http://fabricjs.com/fabric-intro-part-5
+    canvas.on('mouse:wheel', function(opt) {
+        var delta = opt.e.deltaY;
+        var old_zoom = (toolbarStore.zoom / 100);
+        var new_zoom = Math.round((old_zoom * (0.999 ** delta)) * 10) * 10
+        toolbarStore.setZoom(new_zoom);
+        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, new_zoom / 100);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+    });
 
+    // Moving around the canvas
+    // Based on http://fabricjs.com/fabric-intro-part-5
+    canvas.on('mouse:down', function(opt) {
+        var evt = opt.e;
+        if (toolbarStore.isActive(Tool.Move)) {
+            this.isDragging = true;
+            this.selection = false;
+            this.lastPosX = evt.clientX;
+            this.lastPosY = evt.clientY;
+        }
+    });
+    canvas.on('mouse:move', function(opt) {
+        if (this.isDragging) {
+            var e = opt.e;
+            var vpt = this.viewportTransform;
+            vpt[4] += e.clientX - this.lastPosX;
+            vpt[5] += e.clientY - this.lastPosY;
+            this.requestRenderAll();
+            this.lastPosX = e.clientX;
+            this.lastPosY = e.clientY;
+        }
+    });
+    canvas.on('mouse:up', function(opt) {
+        // on mouse up we want to recalculate new interaction
+        // for all objects, so we call setViewportTransform
+        this.setViewportTransform(this.viewportTransform);
+        this.isDragging = false;
+        this.selection = true;
+    });
+    
     var rect = rect_gen(50, 50, color_area)
     canvas.add(rect)
     var rect2 = rect_gen(150, 150, color_r_area)
