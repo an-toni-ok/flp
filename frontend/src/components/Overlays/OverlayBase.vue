@@ -41,7 +41,8 @@ const opened = ref(true)
 }
 
 .overlay {
-    height: 100vh;
+    height: 100%;
+    z-index: 4;
     border-left: 1px solid var(--color-border);
     width: fit-content;
     position: fixed;
