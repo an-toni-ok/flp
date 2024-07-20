@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { Canvas, Rect } from 'fabric';
+import { useToolbarStore } from '@/stores/toolbar';
 
 // Only has value after mount, use onMounted
 const can_ref = ref(null)
@@ -34,6 +35,8 @@ function setCanvasSize(canvas) {
     )
 }
 
+const toolbarStore = useToolbarStore();
+
 onMounted(() => {
     canvas = new Canvas(can_ref.value);
     setCanvasSize(canvas)
@@ -42,6 +45,13 @@ onMounted(() => {
         setCanvasSize(canvas);
     })
     resizeObserver.observe(can_cont_ref.value);
+
+    watch(
+        () => toolbarStore.zoom,
+        (zoom) => {
+            canvas.setZoom(zoom / 100)
+        }
+    );
 
     var rect = rect_gen(50, 50, color_area)
     canvas.add(rect)
