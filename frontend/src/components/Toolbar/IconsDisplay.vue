@@ -7,6 +7,7 @@ import IconArea from '@/components/icons/IconArea.vue';
 import IconRestrictedArea from '@/components/icons/IconRestrictedArea.vue';
 import IconMove from '@/components/icons/IconMove.vue';
 import IconQuestion from '@/components/icons/IconQuestion.vue';
+import IconDelete from '../icons/IconDelete.vue';
 
 
 const toolbar = useToolbarStore();
@@ -36,6 +37,13 @@ const toolbar = useToolbarStore();
                 @click="toolbar.setTool(Tool.Move)"
                 help_text="Tool to move the plan around." >
                 <IconMove />
+            </ToolIconButton>
+        </div>
+        <div :class="{ 'selected': toolbar.isActive(Tool.Delete)}" >
+            <ToolIconButton
+                @click="toolbar.setTool(Tool.Delete)"
+                help_text="Delete areas clicked on." >
+                <IconDelete />
             </ToolIconButton>
         </div>
         <div>

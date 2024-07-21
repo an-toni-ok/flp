@@ -93,37 +93,40 @@ onMounted(() => {
         var evt = opt.e;
         let activeObjects = canvas.getActiveObjects()
         if (activeObjects.length) {
-            if (activeObjects[0].stroke == color_area) {
-                toolbarStore.setTool(Tool.Area)
-            } else {
-                toolbarStore.setTool(Tool.RestrictedArea)
+            if ((toolbarStore.isActive(Tool.Area) &&
+            activeObjects[0].stroke == color_area)) {
+                return
             }
-        } else {
-            let new_area = undefined;
-            switch (toolbarStore.activeTool) {
-                // case Tool.Move.name:
-                //     this.isDragging = true;
-                //     this.selection = false;
-                //     this.lastPosX = evt.clientX;
-                //     this.lastPosY = evt.clientY;
-                case Tool.Area.name:
-                    this.isCreating = true;
-                    var pointer = canvas.getPointer(evt, true);
-                    this.origX = pointer.x;
-                    this.origY = pointer.y;
-                    new_area = generate_area(pointer.x, pointer.y, true, 10, 10);
-                    canvas.add(new_area);
-                    canvas.setActiveObject(new_area);
-                    break;
-                case Tool.RestrictedArea.name:
-                    this.isCreating = true;
-                    var pointer = canvas.getPointer(evt, true);
-                    this.origX = pointer.x;
-                    this.origY = pointer.y;
-                    new_area = generate_area(pointer.x, pointer.y, false)
-                    canvas.add(new_area);
-                    canvas.setActiveObject(new_area);
-                    break;
+            if ((toolbarStore.isActive(Tool.RestrictedArea) && activeObjects[0].stroke == color_r_area)) {
+                return
+            }
+        }
+
+        let new_area = undefined;
+        switch (toolbarStore.activeTool) {
+            // case Tool.Move.name:
+            //     this.isDragging = true;
+            //     this.selection = false;
+            //     this.lastPosX = evt.clientX;
+            //     this.lastPosY = evt.clientY;
+            case Tool.Area.name:
+                this.isCreating = true;
+                var pointer = canvas.getPointer(evt, true);
+                this.origX = pointer.x;
+                this.origY = pointer.y;
+                new_area = generate_area(pointer.x, pointer.y, true, 10, 10);
+                canvas.add(new_area);
+                canvas.setActiveObject(new_area);
+                break;
+            case Tool.RestrictedArea.name:
+                this.isCreating = true;
+                var pointer = canvas.getPointer(evt, true);
+                this.origX = pointer.x;
+                this.origY = pointer.y;
+                new_area = generate_area(pointer.x, pointer.y, false)
+                canvas.add(new_area);
+                canvas.setActiveObject(new_area);
+                break;
                 }
         }
     });
@@ -158,6 +161,11 @@ onMounted(() => {
     canvas.on('mouse:up', function(opt) {
         // on mouse up we want to recalculate new interaction
         // for all objects, so we call setViewportTransform
+        if (toolbarStore.isActive(Tool.Delete)) {
+            let area = canvas.getActiveObject();
+            canvas.remove(area);
+        }
+
         this.setViewportTransform(this.viewportTransform);
         this.isDragging = false;
         if (this.isCreating) {
