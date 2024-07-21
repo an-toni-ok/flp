@@ -1,21 +1,37 @@
 <script setup>
 import ZoomDisplay from './Toolbar/ZoomDisplay.vue';
 import IconsDisplay from './Toolbar/IconsDisplay.vue';
+import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
 </script>
 
 <template>
-    <div class="tool-area">
-        <div class="tool-area-name">
-            <h3>Flächeneingabe</h3>
-            <p>1/5</p>
+    <div class="actions-container">
+        <div class="tool-area">
+            <div class="tool-area-name">
+                <h3>Flächeneingabe</h3>
+                <p>1/5</p>
+            </div>
+            <IconsDisplay />
+            <ZoomDisplay />
         </div>
-        <IconsDisplay />
-        <ZoomDisplay />
+        <ProgressButtons />
     </div>
 </template>
 
 <style scoped>
+.actions-container {
+    position: relative;
+    padding-block: var(--site-margin-tb);
+    padding-inline: var(--site-margin-lr);
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+}
+
 .tool-area {
+    z-index: 3;
     position: absolute;
     top: var(--site-margin-tb);
     left: var(--site-margin-lr);

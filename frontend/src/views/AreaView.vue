@@ -7,24 +7,36 @@ import DrawingArea from '@/components/DrawingArea.vue';
 
 <template>
     <div class="main-display">
-        <div class="overlay">
-            <Toolbar />
+        <div class="flow-remover-outer">
+            <div class="overlay">
+                <Toolbar />
+                <AreaOverlay :is-create="true" />
+            </div>
         </div>
         <DrawingArea />
-        <AreaOverlay :is-create="true" />
     </div>
 </template>
 
 <style scoped>
+.flow-remover-outer {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
 .overlay {
     position: relative;
+    height: 100%;
     /* margin: var(--site-margin-tb) var(--site-margin-lr); */
-    z-index: 3;
+    display: flex;
 }
 
 .main-display {
     width: 100%;
     height: 100vh;
 	overflow: hidden;
+    position: relative;
 }
 </style>

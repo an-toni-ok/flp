@@ -38,14 +38,13 @@ const opened = ref(true)
     --top-padding-width: calc(2 * var(--base-padding-width));
     --overlay-width: var(--font-size-h2);
     --overlay-closed-width: calc(2 * var(--base-padding-width) + var(--overlay-width));
+    z-index: 4;
 }
 
 .overlay {
     height: 100%;
-    z-index: 4;
     border-left: 1px solid var(--color-border);
     width: fit-content;
-    position: fixed;
     top: 0;
     right: 0;
     background-color: var(--color-background);
