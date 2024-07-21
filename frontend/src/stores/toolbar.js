@@ -35,5 +35,17 @@ export const useToolbarStore = defineStore('toolbar', () => {
     zoom.value = new_value
   }
 
-  return { activeTool, zoom, setTool, lowerZoom, raiseZoom, isActive }
+  function setZoom(new_zoom) {
+    if (new_zoom > zoom_max) {
+      zoom.value = zoom_max
+      return
+    }
+    if (new_zoom < zoom_min) {
+      zoom.value = zoom_min
+      return
+    }
+    zoom.value = new_zoom
+  }
+
+  return { activeTool, zoom, setTool, lowerZoom, raiseZoom, setZoom, isActive }
 })
