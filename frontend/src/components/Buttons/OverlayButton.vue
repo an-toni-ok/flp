@@ -32,6 +32,11 @@ buttons is in src/assets/main.css.
     background-color: var(--color-background);
 }
 
+.icon-button:focus,
+.icon-button:hover {
+    border: 2px solid var(--color-text-primary);
+}
+
 .icon-button:focus > * {
     fill: var(--color-brand);
 }
