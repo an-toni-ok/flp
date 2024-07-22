@@ -13,7 +13,7 @@ const planningStore = usePlanningStore();
     <div class="actions-container">
         <div class="tool-area">
             <div class="tool-area-name">
-                <h3>Flächeneingabe</h3>
+                <h1>Flächeneingabe</h1>
                 <p>1/5</p>
             </div>
             <IconsDisplay />
@@ -57,7 +57,7 @@ const planningStore = usePlanningStore();
     padding: var(--tool-area-padding) 1.5rem;
 }
 
-.tool-area-name > h3 {
+.tool-area-name > h1 {
     line-height: 1;
     font-size: var(--tool-area-height);
     font-weight: 500;
