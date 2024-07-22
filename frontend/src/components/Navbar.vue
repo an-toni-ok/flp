@@ -58,7 +58,7 @@ const opened = ref(false);
 }
 
 nav {
-    height: 100vh;
+    height: 100%;
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
