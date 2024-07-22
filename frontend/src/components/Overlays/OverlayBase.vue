@@ -45,6 +45,7 @@ const opened = ref(true)
     height: 100%;
     border-left: 1px solid var(--color-border);
     width: fit-content;
+    position: absolute;
     top: 0;
     right: 0;
     background-color: var(--color-background);
