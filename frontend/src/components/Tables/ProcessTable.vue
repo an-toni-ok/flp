@@ -12,49 +12,54 @@ const processesStore = useProcessesStore();
 </script>
 
 <template>
-    <table>
-        <tr>
-            <th>Technologie</th>
-            <th>Maschinenzeit</th>
-            <th>Manuelle Zeit</th>
-            <th>Aktionen</th>
-        </tr>
-        <ProcessTableRow 
-            v-for="(item, index) in processesStore.processes"
-            :machine_time="item.machine_time"
-            :manual_time="item.manual_time"
-            :technology="item.technology" >
-            <IconButtonTable 
-                help_text="Edit this table row"
-                @click="processesStore.edit(index)">
-                <IconEdit />
-            </IconButtonTable>
-            <IconButtonTable 
-                help_text="Move this table row down"
-                :focus="false"
-                @click="processesStore.move(index, false)">
-                <IconMoveDown />
-            </IconButtonTable>
-            <IconButtonTable
-                help_text="Move this table row up"
-                :focus="false"
-                @click="processesStore.move(index, true)">
-                <IconMoveUp />
-            </IconButtonTable>
-            <IconButtonTable
-                help_text="Duplicate this table row"
-                :focus="false"
-                @click="processesStore.clone(index)">
-                <IconDuplicate />
-            </IconButtonTable>
-            <IconButtonTable
-                help_text="Delete this table row"
-                :focus="false"
-                @click="processesStore.del(index)">
-                <IconDelete />
-            </IconButtonTable>
-        </ProcessTableRow>
-    </table>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Technologie</th>
+                <th>Maschinenzeit</th>
+                <th>Manuelle Zeit</th>
+                <th>Aktionen</th>
+            </tr>
+            <ProcessTableRow 
+                v-for="(item, index) in processesStore.processes"
+                :machine_time="item.machine_time"
+                :manual_time="item.manual_time"
+                :technology="item.technology" >
+                <IconButtonTable 
+                    help_text="Edit this table row"
+                    @click="processesStore.edit(index)">
+                    <IconEdit />
+                </IconButtonTable>
+                <IconButtonTable 
+                    help_text="Move this table row down"
+                    :focus="false"
+                    @click="processesStore.move(index, false)">
+                    <IconMoveDown />
+                </IconButtonTable>
+                <IconButtonTable
+                    help_text="Move this table row up"
+                    :focus="false"
+                    @click="processesStore.move(index, true)">
+                    <IconMoveUp />
+                </IconButtonTable>
+                <IconButtonTable
+                    help_text="Duplicate this table row"
+                    :focus="false"
+                    @click="processesStore.clone(index)">
+                    <IconDuplicate />
+                </IconButtonTable>
+                <IconButtonTable
+                    help_text="Delete this table row"
+                    :focus="false"
+                    @click="processesStore.del(index)">
+                    <IconDelete />
+                </IconButtonTable>
+            </ProcessTableRow>
+        </table>
+        <p 
+            v-if="!processesStore.processes.length"
+            class="no-data">Zur Zeit sind noch keine Daten in der Tabelle.</p>
+    </div>
 </template>
 
 <style scoped>
@@ -62,6 +67,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   padding-left: 1.5rem;
+  min-width: 37rem;
 }
 
 table > tr {
@@ -88,5 +94,16 @@ table > tr > * {
 
 table > tr > *:first-child {
     padding-left: 1.5rem;
+}
+
+table > tr > *:last-child {
+    padding-right: 1.5rem;
+}
+
+.no-data {
+    border: 1px solid var(--color-border);
+    border-top: none;
+    padding-inline: 1.5rem;
+    padding-block: calc(0.75* var(--default-padding));
 }
 </style>
