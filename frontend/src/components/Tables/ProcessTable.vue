@@ -107,10 +107,6 @@ table > tr > *:first-child {
     padding-left: 1.5rem;
 }
 
-table > tr > *:last-child {
-    padding-right: 1rem;
-}
-
 .no-data {
     border: 1px solid var(--color-border);
     border-top: none;

@@ -20,13 +20,25 @@ const props = defineProps({
         <td>{{ technology }}</td>
         <td>{{ machine_time }}</td>
         <td>{{ manual_time }}</td>
-        <td >
-            <slot></slot>
+        <td class="action">
+            <div class="center">
+                <slot></slot>
+            </div>
         </td>
     </tr>
 </template>
 
 <style scoped>
+.action {
+    white-space: nowrap;
+    width: fit-content;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 tr > td:first-child {
     max-width: 60ch;
     word-wrap: break-word;

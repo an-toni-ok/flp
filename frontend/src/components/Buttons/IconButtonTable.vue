@@ -33,6 +33,7 @@ buttons is in src/assets/main.css.
     align-items: center;
     justify-content: center;
     border: none;
+    width: fit-content;
 }
 
 .focus:focus > * {
