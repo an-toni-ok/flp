@@ -16,8 +16,8 @@ const processesStore = useProcessesStore();
         <table>
             <tr>
                 <th>Technologie</th>
-                <th>Maschinenzeit</th>
-                <th>Manuelle Zeit</th>
+                <th>Extrazeit<br>Maschine</th>
+                <th>Extrazeit<br>Manuell</th>
                 <th>Aktionen</th>
             </tr>
             <ProcessTableRow 
@@ -25,35 +25,45 @@ const processesStore = useProcessesStore();
                 :machine_time="item.machine_time"
                 :manual_time="item.manual_time"
                 :technology="item.technology" >
-                <IconButtonTable 
-                    help_text="Edit this table row"
-                    @click="processesStore.edit(index)">
-                    <IconEdit />
-                </IconButtonTable>
-                <IconButtonTable 
-                    help_text="Move this table row down"
-                    :focus="false"
-                    @click="processesStore.move(index, false)">
-                    <IconMoveDown />
-                </IconButtonTable>
-                <IconButtonTable
-                    help_text="Move this table row up"
-                    :focus="false"
-                    @click="processesStore.move(index, true)">
-                    <IconMoveUp />
-                </IconButtonTable>
-                <IconButtonTable
-                    help_text="Duplicate this table row"
-                    :focus="false"
-                    @click="processesStore.clone(index)">
-                    <IconDuplicate />
-                </IconButtonTable>
-                <IconButtonTable
-                    help_text="Delete this table row"
-                    :focus="false"
-                    @click="processesStore.del(index)">
-                    <IconDelete />
-                </IconButtonTable>
+                <td>
+                    <IconButtonTable 
+                        help_text="Edit this table row"
+                        @click="processesStore.edit(index)">
+                        <IconEdit />
+                    </IconButtonTable>
+                </td>
+                <td>
+                    <IconButtonTable 
+                        help_text="Move this table row down"
+                        :focus="false"
+                        @click="processesStore.move(index, false)">
+                        <IconMoveDown />
+                    </IconButtonTable>
+                </td>
+                <td>
+                    <IconButtonTable
+                        help_text="Move this table row up"
+                        :focus="false"
+                        @click="processesStore.move(index, true)">
+                        <IconMoveUp />
+                    </IconButtonTable>
+                </td>
+                <td>
+                    <IconButtonTable
+                        help_text="Duplicate this table row"
+                        :focus="false"
+                        @click="processesStore.clone(index)">
+                        <IconDuplicate />
+                    </IconButtonTable>
+                </td>
+                <td>
+                    <IconButtonTable
+                        help_text="Delete this table row"
+                        :focus="false"
+                        @click="processesStore.del(index)">
+                        <IconDelete />
+                    </IconButtonTable>
+                </td>
             </ProcessTableRow>
         </table>
         <p 
@@ -79,8 +89,9 @@ table > tr > th {
     text-align: left;
 }
 
-table > tr > td:nth-child(2),
-table > tr > th:last-child {
+table > tr > th:last-child,
+table > tr > th:nth-child(2),
+table > tr > th:nth-child(3) {
     text-align: center;
 }
 
@@ -89,7 +100,7 @@ table > tr > th {
 }
 
 table > tr > * {
-    padding: 0 var(--default-padding);
+    padding: calc(0.75 * var(--default-padding)) var(--default-padding);
 }
 
 table > tr > *:first-child {
@@ -97,7 +108,7 @@ table > tr > *:first-child {
 }
 
 table > tr > *:last-child {
-    padding-right: 1.5rem;
+    padding-right: 1rem;
 }
 
 .no-data {
