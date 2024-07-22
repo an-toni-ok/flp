@@ -7,23 +7,7 @@ export const useProcessesStore = defineStore('processes', () => {
   const input_machine_time = ref(0)
   const input_manual_time = ref(0)
   const input_technology = ref('')
-  const processes = ref([
-    {
-      machine_time: 10,
-      manual_time: 100,
-      technology: 'test technology'
-    },
-    {
-      machine_time: 12,
-      manual_time: 101,
-      technology: 'tesogy'
-    },
-    {
-      machine_time: 9,
-      manual_time: 10,
-      technology: 'te technology'
-    }
-  ])
+  const processes = ref([])
   function set() {
     if (edit_id.value == 0 || edit_id.value) {
       processes.value[edit_id.value] = {
