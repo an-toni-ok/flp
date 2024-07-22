@@ -55,7 +55,9 @@ const del_tech = (tech) => {
 </script>
 
 <template>
-    <OverlayBase title="Maschine erstellen">
+    <OverlayBase 
+        title="Maschine erstellen"
+        v-model:opened="opened">
         <div class="overlay-content" v-show="opened">
             <div class="overlay-content-column first-column">
                 <div class="overlay-input-group">

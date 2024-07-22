@@ -11,7 +11,7 @@ const props = defineProps({
     }
 })
 
-const opened = ref(true)
+const opened = defineModel('opened', { required: true })
 </script>
 
 <template>

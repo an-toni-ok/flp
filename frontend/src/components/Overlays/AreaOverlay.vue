@@ -23,7 +23,9 @@ const button_text = props.isCreate ? "Erstellen" : "Bearbeiten";
 </script>
 
 <template>
-    <OverlayBase title="Fläche erstellen">
+    <OverlayBase 
+        title="Fläche erstellen"
+        v-model:opened="opened">
         <div class="overlay-content" v-show="opened">
             <div class="input-split">
                 <h2>Fläche</h2>

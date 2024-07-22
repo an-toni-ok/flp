@@ -22,7 +22,9 @@ const button_text = props.isCreate ? "Erstellen" : "Bearbeiten";
 </script>
 
 <template>
-    <OverlayBase title="Prozess erstellen">
+    <OverlayBase 
+        title="Prozess erstellen"
+        v-model:opened="opened">
         <div class="overlay-content" v-show="opened">
             <NumberInput 
                 name="Maschinenzeit"
