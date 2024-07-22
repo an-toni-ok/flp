@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
+import { useProcessesStore } from '@/stores/processes';
 import NumberInput from '../Inputs/NumberInput.vue';
 import TechnologyDropdownInput from '../Inputs/TechnologyDropdownInput.vue';
 import OverlayBase from './OverlayBase.vue';
@@ -14,9 +15,8 @@ const props = defineProps({
 })
 
 const opened = ref(true)
-const technology_value = ref("")
-const machine_time = ref(0)
-const manual_time = ref(0)
+
+const processesStore = useProcessesStore();
 
 const button_text = props.isCreate ? "Erstellen" : "Bearbeiten";
 </script>
@@ -27,17 +27,17 @@ const button_text = props.isCreate ? "Erstellen" : "Bearbeiten";
             <NumberInput 
                 name="Maschinenzeit"
                 id="machinenzeit"
-                v-model:value="machine_time" />
+                v-model:value="processesStore.input_machine_time" />
             <NumberInput 
                 name="Manuelle Zeit"
                 id="manual-time"
-                v-model:value="manual_time" />
+                v-model:value="processesStore.input_manual_time" />
             <TechnologyDropdownInput 
-                v-model:value="technology_value"
+                v-model:value="processesStore.input_technology"
                 :is-changeable="true"
                 :is-deletable="true" />
             <OverlayButton 
-                @click=""
+                @click="processesStore.set"
                 :text="button_text"/>
         </div>
     </OverlayBase>
