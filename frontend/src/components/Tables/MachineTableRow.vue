@@ -1,7 +1,4 @@
 <script setup>
-import { computed, ref } from 'vue';
-import IconArrowDown from '../icons/IconArrowDown.vue';
-import IconButtonTable from '../Buttons/IconButtonTable.vue';
 import ExpandableText from './ExpandableText.vue';
 
 const props = defineProps({
@@ -9,24 +6,6 @@ const props = defineProps({
         required: true,
     },
 })
-
-// const tech_open = ref(false)
-// const show_tech_dropdown = computed(() => {
-//         return props.machine.set_technologies.join(", ").length > 30
-//     },
-// )
-
-// const formatted_techs = computed(() => {
-//         var tech_text = props.machine.set_technologies.join(", ")
-//         if (tech_open.value) {
-//             return tech_text
-//         }
-//         if (tech_text.length < 30) {
-//             return tech_text
-//         }
-//         return tech_text.slice(0, 26) + "..."
-//     },
-// )
 </script>
 
 <template>
@@ -46,7 +25,6 @@ const props = defineProps({
                 help_text="Show all technologies"
                 :text="machine.set_technologies.join(', ')" />
         </td>
-        <!-- <td>{{ machine.set_technologies }}</td> -->
         <td class="action">
             <div class="center">
                 <slot></slot>
