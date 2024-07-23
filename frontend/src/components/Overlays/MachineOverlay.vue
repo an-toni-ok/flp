@@ -120,7 +120,7 @@ const del_tech = (tech) => {
                         </div>
                         <div class="overlay-input-group overlay-input-button">
                             <OverlayButton 
-                                @click=""
+                                @click="machinesStore.set"
                                 :text="actionType"/>
                         </div>
                     </div>
