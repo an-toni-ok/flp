@@ -102,9 +102,7 @@ table > tr > th {
     text-align: left;
 }
 
-table > tr > th:last-child,
-table > tr > th:nth-child(2),
-table > tr > th:nth-child(3) {
+table > tr > th:last-child {
     text-align: center;
 }
 
