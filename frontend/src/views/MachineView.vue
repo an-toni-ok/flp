@@ -38,7 +38,7 @@ const machinesStore = useMachinesStore();
                 </div>
 
                 <!-- <ProcessTable /> -->
-                <!-- <MachineTable /> -->
+                <MachineTable />
             </div>
             <ProgressButtons
                 @prev="planningStore.setState(PlanningState.Processes)"
