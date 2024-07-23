@@ -18,10 +18,13 @@ const props = defineProps({
 })
 
 const machinesStore = useMachinesStore();
+const actionType = computed(() => {
+    if (machinesStore.edit_id == 0 || !!machinesStore.edit_id) {
+        return "editieren"
+    }
+    return "erstellen"
+})
 
-const opened = ref(true)
-
-const button_text = props.isCreate ? "Erstellen" : "Bearbeiten";
 const technologyStore = useTechnologiesStore();
 const expand = computed(() => {
     let num_1 = areOptionsShown.value ? technologyStore.technologies.length : 0;
@@ -45,23 +48,21 @@ const del_tech = (tech) => {
     let index = machinesStore.input_set_technologies.indexOf(tech)
     machinesStore.input_set_technologies.splice(index, 1)
 }
-
-let title = "Maschine erstellen"
 </script>
 
 <template>
     <div class="var-wrapper">
-        <div class="overlay" :class="{ 'overlay-closed': !opened }">
-            <div class="overlay-header" :class="{ 'close': !opened, 'open': opened }">
-                <h1 class="overlay-title">{{ title }}</h1>
+        <div class="overlay" :class="{ 'overlay-closed': !machinesStore.input_overlay_opened }">
+            <div class="overlay-header" :class="{ 'close': !machinesStore.input_overlay_opened, 'open': machinesStore.input_overlay_opened }">
+                <h1 class="overlay-title">Maschine {{ actionType }}</h1>
                 <OverlayIconButton 
-                    @click="opened = !opened"
+                    @click="machinesStore.input_overlay_opened = !machinesStore.input_overlay_opened"
                     help_text="Open/Close the overlay.">
                     <IconArrowsRight />
                 </OverlayIconButton>
             </div>
             <div class="min-size-container">
-                <div class="overlay-content" v-show="opened">
+                <div class="overlay-content" v-show="machinesStore.input_overlay_opened">
                     <div class="overlay-content-column first-column">
                         <div class="overlay-input-group">
                             <h2>Maße</h2>
@@ -120,7 +121,7 @@ let title = "Maschine erstellen"
                         <div class="overlay-input-group overlay-input-button">
                             <OverlayButton 
                                 @click=""
-                                :text="button_text"/>
+                                :text="actionType"/>
                         </div>
                     </div>
                 </div>
