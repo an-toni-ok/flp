@@ -18,52 +18,42 @@ const processesStore = useProcessesStore();
                 <th>Technologie</th>
                 <th>Extrazeit<br>Maschine</th>
                 <th>Extrazeit<br>Manuell</th>
-                <th>Aktionen</th>
+                <th colspan="5">Aktionen</th>
             </tr>
             <ProcessTableRow 
                 v-for="(item, index) in processesStore.processes"
                 :machine_time="item.machine_time"
                 :manual_time="item.manual_time"
                 :technology="item.technology" >
-                <td>
                     <IconButtonTable 
                         help_text="Edit this table row"
                         @click="processesStore.edit(index)">
                         <IconEdit />
                     </IconButtonTable>
-                </td>
-                <td>
                     <IconButtonTable 
                         help_text="Move this table row down"
                         :focus="false"
                         @click="processesStore.move(index, false)">
                         <IconMoveDown />
                     </IconButtonTable>
-                </td>
-                <td>
                     <IconButtonTable
                         help_text="Move this table row up"
                         :focus="false"
                         @click="processesStore.move(index, true)">
                         <IconMoveUp />
                     </IconButtonTable>
-                </td>
-                <td>
                     <IconButtonTable
                         help_text="Duplicate this table row"
                         :focus="false"
                         @click="processesStore.clone(index)">
                         <IconDuplicate />
                     </IconButtonTable>
-                </td>
-                <td>
                     <IconButtonTable
                         help_text="Delete this table row"
                         :focus="false"
                         @click="processesStore.del(index)">
                         <IconDelete />
                     </IconButtonTable>
-                </td>
             </ProcessTableRow>
         </table>
         <p 
@@ -73,16 +63,51 @@ const processesStore = useProcessesStore();
 </template>
 
 <style scoped>
+.table-container {
+    --scrollbar-width: 6px;
+    max-height: calc(100vh - 15rem);
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+    border-left: none;
+    border-right: none;
+}
+
+.table-container::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    border-right: 1px solid var(--color-border);
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    width: var(--scrollbar-width);
+    border-radius: 50px;
+    background-color: var(--color-border);
+}
+
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  padding-left: 1.5rem;
-  min-width: 37rem;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding-left: 1.5rem;
+    min-width: 37rem;
 }
 
 table > tr {
     border: 1px solid var(--color-border);
     height: var(--input-height);
+}
+
+table > tr:first-child {
+    /* border already set by table container */
+    border-top: none;
+}
+
+table > tr:last-child {
+    /* border already set by table container */
+    border-bottom: none;
+}
+
+table > tr:only-child {
+    /* Set the border if only the table head is set */
+    border-bottom: 1px solid var(--color-border);
 }
 
 table > tr > th {
