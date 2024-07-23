@@ -24,13 +24,13 @@ const machinesStore = useMachinesStore();
                         <p>3/5</p>
                     </div>
                     <ToolIconButton 
-                        help_text="Add a process" 
+                        help_text="Add a machine" 
                         v-show="!machinesStore.input_overlay_opened"
                         @click="machinesStore.create">
                         <IconPlus />
                     </ToolIconButton>
                     <ToolIconButton 
-                        help_text="Close the process input"
+                        help_text="Close the machine input"
                         v-show="machinesStore.input_overlay_opened"
                         @click="machinesStore.input_overlay_opened = false">
                         <IconRemove />
