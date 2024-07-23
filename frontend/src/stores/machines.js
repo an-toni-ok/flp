@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useMachinesStore = defineStore('machines', () => {
@@ -10,23 +10,14 @@ export const useMachinesStore = defineStore('machines', () => {
 
   const input_machine_hourly_cost = ref(0)
   const input_investion_cost = ref(0)
-  const input_additional_machine_time = ref('')
+  const input_additional_machine_time = ref(0)
   const input_machine_type = ref('')
 
   const input_technology_value = ref('')
   const input_set_technologies = ref([])
 
   const machines = ref([])
-  const machine_types = ref([
-    'test1',
-    'test2',
-    'test3',
-    'test4',
-    'test5',
-    'test6',
-    'test7',
-    'test8'
-  ])
+  const machine_types = ref([])
 
   function _get_input_machine() {
     return {
@@ -36,7 +27,7 @@ export const useMachinesStore = defineStore('machines', () => {
       investion_cost: input_investion_cost.value,
       additional_machine_time: input_additional_machine_time.value,
       machine_type: input_machine_type.value,
-      set_technologies: input_set_technologies.value
+      set_technologies: Array.from(input_set_technologies.value)
     }
   }
 
@@ -45,7 +36,7 @@ export const useMachinesStore = defineStore('machines', () => {
     input_laenge.value = 0
     input_machine_hourly_cost.value = 0
     input_investion_cost.value = 0
-    input_additional_machine_time.value = ''
+    input_additional_machine_time.value = 0
     input_machine_type.value = ''
     input_technology_value.value = ''
     input_set_technologies.value = []
@@ -84,7 +75,12 @@ export const useMachinesStore = defineStore('machines', () => {
   }
 
   function clone(nr) {
-    var machine = machines.value.at(nr)
+    // vue refs are not clonable
+    var temp_machine = toRaw(machines.value.at(nr))
+    // Otherwise the arrays in the cloned object
+    // are just a ref a to the original object and
+    // setting one updates both.
+    var machine = structuredClone(temp_machine)
     machines.value.splice(nr, 0, machine)
   }
 
