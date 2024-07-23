@@ -1,12 +1,13 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useTechnologiesStore } from '@/stores/technologies';
+import { useMachinesStore } from '@/stores/machines';
 
 import NumberInput from '../Inputs/NumberInput.vue';
 import MachineTypeDropdownInput from '../Inputs/MachineTypeDropdownInput.vue';
 import TechnologyDropdownInput from '../Inputs/TechnologyDropdownInput.vue';
-import OverlayBase from './OverlayBase.vue';
-import InputOptionList from '../BaseInputs/InputOptionList.vue';
+import IconArrowsRight from '../icons/IconArrowsRight.vue';
+import OverlayIconButton from '../BaseInputs/OverlayIconButton.vue';import InputOptionList from '../BaseInputs/InputOptionList.vue';
 import OverlayButton from '../Buttons/OverlayButton.vue';
 
 const props = defineProps({
@@ -16,23 +17,15 @@ const props = defineProps({
     }
 })
 
+const machinesStore = useMachinesStore();
+
 const opened = ref(true)
-const breite = ref(0)
-const laenge = ref(0)
-
-const machine_hourly_cost = ref(0)
-const investion_cost = ref(0)
-const additional_machine_time = ref("")
-const machine_type = ref("")
-
-const technology_value = ref("")
-const set_technologies = ref([]);
 
 const button_text = props.isCreate ? "Erstellen" : "Bearbeiten";
 const technologyStore = useTechnologiesStore();
 const expand = computed(() => {
     let num_1 = areOptionsShown.value ? technologyStore.technologies.length : 0;
-    let num_2 = set_technologies.value.length
+    let num_2 = machinesStore.input_set_technologies.length
 
     return (num_1 + num_2) > 6;
 })
@@ -40,91 +33,185 @@ const expand = computed(() => {
 const areOptionsShown = ref(false);
 
 const set_tech = (tech) => {
-    if (set_technologies.value.includes(tech)) {
+    if (machinesStore.input_set_technologies.includes(tech)) {
         return
     }
-    set_technologies.value.push(tech)
+    machinesStore.input_set_technologies.push(tech)
 }
 const del_tech = (tech) => {
-    if (!set_technologies.value.includes(tech)) {
+    if (!machinesStore.input_set_technologies.includes(tech)) {
       return
     }
-    let index = set_technologies.value.indexOf(tech)
-    set_technologies.value.splice(index, 1)
+    let index = machinesStore.input_set_technologies.indexOf(tech)
+    machinesStore.input_set_technologies.splice(index, 1)
 }
+
+let title = "Maschine erstellen"
 </script>
 
 <template>
-    <OverlayBase 
-        title="Maschine erstellen"
-        v-model:opened="opened">
-        <div class="overlay-content" v-show="opened">
-            <div class="overlay-content-column first-column">
-                <div class="overlay-input-group">
-                    <h2>Maße</h2>
-                    <div :class="{ 'split': expand }">
-                        <div class="scrollbar-padding">
-                            <NumberInput 
-                                name="Breite"
-                                id="machine-breite"
-                                v-model:value="breite" />
-                        </div>
-                        <div class="scrollbar-padding">
-                            <NumberInput 
-                                name="Länge"
-                                id="machine-laenge"
-                                v-model:value="laenge" />
-                        </div>
-                    </div>
-                </div>
-                <div class="overlay-input-group overlay-input-tech">
-                    <h2>Technologien</h2>
-                    <div :class="{ 'split': expand }">
-                        <InputOptionList 
-                            base-id="chosen-tech-"
-                            :deleteable="true"
-                            :filtered-options="set_technologies"
-                            @delete="del_tech" />
-                        <TechnologyDropdownInput 
-                            v-model:value="technology_value"
-                            v-model:options="areOptionsShown"
-                            :is-changeable="true"
-                            :is-deletable="true"
-                            :is-multi-input="true"
-                            :has-label="false"
-                            @set="set_tech" />
-                    </div>
-                </div>
+    <div class="var-wrapper">
+        <div class="overlay" :class="{ 'overlay-closed': !opened }">
+            <div class="overlay-header" :class="{ 'close': !opened, 'open': opened }">
+                <h1 class="overlay-title">{{ title }}</h1>
+                <OverlayIconButton 
+                    @click="opened = !opened"
+                    help_text="Open/Close the overlay.">
+                    <IconArrowsRight />
+                </OverlayIconButton>
             </div>
-            <div class="overlay-content-column second-column">
-                <div class="overlay-input-group">
-                    <h2>Daten</h2>
-                    <NumberInput 
-                        name="Maschinenstundensatz"
-                        id="machine-hourly-rate"
-                        v-model:value="machine_hourly_cost" />
-                    <NumberInput 
-                        name="Investionskosten"
-                        id="investion-cost"
-                        v-model:value="investion_cost" />
-                    <NumberInput 
-                        name="Zusätzliche Maschinenzeit"
-                        id="additional-machine-time"
-                        v-model:value="additional_machine_time" />
-                    <MachineTypeDropdownInput 
-                        v-model:value="machine_type" />
-                </div>
-                <div class="overlay-input-group overlay-input-button">
-                    <OverlayButton 
-                        @click=""
-                        :text="button_text"/>
+            <div class="min-size-container">
+                <div class="overlay-content" v-show="opened">
+                    <div class="overlay-content-column first-column">
+                        <div class="overlay-input-group">
+                            <h2>Maße</h2>
+                            <div :class="{ 'split': expand }">
+                                <div class="scrollbar-padding">
+                                    <NumberInput 
+                                        name="Breite"
+                                        id="machine-breite"
+                                        v-model:value="machinesStore.input_breite" />
+                                </div>
+                                <div class="scrollbar-padding">
+                                    <NumberInput 
+                                        name="Länge"
+                                        id="machine-laenge"
+                                        v-model:value="machinesStore.input_laenge" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overlay-input-group overlay-input-tech">
+                            <h2>Technologien</h2>
+                            <div :class="{ 'split': expand }">
+                                <InputOptionList 
+                                    base-id="chosen-tech-"
+                                    :deleteable="true"
+                                    :filtered-options="machinesStore.input_set_technologies"
+                                    @delete="del_tech" />
+                                <TechnologyDropdownInput 
+                                    v-model:value="machinesStore.input_technology_value"
+                                    v-model:options="areOptionsShown"
+                                    :is-changeable="true"
+                                    :is-deletable="true"
+                                    :is-multi-input="true"
+                                    :has-label="false"
+                                    @set="set_tech" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overlay-content-column second-column">
+                        <div class="overlay-input-group">
+                            <h2>Daten</h2>
+                            <NumberInput 
+                                name="Maschinenstundensatz"
+                                id="machine-hourly-rate"
+                                v-model:value="machinesStore.input_machine_hourly_cost" />
+                            <NumberInput 
+                                name="Investionskosten"
+                                id="investion-cost"
+                                v-model:value="machinesStore.input_investion_cost" />
+                            <NumberInput 
+                                name="Zusätzliche Maschinenzeit"
+                                id="additional-machine-time"
+                                v-model:value="machinesStore.input_additional_machine_time" />
+                            <MachineTypeDropdownInput 
+                                v-model:value="machinesStore.input_machine_type" />
+                        </div>
+                        <div class="overlay-input-group overlay-input-button">
+                            <OverlayButton 
+                                @click=""
+                                :text="button_text"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </OverlayBase>
+    </div>
+
 </template>
 
 <style scoped>
+.var-wrapper {
+    --base-padding-width: 1rem;
+    --top-padding-width: calc(2 * var(--base-padding-width));
+    --overlay-width: var(--font-size-h2);
+    --overlay-closed-width: calc(2 * var(--base-padding-width) + var(--overlay-width));
+    z-index: 4;
+}
+
+.overlay {
+    height: 100%;
+    border-left: 1px solid var(--color-border);
+    width: fit-content;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--color-background);
+    padding: 
+        var(--top-padding-width)
+        var(--top-padding-width)
+        var(--top-padding-width)
+        calc(3 * var(--base-padding-width));
+}
+
+.overlay-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    gap: 4rem;
+}
+
+.overlay-title {
+    font-size: var(--font-size-h2);
+    line-height: 1;
+    /* transition: transform 0.3s ease, opacity 0.3s ease; */
+    white-space: nowrap;
+}
+
+.overlay-closed {
+    width: var(--overlay-closed-width);
+    padding: var(--top-padding-width) var(--base-padding-width);
+}
+
+.open {
+    height: 9rem;
+    align-items: flex-start;
+}
+
+.open > .overlay-title {
+    align-self: flex-end;
+    padding-bottom: 2rem;
+}
+
+.close > .overlay-title {
+    writing-mode: vertical-lr;
+    font-size: var(--font-size-h2);
+    transform: rotate(180deg);
+}
+
+.close > button > svg {
+    transform: rotate(180deg);
+}
+
+.close {
+    height: 100%;
+    width: fit-content;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.min-size-container {
+    min-width: 17.842rem;
+    padding: 2rem;
+    border: 1px solid var(--color-border)
+}
+
+.overlay-closed > .min-size-container {
+    display: none;
+}
+
 .overlay-content {
     display: flex;
     gap: 2rem;
