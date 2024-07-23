@@ -85,9 +85,26 @@ defineEmits(['selected', 'delete'])
     justify-content: flex-end;
     font-size: var(--font-size);
     line-height: 1;
-    padding-right: calc((var(--input-height) - var(--font-size)) / 2);
     border: 1px solid var(--color-border);
     background-color: var(--color-background);
     text-align: right;
+    overflow: hidden;
+}
+
+.option-text > p {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: var(--input-height);
+    padding: calc((var(--input-height) - var(--font-size)) / 2);
+}
+
+.option-text > p::-webkit-scrollbar {
+    height: var(--scrollbar-width);
+}
+
+.option-text > p::-webkit-scrollbar-thumb {
+    height: var(--scrollbar-width);
+    border-radius: 50px;
+    background-color: var(--color-border);
 }
 </style>
