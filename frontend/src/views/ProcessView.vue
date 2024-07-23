@@ -13,8 +13,6 @@ import IconRemove from '@/components/icons/IconRemove.vue';
 
 const planningStore = usePlanningStore();
 const processesStore = useProcessesStore();
-
-const opened = ref(false)
 </script>
 
 <template>
@@ -47,7 +45,7 @@ const opened = ref(false)
                 @next="planningStore.setState(PlanningState.Machines)" />
         </div>
     </div>
-    <ProcessOverlay v-model:opened="opened" />
+    <ProcessOverlay />
 </template>
 
 <style scoped>
