@@ -1,14 +1,8 @@
 <script setup>
 import { PlanningState } from '@/util';
-import MachineOverlay from '@/components/Overlays/MachineOverlay.vue';
 import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
-import ToolIconButton from '@/components/Toolbar/ToolIconButton.vue';
-import IconPlus from '@/components/icons/IconPlus.vue';
-import IconRemove from '@/components/icons/IconRemove.vue';
 
 import { usePlanningStore } from '@/stores/planning';
-import { useMachinesStore } from '@/stores/machines';
-import MachineTable from '@/components/Tables/MachineTable.vue';
 
 const props = defineProps({
     title: {
