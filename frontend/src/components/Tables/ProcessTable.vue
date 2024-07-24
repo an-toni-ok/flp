@@ -8,23 +8,35 @@ import IconMoveUp from '@/components/icons/IconMoveUp.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconDelete from '@/components/icons/IconDelete.vue';
 
+const props = defineProps({
+    short_table: {
+        type: Boolean,
+        default: false
+    },
+    show_actions: {
+        type: Boolean,
+        default: true
+    }
+})
+
 const processesStore = useProcessesStore();
 </script>
 
 <template>
-    <div class="table-container">
+    <div class="table-container" :class="{ 'short': short_table }">
         <table>
             <tr>
                 <th>Technologie</th>
                 <th>Extrazeit<br>Maschine</th>
                 <th>Extrazeit<br>Manuell</th>
-                <th colspan="5">Aktionen</th>
+                <th v-show="show_actions" colspan="5">Aktionen</th>
             </tr>
             <ProcessTableRow 
                 v-for="(item, index) in processesStore.processes"
                 :machine_time="item.machine_time"
                 :manual_time="item.manual_time"
-                :technology="item.technology" >
+                :technology="item.technology"
+                :show_actions="show_actions" >
                     <IconButtonTable 
                         help_text="Edit this table row"
                         @click="processesStore.edit(index)">
@@ -70,6 +82,10 @@ const processesStore = useProcessesStore();
     border: 1px solid var(--color-border);
     border-left: none;
     border-right: none;
+}
+
+.short {
+    max-height: 15rem;
 }
 
 .table-container::-webkit-scrollbar {

@@ -5,6 +5,10 @@ const props = defineProps({
     machine: {
         required: true,
     },
+    show_actions: {
+        type: Boolean,
+        default: true
+    }
 })
 </script>
 
@@ -25,7 +29,7 @@ const props = defineProps({
                 help_text="Show all technologies"
                 :text="machine.set_technologies.join(', ')" />
         </td>
-        <td class="action">
+        <td v-if="show_actions" class="action">
             <div class="center">
                 <slot></slot>
             </div>

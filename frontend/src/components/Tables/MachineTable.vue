@@ -6,11 +6,22 @@ import IconEdit from '@/components/icons/IconEdit.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconDelete from '@/components/icons/IconDelete.vue';
 
+const props = defineProps({
+    short_table: {
+        type: Boolean,
+        default: false
+    },
+    show_actions: {
+        type: Boolean,
+        default: true
+    }
+})
+
 const machinesStore = useMachinesStore();
 </script>
 
 <template>
-    <div class="table-container">
+    <div class="table-container" :class="{ 'short': short_table }">
         <table>
             <tr>
                 <th>Maschinentyp</th>
@@ -20,11 +31,12 @@ const machinesStore = useMachinesStore();
                 <th>Breite</th>
                 <th>Länge</th>
                 <th>Technologien</th>
-                <th colspan="5">Aktionen</th>
+                <th colspan="5" v-if="show_actions">Aktionen</th>
             </tr>
             <MachineTableRow 
                 v-for="(item, index) in machinesStore.machines"
-                :machine="item" >
+                :machine="item"
+                :show_actions="show_actions" >
                     <IconButtonTable 
                         help_text="Edit this table row"
                         @click="machinesStore.edit(index)">
@@ -58,6 +70,10 @@ const machinesStore = useMachinesStore();
     border: 1px solid var(--color-border);
     border-left: none;
     border-right: none;
+}
+
+.short {
+    max-height: 15rem;
 }
 
 .table-container::-webkit-scrollbar {

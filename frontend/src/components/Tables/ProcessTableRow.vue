@@ -12,6 +12,10 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    show_actions: {
+        type: Boolean,
+        default: true
+    }
 })
 </script>
 
@@ -20,7 +24,7 @@ const props = defineProps({
         <td>{{ technology }}</td>
         <td>{{ machine_time }}</td>
         <td>{{ manual_time }}</td>
-        <td class="action">
+        <td v-if="show_actions" class="action">
             <div class="center">
                 <slot></slot>
             </div>
