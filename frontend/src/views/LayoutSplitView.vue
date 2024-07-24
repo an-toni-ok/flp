@@ -15,7 +15,7 @@ const props = defineProps({
     },
     totalNumber: {
         type: Number,
-        default: 5
+        default: 4
     },
     prevState: {
         type: PlanningState,
@@ -37,7 +37,7 @@ const planningStore = usePlanningStore();
                 <div class="view-data-header">
                     <div class="view-data-name">
                         <h1>{{ title }}</h1>
-                        <p>{{ number }}/{{ totalNumber }}</p>
+                        <p>{{ number }} von {{ totalNumber }}</p>
                     </div>
                     <slot name="header-buttons"></slot>
                 </div>
@@ -78,7 +78,7 @@ const planningStore = usePlanningStore();
 
 .view-data-name {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     background-color: var(--color-background);
     border: 1px solid var(--color-border);
     gap: 2rem;

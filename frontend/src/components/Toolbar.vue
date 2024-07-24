@@ -14,7 +14,7 @@ const planningStore = usePlanningStore();
         <div class="tool-area">
             <div class="tool-area-name">
                 <h1>Flächeneingabe</h1>
-                <p>1/5</p>
+                <p>1 von 4</p>
             </div>
             <IconsDisplay />
             <ZoomDisplay />
@@ -50,7 +50,7 @@ const planningStore = usePlanningStore();
 
 .tool-area-name {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     background-color: var(--color-background);
     border: 1px solid var(--color-border);
     gap: 2rem;
