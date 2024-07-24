@@ -88,6 +88,7 @@ table {
     border-spacing: 0;
     padding-left: 1.5rem;
     min-width: 37rem;
+    width: 100%;
 }
 
 table > tr {
@@ -135,6 +136,7 @@ table > tr > *:first-child {
 .no-data {
     border: 1px solid var(--color-border);
     border-top: none;
+    border-bottom: none;
     padding-inline: 1.5rem;
     padding-block: calc(0.75* var(--default-padding));
 }
