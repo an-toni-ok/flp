@@ -15,7 +15,7 @@ const machinesStore = useMachinesStore();
 
 <template>
     <LayoutSplitView
-        title="Produktionsprozesseingabe" 
+        title="Maschineneingabe" 
         :number="3"
         :prev-state="PlanningState.Processes"
         :next-state="PlanningState.Configuration">
