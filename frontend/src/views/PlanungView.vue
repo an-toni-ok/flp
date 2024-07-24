@@ -3,6 +3,7 @@ import { PlanningState } from '@/util';
 import AreaView from './AreaView.vue';
 import ProcessView from './ProcessView.vue';
 import MachineView from './MachineView.vue';
+import ConfigurationView from './ConfigurationView.vue';
 import { usePlanningStore } from '@/stores/planning';
 
 const planningStore = usePlanningStore();
@@ -13,6 +14,7 @@ const planningStore = usePlanningStore();
     <AreaView v-if="planningStore.isActive(PlanningState.Areas)" />
     <ProcessView v-if="planningStore.isActive(PlanningState.Processes)" />
     <MachineView v-if="planningStore.isActive(PlanningState.Machines)" />
+    <ConfigurationView v-if="planningStore.isActive(PlanningState.Configuration)" />
 </template>
 
 <style scoped>
