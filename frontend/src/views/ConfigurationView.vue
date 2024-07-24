@@ -30,7 +30,8 @@ const settingsStore = useSettingsStore();
             </div>
             <ProgressButtons
                 @prev="planningStore.setState(PlanningState.Machines)"
-                @next="planningStore.setState(PlanningState.Overview)" />
+                @next="planningStore.setState(PlanningState.Overview)"
+                :complete="true" />
         </div>
     </div>
 </template>

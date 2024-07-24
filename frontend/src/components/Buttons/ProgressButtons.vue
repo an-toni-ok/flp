@@ -1,7 +1,15 @@
 <script setup>
 import IconArrowLeft from '../icons/IconArrowLeft.vue';
 import IconArrowRight from '../icons/IconArrowRight.vue';
+import IconConfirm from '../icons/IconConfirm.vue';
 import ToolIconButton from '../Toolbar/ToolIconButton.vue';
+
+const props = defineProps({
+    complete: {
+        type: Boolean,
+        default: false
+    }
+})
 
 defineEmits(['next', 'prev'])
 </script>
@@ -12,7 +20,8 @@ defineEmits(['next', 'prev'])
             <IconArrowLeft />
         </ToolIconButton>
         <button aria-label="Continue" @click="$emit('next')">
-            <IconArrowRight />
+            <IconArrowRight v-if="!complete" />
+            <IconConfirm v-if="complete" />
         </button>
     </div>
 </template>
