@@ -67,6 +67,7 @@ const planningStore = usePlanningStore();
     padding-block: var(--site-margin-tb);
     padding-inline: var(--site-margin-lr);
     border-right: 1px solid var(--color-border);
+    background-color: var(--color-background);
 }
 
 .view-data-header {
