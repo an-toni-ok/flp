@@ -1,201 +1,166 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
-import { Canvas, Color, Point, Rect } from 'fabric';
+import { onMounted, ref } from 'vue'
 import { useToolbarStore } from '@/stores/toolbar';
 import { Tool } from '@/util';
-
-// Only has value after mount, use onMounted
-const can_ref = ref(null)
-const can_cont_ref = ref(null)
-let color_area = "#4CAF50"
-let color_r_area = "#D32F2F"
-let color_machine = "#FF9800"
-let canvas = undefined
-
-function rect_gen(left, top, stroke_color, width=100, height=100) {
-    var rect = new Rect({
-        left: left,
-        top: top,
-        fill: "transparent",
-        width: width,
-        height: height,
-    })
-    rect.setControlVisible("mtr", false)
-    rect.lockRotation = true
-    rect.stroke = stroke_color
-    rect.strokeUniform = true
-    rect.strokeWidth = 10
-    return rect
-}
-
-function generate_area(left, top, area=false, width=0, height=0) {
-    var rect = new Rect({
-        left: left,
-        top: top,
-        fill: "transparent",
-        width: width,
-        height: height,
-    })
-    rect.setControlVisible("mtr", false);
-    rect.lockRotation = true;
-    if (area) {
-        rect.stroke = color_area;
-    } else {
-        rect.stroke = color_r_area;
-    }
-    rect.strokeUniform = true;
-    rect.strokeWidth = 10;
-    return rect
-}
-
-function setCanvasSize(canvas) {
-    canvas.setDimensions({
-            width: can_cont_ref.value.clientWidth,
-            height: can_cont_ref.value.clientHeight
-        }
-    )
-}
+import AreaLabel from '@/components/DrawingArea/AreaLabel.vue';
 
 const toolbarStore = useToolbarStore();
 
-onMounted(() => {
-    canvas = new Canvas(can_ref.value);
-    setCanvasSize(canvas)
+const mouse = ref({x: 0, y: 0})
+const start_pos = ref({x: undefined, y: undefined})
 
-    const resizeObserver = new ResizeObserver(() => {
-        setCanvasSize(canvas);
-    })
-    resizeObserver.observe(can_cont_ref.value);
+const mouse_down = ref(false)
+const first_position_update = ref(false)
+const element_selected = ref(false)
 
-    // Zoom
-    // Button inputs
-    watch(
-        () => toolbarStore.zoom,
-        (zoom) => {
-            canvas.zoomToPoint(new Point(canvas.width / 2, canvas.height / 2), zoom / 100);
-        }
-    );
-    // Mouse wheels
-    // Based on http://fabricjs.com/fabric-intro-part-5
-    canvas.on('mouse:wheel', function(opt) {
-        var delta = opt.e.deltaY;
-        var old_zoom = (toolbarStore.zoom / 100);
-        var new_zoom = Math.round((old_zoom * (0.999 ** delta)) * 10) * 10
-        toolbarStore.setZoom(new_zoom);
-        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, new_zoom / 100);
-        opt.e.preventDefault();
-        opt.e.stopPropagation();
-    });
+const rects = ref([])
+const drawing_shape = ref(undefined)
+const drawing_container = ref(undefined)
+const drawing_border_class = ref("")
+const drawing_shape_display_dimensions = ref({
+    height: "0px",
+    width: "0px"
+})
 
-    // Moving around the canvas
-    // Based on http://fabricjs.com/fabric-intro-part-5
-    canvas.on('mouse:down', function(opt) {
-        var evt = opt.e;
-        let activeObjects = canvas.getActiveObjects()
-        if (activeObjects.length) {
-            if ((toolbarStore.isActive(Tool.Area) &&
-            activeObjects[0].stroke == color_area)) {
-                return
-            }
-            if ((toolbarStore.isActive(Tool.RestrictedArea) && activeObjects[0].stroke == color_r_area)) {
-                return
-            }
-        }
+const offset = ref({x: 0, y: 0})
 
-        let new_area = undefined;
+const update_rect = () => {
+    let x_pos = Math.min(start_pos.value.x, mouse.value.x) + "px";
+    let y_pos = Math.min(start_pos.value.y, mouse.value.y) + "px";
+
+    let width = Math.abs(mouse.value.x - start_pos.value.x) + "px";
+    let height = Math.abs(mouse.value.y - start_pos.value.y) + "px";
+
+    if (drawing_shape.value) {
+        drawing_shape.value.style.left = x_pos;
+        drawing_shape.value.style.top = y_pos;
+        drawing_shape.value.style.width = width;
+        drawing_shape_display_dimensions.value.width = width;
+        drawing_shape.value.style.height = height;
+        drawing_shape_display_dimensions.value.height = height;
+    }
+}
+
+const mouse_down_handler = () => {
+    if (element_selected.value) {
+
+    } else {
+        start_pos.value.x = mouse.value.x
+        start_pos.value.y = mouse.value.y
+        mouse_down.value = true
+        update_rect()
         switch (toolbarStore.activeTool) {
-            // case Tool.Move.name:
-            //     this.isDragging = true;
-            //     this.selection = false;
-            //     this.lastPosX = evt.clientX;
-            //     this.lastPosY = evt.clientY;
             case Tool.Area.name:
-                this.isCreating = true;
-                var pointer = canvas.getPointer(evt, true);
-                this.origX = pointer.x;
-                this.origY = pointer.y;
-                new_area = generate_area(pointer.x, pointer.y, true, 10, 10);
-                canvas.add(new_area);
-                canvas.setActiveObject(new_area);
-                break;
+                drawing_border_class.value = 'area'
+                break
             case Tool.RestrictedArea.name:
-                this.isCreating = true;
-                var pointer = canvas.getPointer(evt, true);
-                this.origX = pointer.x;
-                this.origY = pointer.y;
-                new_area = generate_area(pointer.x, pointer.y, false)
-                canvas.add(new_area);
-                canvas.setActiveObject(new_area);
-                break;
-                }
+                drawing_border_class.value = 'restricted-area'
+                break
         }
-    });
-    canvas.on('mouse:move', function(opt) {
-        // if (this.isDragging) {
-        //     var e = opt.e;
-        //     var vpt = this.viewportTransform;
-        //     vpt[4] += e.clientX - this.lastPosX;
-        //     vpt[5] += e.clientY - this.lastPosY;
-        //     this.requestRenderAll();
-        //     this.lastPosX = e.clientX;
-        //     this.lastPosY = e.clientY;
-        // }
-        var evt = opt.e;
-        if (this.isCreating) {
-            var pointer = canvas.getPointer(evt, true);
-            let area = canvas.getActiveObject();
-            if(this.origX > pointer.x){
-                area.set({ left: Math.abs(pointer.x) });
-            }
-            if(this.origY > pointer.y){
-                area.set({ top: Math.abs(pointer.y) });
-            }
+    }
 
-            area.set({ width: Math.abs(this.origX - pointer.x) });
-            area.set({ height: Math.abs(this.origY - pointer.y) });
+}
 
+const mouse_move_handler = (event) => {
+    mouse.value.x = event.pageX - offset.value.x
+    mouse.value.y = event.pageY - offset.value.y
+    if (mouse_down.value) {
+        update_rect()
+    }
+}
 
-            canvas.renderAll();
-        }
-    });
-    canvas.on('mouse:up', function(opt) {
-        // on mouse up we want to recalculate new interaction
-        // for all objects, so we call setViewportTransform
-        if (toolbarStore.isActive(Tool.Delete)) {
-            let area = canvas.getActiveObject();
-            canvas.remove(area);
-        }
+const mouse_up_handler = () => {
+    if (mouse_down.value) {
+        update_rect()
+        drawing_border_class.value = ""
+        mouse_down.value = false
+    }
+}
 
-        this.setViewportTransform(this.viewportTransform);
-        this.isDragging = false;
-        if (this.isCreating) {
-            this.isCreating = false;
-            this.origX = undefined;
-            this.origY = undefined;
-        }
-        this.selection = true;
-    });
+onMounted(() => {
+    let container_offset = drawing_container.value.getBoundingClientRect()
+    offset.value.x = container_offset.left;
+    offset.value.y = container_offset.top;
 })
 </script>
 
 <template>
-    <div class="canvas-content" ref="can_cont_ref">
-        <canvas ref="can_ref">
-        </canvas>
-    </div>        
-
+    <div 
+        class="drawing-container"
+        @mousedown="mouse_down_handler"
+        @mousemove="mouse_move_handler"
+        @mouseup="mouse_up_handler"
+        ref="drawing_container" >
+        <!-- @touchstart="mouse_down_handler"
+        @touchmove="update"
+        @touchend="mouse_up_handler"> -->
+        <!-- <div class="plan-drawing"></div> -->
+        <div 
+            v-show="mouse_down"
+            class="drawing-shape" 
+            ref="drawing_shape"
+            :class="drawing_border_class" >
+            <div class="label-container">
+                <AreaLabel 
+                    :dimension-text="drawing_shape_display_dimensions.width"
+                    direction="top" />
+                <AreaLabel 
+                    :dimension-text="drawing_shape_display_dimensions.width"
+                    direction="bottom" />
+                <AreaLabel 
+                    :dimension-text="drawing_shape_display_dimensions.height"
+                    direction="left" />
+                <AreaLabel 
+                    :dimension-text="drawing_shape_display_dimensions.height"
+                    direction="right" />
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped>
-.overflow-hider {
-    display: flex;
-    width: inherit;
-    height: 100%;
-    overflow: hidden;
-}
-
-.canvas-content {
+.drawing-container {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.info {
+    padding: 10rem;
+}
+
+.plan-drawing {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background-color: lightblue;
+}
+
+.drawing-shape {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    top: 0;
+    left: 0;
+}
+
+.area {
+    border: 10px solid var(--color-area);
+}
+
+.restricted-area {
+    border: 10px solid var(--color-restricted-area);
+}
+
+.machine {
+    background-color: var(--color-machine);
+}
+
+.label-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
 </style>
