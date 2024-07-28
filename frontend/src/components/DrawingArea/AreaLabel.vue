@@ -2,8 +2,12 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-    dimensionText: {
-        type: String,
+    dimensionNr: {
+        type: Number,
+        required: true,
+    },
+    otherDimension: {
+        type: Number,
         required: true,
     },
     direction: {
@@ -13,20 +17,14 @@ const props = defineProps({
 })
 
 const outsideLabel = computed(() => {
-    try {
-        let dimensionNr = parseInt(props.dimensionText.slice(0, -2));
-        return dimensionNr < 100;
-    } catch (error) {
-        return true
-    }
-    
+    return (props.dimensionNr < 100) || (props.otherDimension < 60);
 })
 
 </script>
 
 <template>
     <p :class="[ 'label', 'label-' + direction, outsideLabel ? 'label-outside-' + direction : '' ]">
-        {{ dimensionText }}
+        {{ dimensionNr }}px
     </p>
 </template>
 

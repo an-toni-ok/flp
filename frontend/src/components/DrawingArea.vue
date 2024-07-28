@@ -102,16 +102,20 @@ onMounted(() => {
             :class="drawing_border_class" >
             <div class="label-container">
                 <AreaLabel 
-                    :dimension-text="drawing_shape_display_dimensions.width"
+                    :dimension-nr="drawing_shape_dimensions.width"
+                    :other-dimension="drawing_shape_dimensions.height"
                     direction="top" />
                 <AreaLabel 
-                    :dimension-text="drawing_shape_display_dimensions.width"
+                    :dimension-nr="drawing_shape_dimensions.width"
+                    :other-dimension="drawing_shape_dimensions.height"
                     direction="bottom" />
                 <AreaLabel 
-                    :dimension-text="drawing_shape_display_dimensions.height"
+                    :dimension-nr="drawing_shape_dimensions.height"
+                    :other-dimension="drawing_shape_dimensions.width"
                     direction="left" />
                 <AreaLabel 
-                    :dimension-text="drawing_shape_display_dimensions.height"
+                    :dimension-nr="drawing_shape_dimensions.height"
+                    :other-dimension="drawing_shape_dimensions.width"
                     direction="right" />
             </div>
         </div>
