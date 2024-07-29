@@ -55,15 +55,16 @@ watch(
 }
 
 .area {
-    border: 10px solid var(--color-area);
+    border: 10px dashed var(--color-area);
 }
 
 .restricted-area {
-    border: 10px solid var(--color-restricted-area);
+    border: 10px dashed var(--color-restricted-area);
 }
 
 .machine {
     background-color: var(--color-machine);
+    border: 10px dashed var(--color-background-area);
 }
 
 .label-container {
