@@ -35,6 +35,12 @@ const outsideLabel = computed(() => {
     font-size: 1rem;
     line-height: 1rem;
     padding: 0.25rem;
+    /** Disable text selectability */
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .label-top {
