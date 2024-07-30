@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, toRaw } from 'vue'
 import { useToolbarStore } from '@/stores/toolbar';
-import { Tool, DrawingShape, DrawingState } from '@/util';
+import { Tool, DrawingShape, DrawingState, AreaCorner, AreaBorder } from '@/util';
 
 import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
 import AreaDisplay from '@/components/DrawingArea/AreaDisplay.vue';
@@ -10,6 +10,7 @@ const toolbarStore = useToolbarStore();
 
 const mouse = ref({x: 0, y: 0})
 const start_pos = ref({x: undefined, y: undefined})
+const strech_x_axis = ref(false)
 const mouse_offset_in_area = ref({x: 0, y: 0})
 
 const mouse_down = ref(false)
@@ -32,6 +33,9 @@ const drawing_shape_dimensions = ref({
 
 const offset = ref({x: 0, y: 0})
 
+/**
+ * Updates the drawing shape based on the mouse position.
+ */
 const update_rect = () => {
     drawing_shape_dimensions.value.left = Math.min(
         start_pos.value.x, mouse.value.x
@@ -47,32 +51,39 @@ const update_rect = () => {
     );
 }
 
+/**
+ * Streches the drawing shape based on the mouse position,
+ * the strech direction is determined by strech_x_axis.
+ */
+const strech_rect = () => {
+    if (strech_x_axis.value) {
+        drawing_shape_dimensions.value.left = Math.min(
+            start_pos.value.x, mouse.value.x
+        );
+        drawing_shape_dimensions.value.width = Math.abs(
+            mouse.value.x - start_pos.value.x
+        );
+    } else {
+        drawing_shape_dimensions.value.height = Math.abs(
+            mouse.value.y - start_pos.value.y
+        );
+        drawing_shape_dimensions.value.top = Math.min(
+            start_pos.value.y, mouse.value.y
+        );
+    }
+}
+
+/**
+ * Moves the drawing shape based on the mouse position
+ * while taking the offset of the mouse into consideration.
+ */
 const move_rect = () => {
     drawing_shape_dimensions.value.top = mouse.value.y - mouse_offset_in_area.value.y;
     drawing_shape_dimensions.value.left = mouse.value.x - mouse_offset_in_area.value.x;
 }
 
 /**
- * Checks if the mouse is currently within the
- * specified area.
- * 
- * @param {*} height Height of the area
- * @param {*} width Width of the area
- * @param {*} left X position of the area
- * @param {*} top Y position of the area
- */
-const is_in_area = (height, width, left, top) => {
-    let right = left + width;
-    let bottom = top + height;
-
-    let is_in_x = (left <= mouse.value.x) && (mouse.value.x <= right);
-    let is_in_y = (top <= mouse.value.y) && (mouse.value.y <= bottom);
-
-    return (is_in_x && is_in_y)
-}
-
-/**
- * Adds the currently drawn shape to irs corresponding array.
+ * Adds the currently drawn shape to its corresponding array.
  */
 const storeCurrentShape = () => {
     // vue refs are not clonable
@@ -93,64 +104,32 @@ const storeCurrentShape = () => {
     }
 }
 
-const mouse_down_handler = () => {
-    switch (drawing_state.value) {
-        case DrawingState.Drawing.name:
-            start_pos.value.x = mouse.value.x
-            start_pos.value.y = mouse.value.y
-            mouse_down.value = true
-            update_rect()
-            switch (toolbarStore.activeTool) {
-                case Tool.Area.name:
-                    drawing_border_class.value = 'area'
-                    drawing_shape_dimensions.value.type = DrawingShape.Area.name
-                    break
-                case Tool.RestrictedArea.name:
-                    drawing_border_class.value = 'restricted-area'
-                    drawing_shape_dimensions.value.type = DrawingShape.RestrictedArea.name
-                    break
-            }
-            break;
-        case DrawingState.Selected.name:
-            let height = drawing_shape_dimensions.value.height;
-            let width = drawing_shape_dimensions.value.width;
-            let top = drawing_shape_dimensions.value.top;
-            let left = drawing_shape_dimensions.value.left;
-
-            if (!is_in_area(height, width, left, top)) {
-                /** Restore the element */
-                storeCurrentShape()
-                drawing_state.value = DrawingState.Drawing.name;
-                drawing_border_class.value = ""
-                return
-            }
-
-            if (is_in_area(height - 20, width - 20, left + 10, top + 10)) {
-                /** Click outside of border areas -> move */
-                mouse_offset_in_area.value.x = mouse.value.x - left;
-                mouse_offset_in_area.value.y = mouse.value.y - top;
-                drawing_state.value = DrawingState.Move.name;
-            } else {
-                /** Border was clicked -> resize */
-                drawing_state.value = DrawingState.Resize.name;
-                // Set the position the rectangle expands from 
-                // to the point opposite from the mouse in the
-                // rectange.
-                if (mouse.value.x - left > width / 2) {
-                    start_pos.value.x = left;
-                } else {
-                    start_pos.value.x = left + width;
-                }
-                if (mouse.value.y - top > height / 2) {
-                    start_pos.value.y = top
-                } else {
-                    start_pos.value.y = top + height
-                }
-            }
-            break;
+/**
+ * Draws a new shape.
+ */
+const create_shape_handler = () => {
+    start_pos.value.x = mouse.value.x
+    start_pos.value.y = mouse.value.y
+    mouse_down.value = true
+    update_rect()
+    switch (toolbarStore.activeTool) {
+        case Tool.Area.name:
+            drawing_border_class.value = 'area'
+            drawing_shape_dimensions.value.type = DrawingShape.Area.name
+            break
+        case Tool.RestrictedArea.name:
+            drawing_border_class.value = 'restricted-area'
+            drawing_shape_dimensions.value.type = DrawingShape.RestrictedArea.name
+            break
     }
 }
 
+/**
+ * Event handler for mouse move that calls redraw methods if
+ * it is in a Redraw state.
+ * 
+ * @param {*} event The mouse move event
+ */
 const mouse_move_handler = (event) => {
     mouse.value.x = event.pageX - offset.value.x
     mouse.value.y = event.pageY - offset.value.y
@@ -165,6 +144,9 @@ const mouse_move_handler = (event) => {
             break;
         case DrawingState.Resize.name:
             update_rect()
+            break;
+        case DrawingState.Strech.name:
+            strech_rect()
             break;
     }
 }
@@ -188,9 +170,20 @@ const mouse_up_handler = () => {
         storeCurrentShape();
         drawing_state.value = DrawingState.Drawing.name;
     }
+    if (drawing_state.value == DrawingState.Strech.name) {
+        storeCurrentShape();
+        drawing_state.value = DrawingState.Drawing.name;
+    }
 }
 
-const select_handler = (index, shape) => {
+/**
+ * Removes a shape from its' array and sets the drawing shape
+ * to its values.
+ * 
+ * @param {*} index The index of the shape in its array
+ * @param {*} shape The shape itself
+ */
+const extract_drawing_shape_from_array = (index, shape) => {
     switch (shape.type) {
         case DrawingShape.Area.name:
             areas.value.splice(index, 1)
@@ -207,6 +200,87 @@ const select_handler = (index, shape) => {
     drawing_state.value = DrawingState.Selected.name
 }
 
+/**
+ * Starts the moving of a shape
+ * 
+ * @param {*} index The index of the shape clicked on
+ * @param {*} shape The shape clicked on
+ */
+const move_handler = (index, shape) => {
+    extract_drawing_shape_from_array(index, shape)
+
+    // Set the offset of the mouse click for the position 
+    // calculation later.
+    mouse_offset_in_area.value.x = mouse.value.x - shape.left;
+    mouse_offset_in_area.value.y = mouse.value.y - shape.top;
+
+    // Set the drawing state
+    drawing_state.value = DrawingState.Move.name;
+}
+
+/**
+ * Starts the resizing of a shape.
+ * 
+ * @param {*} index The index of the shape clicked on
+ * @param {*} shape The shape clicked on
+ * @param {AreaCorner} position The mouse position of the click
+ */
+const resize_handler = (index, shape, position) => {
+    extract_drawing_shape_from_array(index, shape)
+
+    // Set the start position to the opposite side of the cursor
+    // (position = cursor position)
+    switch (position) {
+        case AreaCorner.TopLeft:
+            start_pos.value.y = shape.top + shape.height;
+            start_pos.value.x = shape.left + shape.width;
+            break;
+        case AreaCorner.TopRight:
+            start_pos.value.y = shape.top + shape.height;
+            start_pos.value.x = shape.left;
+            break;
+        case AreaCorner.BottomLeft:
+            start_pos.value.y = shape.top;
+            start_pos.value.x = shape.left + shape.width;
+            break;
+        case AreaCorner.BottomRight:
+            start_pos.value.y = shape.top;
+            start_pos.value.x = shape.left;
+            break;
+    }
+
+    // Set the drawing state
+    drawing_state.value = DrawingState.Resize.name;
+}
+
+const stretch_handler = (index, shape, position) => {
+    extract_drawing_shape_from_array(index, shape)
+
+    // Set the start position to the opposite side of the cursor
+    // (position = cursor position)
+    switch (position) {
+        case AreaBorder.Top:
+        case AreaBorder.Left:
+            start_pos.value.y = shape.top + shape.height;
+            start_pos.value.x = shape.left + shape.width;
+            break;
+        case AreaBorder.Right:
+        case AreaBorder.Bottom:
+            start_pos.value.y = shape.top;
+            start_pos.value.x = shape.left;
+            break;
+    }
+
+    if (position == AreaBorder.Top || position == AreaBorder.Bottom) {
+        strech_x_axis.value = false;
+    } else {
+        strech_x_axis.value = true;
+    }
+
+    // Set the drawing state
+    drawing_state.value = DrawingState.Strech.name;
+}
+
 onMounted(() => {
     let container_offset = drawing_container.value.getBoundingClientRect()
     offset.value.x = container_offset.left;
@@ -217,12 +291,12 @@ onMounted(() => {
 <template>
     <div 
         class="drawing-container"
-        @mousedown="mouse_down_handler"
+        @mousedown="create_shape_handler"
         @mousemove="mouse_move_handler"
         @mouseup="mouse_up_handler"
         ref="drawing_container"
         :class="{ 'raised': mouse_down }" >
-        <!-- @touchstart="mouse_down_handler"
+        <!-- @touchstart="create_shape_handler"
         @touchmove="update"
         @touchend="mouse_up_handler"> -->
         <!-- <div class="plan-drawing"></div> -->
@@ -230,17 +304,21 @@ onMounted(() => {
             <AreaDisplay 
                 v-for="(area, index) in areas"
                 :rect="area"
-                @selected="select_handler(index, area)" />
+                @resize="(position) => resize_handler(index, area, position)"
+                @strech="(position) => stretch_handler(index, area, position)"
+                @move="move_handler(index, area)" />
             <AreaDisplay 
                 v-model="restricted_areas" 
                 v-for="(area, index) in restricted_areas"
                 :rect="area"
-                @selected="select_handler(index, area)" />
+                @resize="(position) => resize_handler(index, area, position)"
+                @strech="(position) => stretch_handler(index, area, position)"
+                @move="move_handler(index, area)" />
             <AreaDisplay 
                 v-model="machines" 
                 v-for="(machine, index) in machines"
                 :rect="machine"
-                @selected="select_handler(index, machine)" />
+                @move="move_handler(index, machine)" />
         </svg>
         <DrawingInput 
             :dimensions="drawing_shape_dimensions" 

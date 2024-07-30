@@ -1,10 +1,12 @@
 /* Variables for colors and more */
 :root {
   --color-background: #FFFFFF;
+  --color-background-drawing: #F2EDEF;
   --color-border: #CCCCCC;
   --color-error: #D32F2F;
   --color-area: #4CAF50;
   --color-restricted-area: #D32F2F;
+  --color-machine: #FF9800;
   --color-text-primary: #212121;
   --color-text-secondary: #757575;
   --color-brand: #f30147;
@@ -25,6 +27,7 @@
   --top-padding-width: calc(2 * var(--base-padding-width));
   --tool-area-padding: 0.725rem;
   --tool-area-height: 1rem;
+  --measurement: calc(var(--tool-area-height) +2 * var(--tool-area-padding));
 }
 
 /* General styling */

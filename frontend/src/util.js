@@ -13,6 +13,75 @@ export class Tool {
   }
 }
 
+export class AreaCorner {
+  static TopLeft = new AreaCorner('TopLeft')
+  static TopRight = new AreaCorner('TopRight')
+  static BottomLeft = new AreaCorner('BottomLeft')
+  static BottomRight = new AreaCorner('BottomRight')
+
+  constructor(name) {
+    this.name = name
+  }
+
+  isDiagnonalTLtoBR() {
+    return this.name == 'TopLeft' || this.name == 'BottomRight'
+  }
+
+  toString() {
+    return `AreaCorner.${this.name}`
+  }
+}
+
+export class AreaBorder {
+  static Top = new AreaBorder('Top')
+  static Left = new AreaBorder('Left')
+  static Right = new AreaBorder('Right')
+  static Bottom = new AreaBorder('Bottom')
+
+  constructor(name) {
+    this.name = name
+  }
+
+  isX() {
+    return this.name == 'Left' || this.name == 'Right'
+  }
+
+  toString() {
+    return `AreaBorder.${this.name}`
+  }
+}
+
+export class DrawingState {
+  static Waiting = new DrawingState('waiting')
+  static Drawing = new DrawingState('drawing')
+  static Selected = new DrawingState('selected')
+  static Resize = new DrawingState('resize')
+  static Strech = new DrawingState('strech')
+  static Move = new DrawingState('move')
+
+  constructor(name) {
+    this.name = name
+  }
+
+  toString() {
+    return `DrawingState.${this.name}`
+  }
+}
+
+export class DrawingShape {
+  static Area = new DrawingShape('area')
+  static RestrictedArea = new DrawingShape('restricted-area')
+  static Machine = new DrawingShape('machine')
+
+  constructor(name) {
+    this.name = name
+  }
+
+  toString() {
+    return `DrawingShape.${this.name}`
+  }
+}
+
 export class PlanningState {
   static Areas = new PlanningState('Area')
   static Processes = new PlanningState('Processes')
