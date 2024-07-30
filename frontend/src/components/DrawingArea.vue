@@ -13,14 +13,11 @@ const start_pos = ref({x: undefined, y: undefined})
 const strech_x_axis = ref(false)
 const mouse_offset_in_area = ref({x: 0, y: 0})
 
-const mouse_down = ref(false)
-const element_selected = ref(false)
-
 const areas = ref([])
 const restricted_areas = ref([])
 const machines = ref([])
 
-const drawing_state = ref(DrawingState.Drawing.name)
+const drawing_state = ref(DrawingState.Waiting.name)
 const drawing_container = ref(undefined)
 const drawing_border_class = ref("")
 const drawing_shape_dimensions = ref({
@@ -105,12 +102,12 @@ const storeCurrentShape = () => {
 }
 
 /**
- * Draws a new shape.
+ * Creates a new shape.
  */
 const create_shape_handler = () => {
     start_pos.value.x = mouse.value.x
     start_pos.value.y = mouse.value.y
-    mouse_down.value = true
+    drawing_state.value = DrawingState.Drawing.name
     update_rect()
     switch (toolbarStore.activeTool) {
         case Tool.Area.name:
@@ -125,7 +122,7 @@ const create_shape_handler = () => {
 }
 
 /**
- * Event handler for mouse move that calls redraw methods if
+ * Event handler for mouse move events that calls redraw methods if
  * it is in a Redraw state.
  * 
  * @param {*} event The mouse move event
@@ -133,11 +130,13 @@ const create_shape_handler = () => {
 const mouse_move_handler = (event) => {
     mouse.value.x = event.pageX - offset.value.x
     mouse.value.y = event.pageY - offset.value.y
+    if (drawing_state.value == DrawingState.Waiting.name) {
+        return;
+    }
+
     switch (drawing_state.value) {
         case DrawingState.Drawing.name:
-            if (mouse_down.value) {
-                update_rect()
-            }
+            update_rect()
             break;
         case DrawingState.Move.name:
             move_rect()
@@ -151,29 +150,37 @@ const mouse_move_handler = (event) => {
     }
 }
 
+/**
+ * Event handler for mouse up events that stores the current shape 
+ * if the area is not in a Waiting State.
+ */
 const mouse_up_handler = () => {
-    if (mouse_down.value) {
-        if (drawing_shape_dimensions.value.height > 10 || drawing_shape_dimensions.value.width > 10) {
-            storeCurrentShape();
-        }
+    if (drawing_state.value == DrawingState.Waiting.name) {
+        return;
+    }
 
-        drawing_border_class.value = ""
-        mouse_down.value = false
+    switch (drawing_state.value) {
+        case DrawingState.Drawing.name:
+            if (drawing_shape_dimensions.value.height > 10 || drawing_shape_dimensions.value.width > 10) {
+                storeCurrentShape();
+            }
+
+            drawing_border_class.value = ""
+            break;
+        case DrawingState.Move.name:
+            storeCurrentShape();
+            mouse_offset_in_area.value.x = 0
+            mouse_offset_in_area.value.y = 0
+            break;
+        case DrawingState.Resize.name:
+            storeCurrentShape();
+            break;
+        case DrawingState.Strech.name:
+            storeCurrentShape();
+            break;
     }
-    if (drawing_state.value == DrawingState.Move.name) {
-        storeCurrentShape();
-        drawing_state.value = DrawingState.Drawing.name;
-        mouse_offset_in_area.value.x = 0
-        mouse_offset_in_area.value.y = 0
-    }
-    if (drawing_state.value == DrawingState.Resize.name) {
-        storeCurrentShape();
-        drawing_state.value = DrawingState.Drawing.name;
-    }
-    if (drawing_state.value == DrawingState.Strech.name) {
-        storeCurrentShape();
-        drawing_state.value = DrawingState.Drawing.name;
-    }
+
+    drawing_state.value = DrawingState.Waiting.name
 }
 
 /**
@@ -253,6 +260,13 @@ const resize_handler = (index, shape, position) => {
     drawing_state.value = DrawingState.Resize.name;
 }
 
+/**
+ * Starts the stretching of a shape.
+ * 
+ * @param {*} index The index of the shape clicked on
+ * @param {*} shape The shape clicked on
+ * @param {AreaCorner} position The mouse position of the click
+ */
 const stretch_handler = (index, shape, position) => {
     extract_drawing_shape_from_array(index, shape)
 
@@ -294,8 +308,9 @@ onMounted(() => {
         @mousedown="create_shape_handler"
         @mousemove="mouse_move_handler"
         @mouseup="mouse_up_handler"
-        ref="drawing_container"
-        :class="{ 'raised': mouse_down }" >
+        ref="drawing_container" 
+        :class="{ 'raised': drawing_state != DrawingState.Waiting.name }">
+        <!-- :class="{ 'raised': mouse_down }" > -->
         <!-- @touchstart="create_shape_handler"
         @touchmove="update"
         @touchend="mouse_up_handler"> -->
@@ -322,7 +337,7 @@ onMounted(() => {
         </svg>
         <DrawingInput 
             :dimensions="drawing_shape_dimensions" 
-            :mouse_down="mouse_down || drawing_state != DrawingState.Drawing.name" />
+            :mouse_down="drawing_state != DrawingState.Waiting.name" />
     </div>
 </template>
 
