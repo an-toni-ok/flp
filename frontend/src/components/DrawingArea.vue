@@ -79,15 +79,64 @@ const move_rect = () => {
 
 /**
  * Adds the currently drawn shape to its corresponding array.
+ * Makes sure the shape is snapped to the grid.
  */
 const storeCurrentShape = () => {
     // vue refs are not clonable
     let current_rect = toRaw(drawing_shape_dimensions.value)
+    let x, y;
+    [ x, y ] = get_grid_point(current_rect.left, current_rect.top)
+    current_rect.left = x;
+    current_rect.top = y;
+
+    // Make sure that the shape terminates on a grid intersection
+    // coordinate on the x axis
+    let width_diff = current_rect.width % areasStore.square_dimension;
+    current_rect.width -= width_diff;
+    if (width_diff > areasStore.square_dimension / 2) {
+        current_rect.width += areasStore.square_dimension
+    }
+
+    // Make sure that the shape terminates on a grid intersection
+    // coordinate on the y axis
+    let height_diff = current_rect.height % areasStore.square_dimension;
+    current_rect.height -= height_diff;
+    if (height_diff > areasStore.square_dimension / 2) {
+        current_rect.height += areasStore.square_dimension
+    }
+    
+    // Adjust the shapes so it's correctly displayed after
+    // being stored.
     current_rect.height /= (toolbarStore.zoom / 100)
     current_rect.width /= (toolbarStore.zoom / 100)
     current_rect.left /= (toolbarStore.zoom / 100)
     current_rect.top /= (toolbarStore.zoom / 100)
+
+
     areasStore.addShape(current_rect);
+}
+
+/**
+ * Takes a point and returns the closest grid intersection
+ * point to it.
+ * 
+ * @param {*} x The x coordinate of the original point
+ * @param {*} y The y coordinate of the original point
+ */
+const get_grid_point = (x, y) => {
+    let grid_x_diff = (x - areasStore.square_dimension / 2) % areasStore.square_dimension;
+    let new_x = x - grid_x_diff;
+    if (grid_x_diff > areasStore.square_dimension / 2) {
+        new_x += areasStore.square_dimension;
+    }
+
+    let grid_y_diff = (y - areasStore.square_dimension / 2) % areasStore.square_dimension;
+    let new_y = y - grid_y_diff;
+    if (grid_y_diff > areasStore.square_dimension / 2) {
+        new_y += areasStore.square_dimension
+    }
+
+    return [new_x, new_y]
 }
 
 /**
@@ -97,8 +146,8 @@ const create_shape_handler = () => {
     if (!(toolbarStore.activeTool == Tool.Area.name || toolbarStore.activeTool == Tool.RestrictedArea.name)) {
         return
     }
-    shape_start_point.value.x = mouse.value.x
-    shape_start_point.value.y = mouse.value.y
+    [ shape_start_point.value.x, shape_start_point.value.y ] = get_grid_point(mouse.value.x, mouse.value.y);
+
     drawing_state.value = DrawingState.Drawing.name
     update_rect()
     switch (toolbarStore.activeTool) {
