@@ -53,13 +53,13 @@ const top = computed(() => {
 })
 
 const width_label = computed(() => {
-    let value = parseInt(width.value / areasStore.square_dimension)
+    let value = Math.round(width.value / areasStore.square_dimension)
     let last_digit = value % 10
     return `${ (value - last_digit) / 10 },${ last_digit } m`
 })
 
 const height_label = computed(() => {
-    let value = parseInt(height.value / areasStore.square_dimension)
+    let value = Math.round(height.value / areasStore.square_dimension)
     let last_digit = value % 10
     return `${ (value - last_digit) / 10 },${ last_digit } m`
 })

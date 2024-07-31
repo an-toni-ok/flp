@@ -22,8 +22,8 @@ watch(
         shape.value.style.width = newValue.width + "px";
         shape.value.style.height = newValue.height + "px";
 
-        label_texts.value.width = parseInt(newValue.width / areasStore.square_dimension)
-        label_texts.value.height = parseInt(newValue.height / areasStore.square_dimension)
+        label_texts.value.width = Math.round(newValue.width / areasStore.square_dimension)
+        label_texts.value.height = Math.round(newValue.height / areasStore.square_dimension)
     },
     { deep: true }
 )
