@@ -46,10 +46,10 @@ const width = computed(() => {
     return props.rect.width * (toolbarStore.zoom / 100);
 })
 const left = computed(() => {
-    return (props.rect.left + areasStore.viewOffset.x) * (toolbarStore.zoom / 100);
+    return (props.rect.left) * (toolbarStore.zoom / 100);
 })
 const top = computed(() => {
-    return (props.rect.top + areasStore.viewOffset.y) * (toolbarStore.zoom / 100);
+    return (props.rect.top) * (toolbarStore.zoom / 100);
 })
 
 const border_size = computed(() => {

@@ -6,6 +6,7 @@ import { Tool, DrawingShape, DrawingState, AreaCorner, AreaBorder } from '@/util
 
 import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
 import AreaDisplay from '@/components/DrawingArea/AreaDisplay.vue';
+import AreaBackground from '@/components/DrawingArea/AreaBackground.vue';
 
 const toolbarStore = useToolbarStore();
 const areasStore = useAreasStore()
@@ -317,6 +318,7 @@ onMounted(() => {
         @touchend="mouse_up_handler"> -->
         <!-- <div class="plan-drawing"></div> -->
         <svg class="plan-drawing">
+            <AreaBackground />
             <AreaDisplay 
                 v-for="(area, index) in areasStore.areas"
                 :rect="area"
@@ -345,6 +347,7 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     position: absolute;
+    background-color: var(--color-background-drawing);
 }
 
 .raised {
@@ -360,6 +363,5 @@ onMounted(() => {
     height: 100%;
     position: absolute;
     top: 0;
-    background-color: var(--color-background-drawing);
 }
 </style>

@@ -1,11 +1,17 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { DrawingShape } from '@/util'
+import { useToolbarStore } from './toolbar'
 
 export const useAreasStore = defineStore('areas', () => {
   const areas = ref([])
   const restricted_areas = ref([])
   const machines = ref([])
+
+  const square_dimension = computed(() => {
+    const toolbarStore = useToolbarStore()
+    return parseInt((20 * toolbarStore.zoom) / 100)
+  })
 
   function addShape(rect) {
     // StructuredClone needs to be used,
@@ -39,5 +45,12 @@ export const useAreasStore = defineStore('areas', () => {
     }
   }
 
-  return { areas, restricted_areas, machines, addShape, delShape }
+  return {
+    areas,
+    restricted_areas,
+    machines,
+    square_dimension,
+    addShape,
+    delShape
+  }
 })

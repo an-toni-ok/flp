@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { Tool } from '@/util'
 
 export const useToolbarStore = defineStore('toolbar', () => {
-  const activeTool = ref(Tool.Move.name)
+  const activeTool = ref(Tool.Area.name)
   const zoom = ref(100)
   let zoom_min = 10
   let zoom_max = 500
