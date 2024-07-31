@@ -8,6 +8,10 @@ const props = defineProps(['dimensions', 'mouse_down'])
 const shape = ref(undefined)
 
 const toolbarStore = useToolbarStore()
+const label_texts = ref({
+    height: undefined,
+    width: undefined,
+})
 
 watch(
     () => props.dimensions,
@@ -16,6 +20,9 @@ watch(
         shape.value.style.top = newValue.top + "px";
         shape.value.style.width = newValue.width + "px";
         shape.value.style.height = newValue.height + "px";
+
+        label_texts.value.width = parseInt(newValue.width / (toolbarStore.zoom / 100))
+        label_texts.value.height = parseInt(newValue.height / (toolbarStore.zoom / 100))
     },
     { deep: true }
 )
@@ -29,20 +36,20 @@ watch(
         :class="dimensions.type" >
         <div class="label-container">
             <AreaLabel 
-                :dimension-nr="dimensions.width / (toolbarStore.zoom / 100)"
-                :other-dimension="dimensions.height / (toolbarStore.zoom / 100)"
+                :dimension-nr="label_texts.width"
+                :other-dimension="label_texts.height"
                 direction="top" />
             <AreaLabel 
-                :dimension-nr="dimensions.width / (toolbarStore.zoom / 100)"
-                :other-dimension="dimensions.height / (toolbarStore.zoom / 100)"
+                :dimension-nr="label_texts.width"
+                :other-dimension="label_texts.height"
                 direction="bottom" />
             <AreaLabel 
-                :dimension-nr="dimensions.height / (toolbarStore.zoom / 100)"
-                :other-dimension="dimensions.width / (toolbarStore.zoom / 100)"
+                :dimension-nr="label_texts.height"
+                :other-dimension="label_texts.width"
                 direction="left" />
             <AreaLabel 
-                :dimension-nr="dimensions.height / (toolbarStore.zoom / 100)"
-                :other-dimension="dimensions.width / (toolbarStore.zoom / 100)"
+                :dimension-nr="label_texts.height"
+                :other-dimension="label_texts.width"
                 direction="right" />
         </div>
     </div>

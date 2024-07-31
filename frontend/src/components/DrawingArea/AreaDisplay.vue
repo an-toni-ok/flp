@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useToolbarStore } from '@/stores/toolbar';
+import { useAreasStore } from '@/stores/areas';
 import { AreaBorder, AreaCorner } from '@/util';
 import AreaDisplayBorder from './AreaDisplayBorder.vue';
 import AreaDisplayCorner from './AreaDisplayCorner.vue';
@@ -36,6 +37,7 @@ let area_corners = [
     AreaCorner.BottomRight
 ]
 const toolbarStore= useToolbarStore()
+const areasStore = useAreasStore();
 
 const height = computed(() => {
     return props.rect.height * (toolbarStore.zoom / 100);
@@ -44,10 +46,10 @@ const width = computed(() => {
     return props.rect.width * (toolbarStore.zoom / 100);
 })
 const left = computed(() => {
-    return props.rect.left * (toolbarStore.zoom / 100);
+    return (props.rect.left + areasStore.viewOffset.x) * (toolbarStore.zoom / 100);
 })
 const top = computed(() => {
-    return props.rect.top * (toolbarStore.zoom / 100);
+    return (props.rect.top + areasStore.viewOffset.y) * (toolbarStore.zoom / 100);
 })
 
 const border_size = computed(() => {
@@ -76,19 +78,19 @@ const cssBorderSize = computed(() => {
         <text 
             :x="left + width / 2" 
             :y="top + 0.25 * 16 + border_size + 10"
-            text-anchor="middle">{{ rect.width }}</text>
+            text-anchor="middle">{{ parseInt(rect.width) }}</text>
         <text 
             :x="left + 0.25 * 16 + border_size" 
             :y="top + height / 2"
-            text-anchor="start">{{ rect.height }}</text>
+            text-anchor="start">{{ parseInt(rect.height) }}</text>
         <text 
             :x="left + width - 0.25 * 16 - border_size" 
             :y="top + height / 2"
-            text-anchor="end">{{ rect.height }}</text>
+            text-anchor="end">{{ parseInt(rect.height) }}</text>
         <text 
             :x="left + width / 2" 
             :y="top + height - 0.25 * 16 - border_size"
-            text-anchor="middle">{{ rect.width }}</text>
+            text-anchor="middle">{{ parseInt(rect.width) }}</text>
         <!-- The following four rectangles are the borders of
         the original rectangle and allow for specific cursor
         changes and click handlers. -->
