@@ -14,21 +14,21 @@ const square_dimension_halfed = computed(() => {
         <pattern 
             id="bg-pattern" 
             patternUnits="userSpaceOnUse" 
-            :width="areasStore.square_dimension * 4" 
-            :height="areasStore.square_dimension * 4">
+            :width="areasStore.square_dimension * 5" 
+            :height="areasStore.square_dimension * 5">
             <!-- x-lines -->
             <line 
                 class="strong-line"
                 x1='0' 
-                :x2='areasStore.square_dimension * 4' 
+                :x2='areasStore.square_dimension * 5' 
                 :y1='square_dimension_halfed' 
                 :y2='square_dimension_halfed' 
                 stroke-width='2'/>
             <line 
-                v-for="index in [0, 1, 2]"
+                v-for="index in [0, 1, 2, 3]"
                 class="light-line"
                 x1='0' 
-                :x2='areasStore.square_dimension * 4' 
+                :x2='areasStore.square_dimension * 5' 
                 :y1='square_dimension_halfed + (areasStore.square_dimension * (index + 1))' 
                 :y2='square_dimension_halfed + (areasStore.square_dimension * (index + 1))' 
                  
@@ -38,15 +38,15 @@ const square_dimension_halfed = computed(() => {
                 :x1='square_dimension_halfed' 
                 :x2='square_dimension_halfed' 
                 y1='0' 
-                :y2='areasStore.square_dimension * 4' 
+                :y2='areasStore.square_dimension * 5' 
                 stroke-width='2' />
             <line 
-                v-for="index in [0, 1, 2]"
+                v-for="index in [0, 1, 2, 3]"
                 class="light-line"
                 :x1='square_dimension_halfed  + (areasStore.square_dimension * (index + 1))' 
                 :x2='square_dimension_halfed  + (areasStore.square_dimension * (index + 1))' 
                 y1='0' 
-                :y2='areasStore.square_dimension * 4' 
+                :y2='areasStore.square_dimension * 5' 
                 stroke-width='2' />
         </pattern>
     </defs>
