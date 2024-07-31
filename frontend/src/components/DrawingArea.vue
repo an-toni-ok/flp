@@ -82,6 +82,10 @@ const move_rect = () => {
 const storeCurrentShape = () => {
     // vue refs are not clonable
     let current_rect = toRaw(drawing_shape_dimensions.value)
+    current_rect.height /= (toolbarStore.zoom / 100)
+    current_rect.width /= (toolbarStore.zoom / 100)
+    current_rect.left /= (toolbarStore.zoom / 100)
+    current_rect.top /= (toolbarStore.zoom / 100)
     areasStore.addShape(current_rect);
 }
 
@@ -180,6 +184,10 @@ const mouse_up_handler = () => {
 const extract_drawing_shape_from_array = (index, shape) => {
     areasStore.delShape(index, shape)
     drawing_shape_dimensions.value = shape
+    drawing_shape_dimensions.value.height *= (toolbarStore.zoom / 100)
+    drawing_shape_dimensions.value.width *= (toolbarStore.zoom / 100)
+    drawing_shape_dimensions.value.left *= (toolbarStore.zoom / 100)
+    drawing_shape_dimensions.value.top *= (toolbarStore.zoom / 100)
     drawing_border_class.value = drawing_shape_dimensions.value.type;
     drawing_state.value = DrawingState.Selected.name
 }

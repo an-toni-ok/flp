@@ -1,10 +1,13 @@
 <script setup>
 import { ref, watch } from 'vue'
 import AreaLabel from '@/components/DrawingArea/AreaLabel.vue';
+import { useToolbarStore } from '@/stores/toolbar';
 
 const props = defineProps(['dimensions', 'mouse_down'])
 
 const shape = ref(undefined)
+
+const toolbarStore = useToolbarStore()
 
 watch(
     () => props.dimensions,
@@ -26,20 +29,20 @@ watch(
         :class="dimensions.type" >
         <div class="label-container">
             <AreaLabel 
-                :dimension-nr="dimensions.width"
-                :other-dimension="dimensions.height"
+                :dimension-nr="dimensions.width / (toolbarStore.zoom / 100)"
+                :other-dimension="dimensions.height / (toolbarStore.zoom / 100)"
                 direction="top" />
             <AreaLabel 
-                :dimension-nr="dimensions.width"
-                :other-dimension="dimensions.height"
+                :dimension-nr="dimensions.width / (toolbarStore.zoom / 100)"
+                :other-dimension="dimensions.height / (toolbarStore.zoom / 100)"
                 direction="bottom" />
             <AreaLabel 
-                :dimension-nr="dimensions.height"
-                :other-dimension="dimensions.width"
+                :dimension-nr="dimensions.height / (toolbarStore.zoom / 100)"
+                :other-dimension="dimensions.width / (toolbarStore.zoom / 100)"
                 direction="left" />
             <AreaLabel 
-                :dimension-nr="dimensions.height"
-                :other-dimension="dimensions.width"
+                :dimension-nr="dimensions.height / (toolbarStore.zoom / 100)"
+                :other-dimension="dimensions.width / (toolbarStore.zoom / 100)"
                 direction="right" />
         </div>
     </div>
