@@ -243,18 +243,26 @@ const extract_drawing_shape_from_array = (index, shape) => {
 }
 
 /**
- * A wrapper function that deletes the shape, if the current tool
- * is Delete and otherwise executes the wrapped function.
+ * Deletes selected shape or draws a restricted area over 
+ * a normal area instead of the normal action if the corresponding
+ * tool is set.
  * 
  * @param {function} func The function to execute if the current tool is not delete
  * @param {*} index The index of the shape in its array
  * @param {*} shape The shape
  * @param {*} position The position of the mouse when the shape was clicked
  */
-const delete_or_action_handler = (func, index, shape, position) => {
+const action_wrapper = (func, index, shape, position) => {
     if (toolbarStore.activeTool == Tool.Delete.name) {
         areasStore.delShape(index, shape);
         return;
+    }
+    // Allow for drawing of restricted areas on normal areas.
+    if (toolbarStore.activeTool == Tool.RestrictedArea.name) {
+        if (shape.type == DrawingShape.Area.name) {
+            create_shape_handler()
+            return;
+        }
     }
     func(index, shape, position);
 }
@@ -371,19 +379,19 @@ onMounted(() => {
             <AreaDisplay 
                 v-for="(area, index) in areasStore.areas"
                 :rect="area"
-                @resize="(position) => delete_or_action_handler(resize_handler, index, area, position)"
-                @strech="(position) => delete_or_action_handler(stretch_handler, index, area, position)"
-                @move="delete_or_action_handler(move_handler, index, area)" />
+                @resize="(position) => action_wrapper(resize_handler, index, area, position)"
+                @strech="(position) => action_wrapper(stretch_handler, index, area, position)"
+                @move="action_wrapper(move_handler, index, area)" />
             <AreaDisplay 
                 v-for="(area, index) in areasStore.restricted_areas"
                 :rect="area"
-                @resize="(position) => delete_or_action_handler(resize_handler, index, area, position)"
-                @strech="(position) => delete_or_action_handler(stretch_handler, index, area, position)"
-                @move="delete_or_action_handler(move_handler, index, area)" />
+                @resize="(position) => action_wrapper(resize_handler, index, area, position)"
+                @strech="(position) => action_wrapper(stretch_handler, index, area, position)"
+                @move="action_wrapper(move_handler, index, area)" />
             <AreaDisplay 
                 v-for="(machine, index) in areasStore.machines"
                 :rect="machine"
-                @move="delete_or_action_handler(move_handler, index, machine)" />
+                @move="action_wrapper(move_handler, index, machine)" />
         </svg>
         <DrawingInput 
             :dimensions="drawing_shape_dimensions" 
