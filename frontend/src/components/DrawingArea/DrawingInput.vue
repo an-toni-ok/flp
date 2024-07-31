@@ -1,13 +1,14 @@
 <script setup>
 import { ref, watch } from 'vue'
 import AreaLabel from '@/components/DrawingArea/AreaLabel.vue';
-import { useToolbarStore } from '@/stores/toolbar';
+import { useAreasStore } from '@/stores/areas';
 
 const props = defineProps(['dimensions', 'mouse_down'])
 
 const shape = ref(undefined)
 
-const toolbarStore = useToolbarStore()
+const areasStore = useAreasStore();
+
 const label_texts = ref({
     height: undefined,
     width: undefined,
@@ -21,8 +22,8 @@ watch(
         shape.value.style.width = newValue.width + "px";
         shape.value.style.height = newValue.height + "px";
 
-        label_texts.value.width = parseInt(newValue.width / (toolbarStore.zoom / 100))
-        label_texts.value.height = parseInt(newValue.height / (toolbarStore.zoom / 100))
+        label_texts.value.width = parseInt(newValue.width / areasStore.square_dimension)
+        label_texts.value.height = parseInt(newValue.height / areasStore.square_dimension)
     },
     { deep: true }
 )

@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { useAreasStore } from '@/stores/areas';
 
 const props = defineProps({
     dimensionNr: {
@@ -16,15 +17,20 @@ const props = defineProps({
     }
 })
 
+
 const outsideLabel = computed(() => {
     return (props.dimensionNr < 100) || (props.otherDimension < 60);
 })
 
+const labelText = computed(() => {
+    let last_digit = props.dimensionNr % 10
+    return `${ (props.dimensionNr - last_digit) / 10 },${ last_digit } m`
+})
 </script>
 
 <template>
     <p :class="[ 'label', 'label-' + direction, outsideLabel ? 'label-outside-' + direction : '' ]">
-        {{ dimensionNr }}px
+        {{ labelText }}
     </p>
 </template>
 

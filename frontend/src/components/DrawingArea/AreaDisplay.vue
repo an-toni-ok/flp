@@ -52,6 +52,18 @@ const top = computed(() => {
     return (props.rect.top) * (toolbarStore.zoom / 100);
 })
 
+const width_label = computed(() => {
+    let value = parseInt(width.value / areasStore.square_dimension)
+    let last_digit = value % 10
+    return `${ (value - last_digit) / 10 },${ last_digit } m`
+})
+
+const height_label = computed(() => {
+    let value = parseInt(height.value / areasStore.square_dimension)
+    let last_digit = value % 10
+    return `${ (value - last_digit) / 10 },${ last_digit } m`
+})
+
 const border_size = computed(() => {
     return 10 * (toolbarStore.zoom / 100)
 })
@@ -78,19 +90,19 @@ const cssBorderSize = computed(() => {
         <text 
             :x="left + width / 2" 
             :y="top + 0.25 * 16 + border_size + 10"
-            text-anchor="middle">{{ parseInt(rect.width) }}</text>
+            text-anchor="middle">{{ width_label }}</text>
         <text 
             :x="left + 0.25 * 16 + border_size" 
             :y="top + height / 2"
-            text-anchor="start">{{ parseInt(rect.height) }}</text>
+            text-anchor="start">{{ height_label }}</text>
         <text 
             :x="left + width - 0.25 * 16 - border_size" 
             :y="top + height / 2"
-            text-anchor="end">{{ parseInt(rect.height) }}</text>
+            text-anchor="end">{{ height_label }}</text>
         <text 
             :x="left + width / 2" 
             :y="top + height - 0.25 * 16 - border_size"
-            text-anchor="middle">{{ parseInt(rect.width) }}</text>
+            text-anchor="middle">{{ width_label }}</text>
         <!-- The following four rectangles are the borders of
         the original rectangle and allow for specific cursor
         changes and click handlers. -->
