@@ -12,8 +12,7 @@ export const useAreasStore = defineStore('areas', () => {
     x_start: 0,
     x_end: 0,
     y_start: 0,
-    y_end: 0,
-    start_set: false
+    y_end: 0
   })
 
   const square_dimension = computed(() => {
@@ -22,44 +21,36 @@ export const useAreasStore = defineStore('areas', () => {
   })
 
   function _update_dimensions() {
-    for (const rect of areas.value.concat(restricted_areas.value)) {
-      if (drawing_dimensions.value.x_end < rect.left + rect.width) {
-        drawing_dimensions.value.x_end = rect.left + rect.width
-      }
-      if (drawing_dimensions.value.x_start > rect.left) {
-        drawing_dimensions.value.x_start = rect.left
-      }
-      if (drawing_dimensions.value.y_end < rect.top + rect.height) {
-        drawing_dimensions.value.y_end = rect.top + rect.height
-      }
-      if (drawing_dimensions.value.y_start > rect.top) {
-        drawing_dimensions.value.y_start = rect.top
-      }
-      if (!drawing_dimensions.value.start_set) {
-        drawing_dimensions.value.x_start = rect.left
-        drawing_dimensions.value.y_start = rect.top
-        drawing_dimensions.value.start_set = true
-      }
-    }
-  }
+    let x_min = 0
+    let y_min = 0
+    let x_max = 0
+    let y_max = 0
+    let min_set = false
 
-  function _update_dimensions_with_rect(rect) {
-    if (drawing_dimensions.value.x_end < rect.left + rect.width) {
-      drawing_dimensions.value.x_end = rect.left + rect.width
+    for (const rect of areas.value.concat(restricted_areas.value)) {
+      if (x_max < rect.left + rect.width) {
+        x_max = rect.left + rect.width
+      }
+      if (x_min > rect.left) {
+        x_min = rect.left
+      }
+      if (y_max < rect.top + rect.height) {
+        y_max = rect.top + rect.height
+      }
+      if (y_min > rect.top) {
+        y_min = rect.top
+      }
+      if (!min_set) {
+        x_min = rect.left
+        y_min = rect.top
+        min_set = true
+      }
     }
-    if (drawing_dimensions.value.x_start > rect.left) {
-      drawing_dimensions.value.x_start = rect.left
-    }
-    if (drawing_dimensions.value.y_end < rect.top + rect.height) {
-      drawing_dimensions.value.y_end = rect.top + rect.height
-    }
-    if (drawing_dimensions.value.y_start > rect.top) {
-      drawing_dimensions.value.y_start = rect.top + rect.height
-    }
-    if (!drawing_dimensions.value.start_set) {
-      drawing_dimensions.value.x_start = rect.left
-      drawing_dimensions.value.y_start = rect.top
-      drawing_dimensions.value.start_set = true
+    drawing_dimensions.value = {
+      x_start: x_min,
+      x_end: x_max,
+      y_start: y_min,
+      y_end: y_max
     }
   }
 
@@ -100,7 +91,7 @@ export const useAreasStore = defineStore('areas', () => {
 
     // Keep track of the dimensions in order to fit the drawing
     // with autozoom later.
-    _update_dimensions_with_rect(rect)
+    _update_dimensions()
   }
 
   return {
