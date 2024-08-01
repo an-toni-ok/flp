@@ -10,8 +10,8 @@ const shape = ref(undefined)
 const areasStore = useAreasStore();
 
 const label_texts = ref({
-    height: undefined,
-    width: undefined,
+    height: 0,
+    width: 0,
 })
 
 watch(
