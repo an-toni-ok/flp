@@ -1,6 +1,5 @@
 <script setup>
 import { computed } from 'vue';
-import { useAreasStore } from '@/stores/areas';
 
 const props = defineProps({
     dimensionNr: {
@@ -41,6 +40,7 @@ const labelText = computed(() => {
     font-size: 1rem;
     line-height: 1rem;
     padding: 0.25rem;
+    text-wrap: nowrap;
     /** Disable text selectability */
     pointer-events: none;
     -webkit-user-select: none;
