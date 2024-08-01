@@ -7,6 +7,7 @@ import { Tool, DrawingShape, DrawingState, AreaCorner, AreaBorder } from '@/util
 import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
 import AreaDisplay from '@/components/DrawingArea/AreaDisplay.vue';
 import AreaBackground from '@/components/DrawingArea/AreaBackground.vue';
+import AreaPlan from './DrawingArea/AreaPlan.vue';
 
 const toolbarStore = useToolbarStore();
 const areasStore = useAreasStore()
@@ -374,25 +375,10 @@ onMounted(() => {
         @touchmove="update"
         @touchend="mouse_up_handler"> -->
         <!-- <div class="plan-drawing"></div> -->
-        <svg class="plan-drawing">
-            <AreaBackground />
-            <AreaDisplay 
-                v-for="(area, index) in areasStore.areas"
-                :rect="area"
-                @resize="(position) => action_wrapper(resize_handler, index, area, position)"
-                @strech="(position) => action_wrapper(stretch_handler, index, area, position)"
-                @move="action_wrapper(move_handler, index, area)" />
-            <AreaDisplay 
-                v-for="(area, index) in areasStore.restricted_areas"
-                :rect="area"
-                @resize="(position) => action_wrapper(resize_handler, index, area, position)"
-                @strech="(position) => action_wrapper(stretch_handler, index, area, position)"
-                @move="action_wrapper(move_handler, index, area)" />
-            <AreaDisplay 
-                v-for="(machine, index) in areasStore.machines"
-                :rect="machine"
-                @move="action_wrapper(move_handler, index, machine)" />
-        </svg>
+        <AreaPlan 
+            @resize="(index, area, position) => action_wrapper(resize_handler, index, area, position)" 
+            @strech="(index, area, position) => action_wrapper(stretch_handler, index, area, position)"
+            @move="(index, area) => action_wrapper(move_handler, index, area)" />
         <DrawingInput 
             :dimensions="drawing_shape_dimensions" 
             :mouse_down="drawing_state != DrawingState.Waiting.name" />
@@ -404,7 +390,6 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: var(--color-background-drawing);
 }
 
 .raised {
