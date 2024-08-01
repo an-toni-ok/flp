@@ -10,6 +10,10 @@ const props = defineProps({
     rect: {
         type: Object,
         required: true,
+    },
+    zoomActivated: {
+        type: Boolean,
+        default: true,
     }
 })
 
@@ -40,16 +44,28 @@ const toolbarStore= useToolbarStore()
 const areasStore = useAreasStore();
 
 const height = computed(() => {
-    return props.rect.height * (toolbarStore.zoom / 100);
+    if (props.zoomActivated) {
+        return props.rect.height * (toolbarStore.zoom / 100);
+    }
+    return props.rect.height;
 })
 const width = computed(() => {
-    return props.rect.width * (toolbarStore.zoom / 100);
+    if (props.zoomActivated) {
+        return props.rect.width * (toolbarStore.zoom / 100);
+    }
+    return props.rect.width;
 })
 const left = computed(() => {
-    return (props.rect.left) * (toolbarStore.zoom / 100);
+    if (props.zoomActivated) {
+        return props.rect.left * (toolbarStore.zoom / 100);
+    }
+    return (props.rect.left);
 })
 const top = computed(() => {
-    return (props.rect.top) * (toolbarStore.zoom / 100);
+    if (props.zoomActivated) {
+        return props.rect.top * (toolbarStore.zoom / 100);
+    }
+    return (props.rect.top);
 })
 
 const width_label = computed(() => {
@@ -65,11 +81,14 @@ const height_label = computed(() => {
 })
 
 const border_size = computed(() => {
-    return 10 * (toolbarStore.zoom / 100)
+    if (props.zoomActivated) {
+        return 10 * (toolbarStore.zoom / 100);
+    }
+    return 10;
 })
 
 const cssBorderSize = computed(() => {
-    return { borderSize: 10 * (toolbarStore.zoom / 100) }
+    return { borderSize: border_size.value }
 })
 </script>
 
