@@ -33,7 +33,7 @@ const planningStore = usePlanningStore();
                 :complete="true" />
         </div>
         <div class="side-content">
-            <AreaPlan />
+            <AreaPlan auto-resize="true" />
         </div>
     </div>
 </template>

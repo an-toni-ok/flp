@@ -38,7 +38,7 @@ const processesStore = useProcessesStore();
             <ProcessTable />
         </template>
         <template v-slot:side-content>
-            <AreaPlan />
+            <AreaPlan auto-resize="true" />
         </template>
         <template v-slot:overlay>
             <ProcessOverlay />

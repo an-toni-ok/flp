@@ -38,7 +38,7 @@ const machinesStore = useMachinesStore();
             <MachineTable />
         </template>
         <template v-slot:side-content>
-            <AreaPlan />
+            <AreaPlan auto-resize="true" />
         </template>
         <template v-slot:overlay>
             <MachineOverlay />
