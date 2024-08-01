@@ -8,7 +8,7 @@ import IconPlus from '@/components/icons/IconPlus.vue';
 
 import { useProcessesStore } from '@/stores/processes';
 import ProcessTable from '@/components/Tables/ProcessTable.vue';
-import AreaPlan from '@/components/DrawingArea/AreaPlan.vue';
+import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
 import IconRemove from '@/components/icons/IconRemove.vue';
 
 const processesStore = useProcessesStore();
@@ -38,7 +38,7 @@ const processesStore = useProcessesStore();
             <ProcessTable />
         </template>
         <template v-slot:side-content>
-            <AreaPlan auto-resize="true" />
+            <AreaPlanUnchangable :auto-resize="true" />
         </template>
         <template v-slot:overlay>
             <ProcessOverlay />

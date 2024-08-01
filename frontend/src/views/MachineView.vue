@@ -6,7 +6,7 @@ import LayoutSplitView from './LayoutSplitView.vue';
 import MachineTable from '@/components/Tables/MachineTable.vue';
 import MachineOverlay from '@/components/Overlays/MachineOverlay.vue';
 import ToolIconButton from '@/components/Toolbar/ToolIconButton.vue';
-import AreaPlan from '@/components/DrawingArea/AreaPlan.vue';
+import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
 
 import IconPlus from '@/components/icons/IconPlus.vue';
 import IconRemove from '@/components/icons/IconRemove.vue';
@@ -38,7 +38,7 @@ const machinesStore = useMachinesStore();
             <MachineTable />
         </template>
         <template v-slot:side-content>
-            <AreaPlan auto-resize="true" />
+            <AreaPlanUnchangable :auto-resize="true" />
         </template>
         <template v-slot:overlay>
             <MachineOverlay />

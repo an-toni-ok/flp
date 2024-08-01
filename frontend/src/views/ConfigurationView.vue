@@ -5,7 +5,7 @@ import { usePlanningStore } from '@/stores/planning';
 import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
 import ConfigurationForm from '@/components/ConfigurationForm.vue';
 import DataOverview from '@/components/DataOverview.vue'
-import AreaPlan from '@/components/DrawingArea/AreaPlan.vue';
+import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
 
 // Slide information
 const title = "Optimierungkonfiguration";
@@ -33,7 +33,7 @@ const planningStore = usePlanningStore();
                 :complete="true" />
         </div>
         <div class="side-content">
-            <AreaPlan auto-resize="true" />
+            <AreaPlanUnchangable :auto-resize="true" />
         </div>
     </div>
 </template>
