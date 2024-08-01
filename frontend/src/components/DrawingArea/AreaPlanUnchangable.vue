@@ -38,6 +38,7 @@ const viewboxText = computed(() => {
                 v-for="(area, index) in areasStore.areas"
                 :rect="area"
                 :zoomActivated="false"
+                :displayOnly="true"
                 @resize="(position) => $emit('resize', index, area, position)"
                 @strech="(position) => $emit('strech', index, area, position)"
                 @move="$emit('move', index, area)" />
@@ -45,6 +46,7 @@ const viewboxText = computed(() => {
                 v-for="(area, index) in areasStore.restricted_areas"
                 :rect="area"
                 :zoomActivated="false"
+                :displayOnly="true"
                 @resize="(position) => $emit('resize', index, area, position)"
                 @strech="(position) => $emit('strech', index, area, position)"
                 @move="$emit('move', index, area)"  />
@@ -52,6 +54,7 @@ const viewboxText = computed(() => {
                 v-for="(machine, index) in areasStore.machines"
                 :rect="machine"
                 :zoomActivated="false"
+                :displayOnly="true"
                 @move="$emit('move', index, area)"  />
         </svg>
     </div>

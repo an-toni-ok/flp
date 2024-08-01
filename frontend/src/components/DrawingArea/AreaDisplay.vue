@@ -14,6 +14,10 @@ const props = defineProps({
     zoomActivated: {
         type: Boolean,
         default: true,
+    },
+    displayOnly: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -88,7 +92,7 @@ const border_size = computed(() => {
 })
 
 const cssBorderSize = computed(() => {
-    return { borderSize: border_size.value }
+    return { strokeWidth: border_size.value }
 })
 </script>
 
@@ -102,59 +106,65 @@ const cssBorderSize = computed(() => {
             :width="width - border_size"
             :x="left + border_size / 2"
             :y="top + border_size / 2"
-            :class="['svg-' + rect.type, 'base-rect']"
+            :class="['svg-' + rect.type, 'base-rect', { 'no-cursor-change': displayOnly }]"
             :style="cssBorderSize"
             fill="transparent"
             @mousedown.stop="$emit('move')" />
-        <text 
-            :x="left + width / 2" 
-            :y="top + 0.25 * 16 + border_size + 10"
-            text-anchor="middle">{{ width_label }}</text>
-        <text 
-            :x="left + 0.25 * 16 + border_size" 
-            :y="top + height / 2"
-            text-anchor="start">{{ height_label }}</text>
-        <text 
-            :x="left + width - 0.25 * 16 - border_size" 
-            :y="top + height / 2"
-            text-anchor="end">{{ height_label }}</text>
-        <text 
-            :x="left + width / 2" 
-            :y="top + height - 0.25 * 16 - border_size"
-            text-anchor="middle">{{ width_label }}</text>
-        <!-- The following four rectangles are the borders of
-        the original rectangle and allow for specific cursor
-        changes and click handlers. -->
-        <AreaDisplayBorder
-            v-for="item in area_borders"
-            :type="rect.type"
-            :position="item"
-            :r_height="height"
-            :r_width="width"
-            :r_left="left"
-            :r_top="top"
-            :border-width="border_size"
-            @strech="(position) => $emit('strech', position)" />
+        <g v-if="!displayOnly">
+            <text 
+                :x="left + width / 2" 
+                :y="top + 0.25 * 16 + border_size + 10"
+                text-anchor="middle">{{ width_label }}</text>
+            <text 
+                :x="left + 0.25 * 16 + border_size" 
+                :y="top + height / 2"
+                text-anchor="start">{{ height_label }}</text>
+            <text 
+                :x="left + width - 0.25 * 16 - border_size" 
+                :y="top + height / 2"
+                text-anchor="end">{{ height_label }}</text>
+            <text 
+                :x="left + width / 2" 
+                :y="top + height - 0.25 * 16 - border_size"
+                text-anchor="middle">{{ width_label }}</text>
+            <!-- The following four rectangles are the borders of
+            the original rectangle and allow for specific cursor
+            changes and click handlers. -->
+            <AreaDisplayBorder
+                v-for="item in area_borders"
+                :type="rect.type"
+                :position="item"
+                :r_height="height"
+                :r_width="width"
+                :r_left="left"
+                :r_top="top"
+                :border-width="border_size"
+                @strech="(position) => $emit('strech', position)" />
 
-        <!-- The following four rectangles are the corners of
-        the original rectangle and allow for specific cursor
-        changes and click handlers. -->
-        <AreaDisplayCorner
-            v-for="item in area_corners"
-            :type="rect.type"
-            :position="item"
-            :r_height="height"
-            :r_width="width"
-            :r_left="left"
-            :r_top="top"
-            :border-width="border_size"
-            @resize="(position) => $emit('resize', position)" />
+            <!-- The following four rectangles are the corners of
+            the original rectangle and allow for specific cursor
+            changes and click handlers. -->
+            <AreaDisplayCorner
+                v-for="item in area_corners"
+                :type="rect.type"
+                :position="item"
+                :r_height="height"
+                :r_width="width"
+                :r_left="left"
+                :r_top="top"
+                :border-width="border_size"
+                @resize="(position) => $emit('resize', position)" />
+        </g>
     </g>
 </template>
 
 <style scoped>
 .base-rect {
     cursor: move;
+}
+
+.no-cursor-change {
+    cursor: auto;
 }
 
 .svg-area {
