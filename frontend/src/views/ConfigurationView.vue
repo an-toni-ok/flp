@@ -29,7 +29,7 @@ const planningStore = usePlanningStore();
             </div>
             <ProgressButtons
                 @prev="planningStore.setState(PlanningState.Machines)"
-                @next="planningStore.setState(PlanningState.Overview)"
+                @next="planningStore.setState(PlanningState.Waiting)"
                 :complete="true" />
         </div>
         <div class="side-content">

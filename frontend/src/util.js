@@ -87,7 +87,8 @@ export class PlanningState {
   static Processes = new PlanningState('Processes')
   static Machines = new PlanningState('Machines')
   static Configuration = new PlanningState('Configuration')
-  static Overview = new PlanningState('Overview')
+  static Waiting = new PlanningState('Waiting')
+  static Result = new PlanningState('Result')
 
   constructor(name) {
     this.name = name
