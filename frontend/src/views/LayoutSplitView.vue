@@ -104,5 +104,6 @@ const planningStore = usePlanningStore();
 .side-content {
     width: 100%;
     height: 100%;
+    padding-right: var(--overlay-closed-width);
 }
 </style>

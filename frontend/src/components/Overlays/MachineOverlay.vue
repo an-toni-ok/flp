@@ -135,8 +135,6 @@ const del_tech = (tech) => {
 .var-wrapper {
     --base-padding-width: 1rem;
     --top-padding-width: calc(2 * var(--base-padding-width));
-    --overlay-width: var(--font-size-h2);
-    --overlay-closed-width: calc(2 * var(--base-padding-width) + var(--overlay-width));
     z-index: 4;
 }
 
@@ -144,9 +142,9 @@ const del_tech = (tech) => {
     height: 100%;
     border-left: 1px solid var(--color-border);
     width: fit-content;
-    /* position: absolute;
+    position: absolute;
     top: 0;
-    right: 0; */
+    right: 0;
     overflow: hidden;
     background-color: var(--color-background);
     padding: 

@@ -79,9 +79,9 @@ const actionType = computed(() => {
     height: 100%;
     border-left: 1px solid var(--color-border);
     width: fit-content;
-    /* position: absolute;
+    position: absolute;
     top: 0;
-    right: 0; */
+    right: 0;
     overflow: hidden;
     background-color: var(--color-background);
     padding: 

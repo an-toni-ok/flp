@@ -28,6 +28,8 @@
   --tool-area-padding: 0.725rem;
   --tool-area-height: 1rem;
   --measurement: calc(var(--tool-area-height) +2 * var(--tool-area-padding));
+  --overlay-width: var(--font-size-h2);
+  --overlay-closed-width: calc(2 * var(--base-padding-width) + var(--overlay-width));
 }
 
 /* General styling */
