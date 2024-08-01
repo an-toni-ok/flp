@@ -69,13 +69,13 @@ const del_tech = (tech) => {
                             <div :class="{ 'split': expand }">
                                 <div class="scrollbar-padding">
                                     <NumberInput 
-                                        name="Breite"
+                                        name="Breite in m"
                                         id="machine-breite"
                                         v-model:value="machinesStore.input_breite" />
                                 </div>
                                 <div class="scrollbar-padding">
                                     <NumberInput 
-                                        name="Länge"
+                                        name="Länge in m"
                                         id="machine-laenge"
                                         v-model:value="machinesStore.input_laenge" />
                                 </div>
@@ -104,15 +104,15 @@ const del_tech = (tech) => {
                         <div class="overlay-input-group">
                             <h2>Daten</h2>
                             <NumberInput 
-                                name="Maschinenstundensatz"
+                                name="Maschinenstundensatz (&#8364;)"
                                 id="machine-hourly-rate"
                                 v-model:value="machinesStore.input_machine_hourly_cost" />
                             <NumberInput 
-                                name="Investionskosten"
+                                name="Investionskosten (&#8364;)"
                                 id="investion-cost"
                                 v-model:value="machinesStore.input_investion_cost" />
                             <NumberInput 
-                                name="Zusätzliche Maschinenzeit"
+                                name="Zusätzliche Maschinenzeit in s"
                                 id="additional-machine-time"
                                 v-model:value="machinesStore.input_additional_machine_time" />
                             <MachineTypeDropdownInput 

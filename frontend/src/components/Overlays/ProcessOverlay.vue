@@ -46,11 +46,11 @@ const actionType = computed(() => {
                     class="overlay-content" 
                     v-show="processesStore.inputOverlayOpened">
                     <NumberInput 
-                        name="Maschinenzeit"
+                        name="Maschinenzeit (in s)"
                         id="machinenzeit"
                         v-model:value="processesStore.input_machine_time" />
                     <NumberInput 
-                        name="Manuelle Zeit"
+                        name="Manuelle Zeit (in s)"
                         id="manual-time"
                         v-model:value="processesStore.input_manual_time" />
                     <TechnologyDropdownInput 
