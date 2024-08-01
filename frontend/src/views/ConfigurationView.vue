@@ -1,11 +1,11 @@
 <script setup>
 import { PlanningState } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
-import { useSettingsStore } from '@/stores/settings';
 
 import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
 import ConfigurationForm from '@/components/ConfigurationForm.vue';
 import DataOverview from '@/components/DataOverview.vue'
+import AreaPlan from '@/components/DrawingArea/AreaPlan.vue';
 
 // Slide information
 const title = "Optimierungkonfiguration";
@@ -32,6 +32,9 @@ const planningStore = usePlanningStore();
                 @next="planningStore.setState(PlanningState.Overview)"
                 :complete="true" />
         </div>
+        <div class="side-content">
+            <AreaPlan />
+        </div>
     </div>
 </template>
 
@@ -39,6 +42,8 @@ const planningStore = usePlanningStore();
 .expand {
 	width: 100%;
     height: 100%;
+    display: inline-flex;
+    overflow: hidden;
 }
 
 .view-content {
@@ -78,5 +83,10 @@ const planningStore = usePlanningStore();
 .view-data-header > p {
     line-height: 1;
     font-size: 0.8rem;
+}
+
+.side-content {
+    width: 100%;
+    height: 100%;
 }
 </style>

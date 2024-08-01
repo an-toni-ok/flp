@@ -8,6 +8,7 @@ import IconPlus from '@/components/icons/IconPlus.vue';
 
 import { useProcessesStore } from '@/stores/processes';
 import ProcessTable from '@/components/Tables/ProcessTable.vue';
+import AreaPlan from '@/components/DrawingArea/AreaPlan.vue';
 import IconRemove from '@/components/icons/IconRemove.vue';
 
 const processesStore = useProcessesStore();
@@ -35,6 +36,9 @@ const processesStore = useProcessesStore();
         </template>
         <template v-slot:table>
             <ProcessTable />
+        </template>
+        <template v-slot:side-content>
+            <AreaPlan />
         </template>
         <template v-slot:overlay>
             <ProcessOverlay />

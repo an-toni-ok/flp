@@ -48,6 +48,9 @@ const planningStore = usePlanningStore();
                 @prev="planningStore.setState(prevState)"
                 @next="planningStore.setState(nextState)" />
         </div>
+        <div class="side-content">
+            <slot name="side-content"></slot>
+        </div>
     </div>
     <slot name="overlay"></slot>
 </template>
@@ -56,6 +59,8 @@ const planningStore = usePlanningStore();
 .expand {
 	width: 100%;
     height: 100%;
+    display: inline-flex;
+    overflow: hidden;
 }
 
 .view-content {
@@ -94,5 +99,10 @@ const planningStore = usePlanningStore();
 .view-data-name > p {
     line-height: 1;
     font-size: 0.8rem;
+}
+
+.side-content {
+    width: 100%;
+    height: 100%;
 }
 </style>
