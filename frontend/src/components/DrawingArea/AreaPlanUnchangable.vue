@@ -71,6 +71,8 @@ const viewboxText = computed(() => {
 
 .plan-drawing {
     display: block;
+    max-width: 100%;
+    max-height: 100%;
     margin: auto 0;
     padding: 1rem;
 }
