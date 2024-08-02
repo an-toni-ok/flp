@@ -1,0 +1,69 @@
+/* Variables for colors and more */
+:root {
+  --color-background: #FFFFFF;
+  --color-background-drawing: #F2EDEF;
+  --color-border: #CCCCCC;
+  --color-error: #D32F2F;
+  --color-area: #4CAF50;
+  --color-restricted-area: #D32F2F;
+  --color-machine: #FF9800;
+  --color-text-primary: #212121;
+  --color-text-secondary: #757575;
+  --color-brand: #f30147;
+  --color-brand-rgb: 243, 1, 71;
+
+  --font-size: 15px;
+  --font-size-h1: 2rem;
+  --font-size-h2: 1.5rem;
+  --font-size-h3: 1.25rem;
+  --line-height: 1.6;
+  --input-height: 2rem;
+  --input-width: 15rem;
+  --site-margin-lr: 2rem;
+  --site-margin-tb: 2rem;
+
+  --default-padding: 0.725rem;
+  --base-padding-width: 1rem;
+  --top-padding-width: calc(2 * var(--base-padding-width));
+  --tool-area-padding: 0.725rem;
+  --tool-area-height: 1rem;
+  --measurement: calc(var(--tool-area-height) +2 * var(--tool-area-padding));
+  --overlay-width: var(--font-size-h2);
+  --overlay-closed-width: calc(2 * var(--base-padding-width) + var(--overlay-width));
+}
+
+/* General styling */
+body,
+html,
+#app {
+  height: 100%;
+}
+
+body {
+  color: var(--color-text-primary);
+  background: var(--color-background);
+  line-height: var(--line-height);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: var(--font-size);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
