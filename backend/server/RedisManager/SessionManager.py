@@ -1,9 +1,11 @@
+from .RunManager import RunManager
 from .RedisConnector import RedisSession, RedisIdCounter
 
 class SessionManager:
     def __init__(self, session_id):
         if not RedisSession.contains(session_id):
             RedisSession.create_session(session_id)
+            RunManager.create(session_id)
 
         self.session_id = session_id
 
@@ -21,6 +23,7 @@ class SessionManager:
                 RedisSession.create_session(session_id)
                 unique_session_id = True
         
+        RunManager.create(session_id)
         return cls(session_id)
 
     @property
