@@ -104,6 +104,28 @@ class RedisSession:
             "run_ids": []
         })
 
+    def get_current_run_id(session_id) -> int:
+        """Gets the run id of the current run.
+
+        Args:
+            session_id (_type_): The session id of the run.
+
+        Raises:
+            Exception: Thrown if the Session isn't set.
+
+        Returns:
+            int: The run id of the new run.
+        """
+        global redis
+
+        try:
+            run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
+            run_id = f"{session_id}_{run_nr}"
+        except TypeError:
+            raise SessionIdNotSet(session_id)
+
+        return run_id
+
     def create_run(session_id) -> int:
         """Creates a new run in the redis session data storage.
 
@@ -114,7 +136,7 @@ class RedisSession:
             Exception: Thrown if the Session isn't set.
 
         Returns:
-            int: The run_id of the new run.
+            int: The run id of the new run.
         """
         global redis
 
