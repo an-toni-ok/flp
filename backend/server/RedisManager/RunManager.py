@@ -4,7 +4,7 @@ from server.celery_tasks import start_optimization
 from .RunInput import RunInput
 from .util import RunStatus
 from .Errors import RunNotStartable, RunNotRunning
-from .RedisConnector import RedisRunConfig, RedisSession
+from .RedisConnector import RedisRunConfig
 
 class RunManager:
     def __init__(self, user_session_id, run_nr, run_id=None):
