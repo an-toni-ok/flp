@@ -13,7 +13,6 @@ const planningStore = usePlanningStore();
 </script>
 
 <template>
-    <!-- Not working! -->
     <AreaView v-if="planningStore.isActive(PlanningState.Areas)" />
     <ProcessView v-if="planningStore.isActive(PlanningState.Processes)" />
     <MachineView v-if="planningStore.isActive(PlanningState.Machines)" />
