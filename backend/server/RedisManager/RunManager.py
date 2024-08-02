@@ -5,10 +5,18 @@ from logging import Logger
 from server.celery_tasks import start_optimization
 from .RunInput import RunInput
 from .util import RunStatus, RunInputType
+from .Errors import RunNotStartable, RunNotRunning
 from .RedisConnector import RedisRunConfig, RedisSession
 
 class RunManager:
     def __init__(self, user_session_id, run_nr, run_id=None):
+        """Creates a RunManager.
+
+        Args:
+            user_session_id (_type_): The user session id.
+            run_nr (_type_): The number of the run.
+            run_id (_type_, optional): The id of the run usable in place of the user_session_id and run_nr. Defaults to None.
+        """
         if run_id:
             self.run_id = run_id
         else:
@@ -18,6 +26,14 @@ class RunManager:
 
     @classmethod
     def init_new_run(cls, user_session_id):
+        """Creates a new run and returns its associated run manager.
+
+        Args:
+            user_session_id (_type_): The user session id.
+
+        Returns:
+            RunManager: The run manager for the new run.
+        """
         run_id = RedisSession.create_run(user_session_id)
         RedisRunConfig.create(run_id)
         
@@ -41,17 +57,31 @@ class RunManager:
         return RunStatus[RedisRunConfig.STATUS.query(self.run_id)]
 
     def start(self):
+        """Starts the execution of a run.
+
+        Raises:
+            RunNotStartable: The run is not startable
+        """
         if self.status is not RunStatus.INPUT:
-            raise Exception("Run is not in the Input stage.")
+            raise RunNotStartable(run_id=self.run_id, text="Run is not in the Input stage.")
 
         if not self.input.is_startable(): 
-            raise Exception("Not all fields are set.")
+            raise RunNotStartable(run_id=self.run_id, text="Not all fields are set.")
         
         start_optimization.delay(self.run_id)
 
     def finish(self, output: Dict, error: bool):
+        """Finishes the execution of a run.
+
+        Args:
+            output (Dict): The output of the optimization.
+            error (bool): An error occurred.
+
+        Raises:
+            RunNotRunning: The run is not running.
+        """
         if self.status is not RunStatus.RUNNING:
-            raise Exception("Run is not running.")
+            raise RunNotRunning(run_id=self.run_id)
 
         # Set output data in redis
         RedisRunConfig.OUTPUT.set(self.run_id, output)

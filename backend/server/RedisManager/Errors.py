@@ -6,6 +6,14 @@ class RunNotCreated(Exception):
     def __init__(self, run_id=""):
         super().__init__(f"Run (run_id: { run_id }) is not created")
 
+class RunNotStartable(Exception):
+    def __init__(self, run_id="", text=""):
+        super().__init__(f"Run (run_id: { run_id }) { text }")
+
+class RunNotRunning(Exception):
+    def __init__(self, run_id=""):
+        super().__init__(f"Run (run_id: { run_id }) is not running")
+
 class InvalidChangeMethod(Exception):
     def __init__(self, message="Input data cannot be changed with the RedisRunConfig. Use the RedisInput class instead."):
         super().__init__(message)
