@@ -1,24 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 
-import AreaPlan from '@/components/DrawingArea/AreaPlan.vue';
-import IconButtonDataOverview from '@/components/Buttons/IconButtonDataOverview.vue';
-import IconArrowRight from '@/components/icons/IconArrowRight.vue';
-import IconArrowLeft from '@/components/icons/IconArrowLeft.vue';
-import MachineList from '@/components/MachineList.vue';
+import MachineList from '@/components/Result/MachineList.vue';
+import ResultsDisplay from '@/components/Result/ResultsDisplay.vue'
+import DrawingArea from '@/components/DrawingArea.vue';
 
 // Slide information
 const title = "Optimierungsergebnisse";
 const number = ref(1);
 const total = ref(3);
-
-const incr_number = () => {
-    number.value = number.value == total.value ? 1 : number.value + 1
-}
-
-const decr_number = () => {
-    number.value = number.value == 1 ? total.value : number.value - 1
-}
 </script>
 
 <template>
@@ -29,29 +19,14 @@ const decr_number = () => {
                     <h1>{{ title }}</h1>
                 </div>
                 <!-- Main content -->
-                <div class="result-selection">
-                    <IconButtonDataOverview
-                        help_text="Zurück"
-                        @click="decr_number">
-                        <IconArrowLeft />
-                    </IconButtonDataOverview>
-                    <div class="result-selection-heading-container">
-                        <div class="result-selection-heading">
-                            <h1>Ergebnis</h1>
-                            <p>{{ number }} von {{ total }}</p>
-                        </div>
-                    </div>
-                    <IconButtonDataOverview
-                        help_text="Weiter"
-                        @click="incr_number">
-                        <IconArrowRight />
-                    </IconButtonDataOverview>
-                </div>
+                <ResultsDisplay 
+                    v-model:number="number"
+                    :total="3" />
                 <MachineList />
             </div>
         </div>
         <div class="side-content">
-            <AreaPlan />
+            <DrawingArea />
         </div>
     </div>
 </template>
@@ -99,40 +74,6 @@ const decr_number = () => {
 }
 
 .view-data-header > p {
-    line-height: 1;
-    font-size: 0.8rem;
-}
-
-.result-selection {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.result-selection-heading-container {
-    height: 100%;
-    width: 100%;
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18rem;
-}
-
-.result-selection-heading {
-    display: flex;
-    align-items: flex-end;
-    gap: 1rem;
-}
-
-.result-selection-heading > h1 {
-    line-height: 1;
-    font-size: var(--tool-area-height);
-    font-weight: 500;
-}
-
-.result-selection-heading > p {
     line-height: 1;
     font-size: 0.8rem;
 }

@@ -1,13 +1,13 @@
 <script setup>
-import { useMachinesStore } from '@/stores/machines';
+import { useAreasStore } from '@/stores/areas';
 
-const machinesStore = useMachinesStore();
+const areasStore = useAreasStore();
 </script>
 
 <template>
     <div class="machines-list">
         <div 
-            v-for="(machine, index) in machinesStore.machines"
+            v-for="(machine, index) in areasStore.machines"
             class="machine" >
             <p class="machine-number">{{ index + 1 }}</p>
             <p class="machine-name">{{ machine.machine_type }}</p>
