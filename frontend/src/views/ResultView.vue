@@ -81,5 +81,6 @@ const total = ref(3);
 .side-content {
     width: 100%;
     height: 100%;
+    position: relative;
 }
 </style>
