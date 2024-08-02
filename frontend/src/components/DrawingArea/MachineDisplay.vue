@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue';
 import { useToolbarStore } from '@/stores/toolbar';
-import { AreaBorder, AreaCorner } from '@/util';
 
 const props = defineProps({
     rect: {
