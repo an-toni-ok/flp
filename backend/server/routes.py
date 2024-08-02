@@ -4,12 +4,9 @@ from celery.result import AsyncResult
 from server.celery_tasks import add_together
 from server.decorators import validate
 from server.schemas import SCHEMA
-from server.extensions import redis_client
 
 from server.RedisManager.RunManager import RunManager
 from server.RedisManager.SessionManager import SessionManager
-from server.RedisManager.util import RunInputType
-
 
 routes = Blueprint('routes', __name__)
 
@@ -17,35 +14,24 @@ routes = Blueprint('routes', __name__)
 @validate(SCHEMA.AREAS)
 def area():
     input_data = request.get_json()
-    sm = SessionManager(
-        session_id=session["id"], 
-        redis=redis_client,
-        logger=current_app.logger
+    sm = SessionManager(session["id"])
+    current_app.logger.debug(
+        f"Loaded session with id \"{ sm.session_id }\"."
     )
-    current_app.logger.debug(f"Recieved input data on endpoint /area in session {sm.session_id}. Data is {input_data}.")
-    rm: RunManager = sm.load_run(
-        redis=redis_client, 
-        logger=current_app.logger
-    )
-    rm.set_input(input_data, RunInputType.AREA, redis_client)
+
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+    current_app.logger.debug(f"Loaded run with id \"{ rm.run_id }\".")
     
+    rm.input.areas = input_data
     return Response(status=200)
 
 @routes.post("/process")
 @validate(SCHEMA.PRODUCTION_STEPS)
 def process():
     input_data = request.get_json()
-    sm = SessionManager(
-        session_id=session["id"], 
-        redis=redis_client,
-        logger=current_app.logger
-    )
-    current_app.logger.debug(f"Recieved input data on endpoint /process in session {sm.session_id}. Data is {input_data}.")
-    rm: RunManager = sm.load_run(
-        redis=redis_client, 
-        logger=current_app.logger
-    )
-    rm.set_input(input_data, RunInputType.STEPS, redis_client)
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+    rm.input.steps = input_data
     
     return Response(status=200)
 
@@ -53,17 +39,9 @@ def process():
 @validate(SCHEMA.MACHINES)
 def machines():
     input_data = request.get_json()
-    sm = SessionManager(
-        session_id=session["id"], 
-        redis=redis_client,
-        logger=current_app.logger
-    )
-    current_app.logger.debug(f"Recieved input data on endpoint /area in session {sm.session_id}. Data is {input_data}.")
-    rm: RunManager = sm.load_run(
-        redis=redis_client, 
-        logger=current_app.logger
-    )
-    rm.set_input(input_data, RunInputType.MACHINES, redis_client)
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+    rm.input.machines = input_data
     
     return Response(status=200)
 
@@ -71,38 +49,26 @@ def machines():
 @validate(SCHEMA.OBJECTIVES)
 def objectives():
     input_data = request.get_json()
-    sm = SessionManager(
-        session_id=session["id"], 
-        redis=redis_client,
-        logger=current_app.logger
-    )
-    current_app.logger.debug(f"Recieved input data on endpoint /area in session {sm.session_id}. Data is {input_data}.")
-    rm: RunManager = sm.load_run(
-        redis=redis_client, 
-        logger=current_app.logger
-    )
-    rm.set_input(input_data, RunInputType.OBJECTIVES, redis_client)
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+    rm.input.objectives = input_data
     
     return Response(status=200)
 
 @routes.post("/optimize")
 def optimize_start():
-    sm = SessionManager(
-        session_id=session["id"], 
-        redis=redis_client,
-        logger=current_app.logger
-    )
-    rm: RunManager = sm.load_run(
-        redis=redis_client, 
-        logger=current_app.logger
-    )
-    rm.start_run(redis=redis_client)
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+    rm.start()
 
     return Response(status=200)
 
 @routes.get("/optimize")
 def optimize_status():
-    return Response(status=200)
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+    
+    return Response(rm.status, status=200)
 
 @routes.get("/add/<num1>/<num2>")
 def add_route(num1: str, num2: str) -> dict[str, object]:

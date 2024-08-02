@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, session
 
+from server.RedisManager.RunManager import RunManager
 from server.extensions import init_redis, celery_init_app, setup_logger
 from server.RedisManager.SessionManager import SessionManager
 
@@ -33,23 +34,13 @@ def create_app() -> Flask:
     # and reassignment on requests
     @app.before_request
     def assign_session_token():
-        from server.extensions import redis_client
-
         if "id" in session:
+            sm = SessionManager(session_id=session["id"])
             app.logger.debug(f"Attempting to log in session id \"{session['id']}\".")
-            sm = SessionManager(
-                session_id=session["id"], 
-                redis=redis_client, 
-                logger=app.logger
-            )
         else:
-            app.logger.debug(f"Creating new session id.")
-            sm: SessionManager = SessionManager.init_new_session(
-                redis_client, 
-                logger=app.logger
-            )
+            sm: SessionManager = SessionManager.create()
+            app.logger.debug(f"Created session with id \"{ sm.session_id }\".")
             session["id"] = sm.session_id
-        app.logger.info(f"Session id \"{session['id']}\" was logged in.")
 
     # register the blueprint routes
     from server.routes import routes
