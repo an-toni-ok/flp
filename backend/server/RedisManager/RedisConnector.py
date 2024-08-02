@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict
+from typing import Dict, List
 
 from server.extensions import redis
 from .util import RunStatus
@@ -61,12 +61,28 @@ class RedisRunConfig(Enum):
 
         redis.json().set(run_id, str(self), data)
 
-    def create(run_id):
+    def create(session_id):
+        """Creates a new run in a session.
+
+        Args:
+            session_id (_type_): The user session id.
+
+        Raises:
+            SessionIdNotSet: The session id supplied does not exist.
+
+        Returns:
+            _type_: The run id of the new run.
+        """
         global redis
- 
-        if redis.json().get(run_id, "$"):
-            # do not allow overwriting existing data
-            raise RunAlreadyExists(run_id)
+
+        try:
+            run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
+            run_id = f"{session_id}_{run_nr}"
+        except TypeError:
+            raise SessionIdNotSet(session_id)
+        
+        redis.json().set(session_id, "$.current_run_nr", run_nr + 1)
+        redis.json().arrappend(session_id, "$.run_ids", run_id)
 
         redis.json().set(run_id, "$", {
             'input': {
@@ -83,6 +99,8 @@ class RedisRunConfig(Enum):
             'execution_id': None, 
             'status': RunStatus.INPUT.value
         })
+
+        return run_id
     
     def __str__(self) -> str:
         if self.value == RedisRunConfig.ALL.value:
@@ -104,8 +122,29 @@ class RedisSession:
             "run_ids": []
         })
 
-    def get_current_run_id(session_id) -> int:
-        """Gets the run id of the current run.
+    def run_ids(session_id) -> List:
+        """Gets the run ids associated with the session id.
+
+        Args:
+            session_id (_type_): The session id of the run.
+
+        Raises:
+            Exception: Thrown if the Session isn't set.
+
+        Returns:
+            int: The run id of the new run.
+        """
+        global redis
+
+        try:
+            run_ids = redis.json().get(session_id, "$.run_ids")
+        except TypeError:
+            raise SessionIdNotSet(session_id)
+
+        return run_ids
+
+    def current_run_nr(session_id) -> int:
+        """Gets the run nr of the current run.
 
         Args:
             session_id (_type_): The session id of the run.
@@ -120,11 +159,10 @@ class RedisSession:
 
         try:
             run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
-            run_id = f"{session_id}_{run_nr}"
         except TypeError:
             raise SessionIdNotSet(session_id)
 
-        return run_id
+        return run_nr
 
     def create_run(session_id) -> int:
         """Creates a new run in the redis session data storage.
