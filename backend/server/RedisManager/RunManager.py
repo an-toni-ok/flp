@@ -1,10 +1,8 @@
-from redis import Redis
 from typing import Dict
-from logging import Logger
 
 from server.celery_tasks import start_optimization
 from .RunInput import RunInput
-from .util import RunStatus, RunInputType
+from .util import RunStatus
 from .Errors import RunNotStartable, RunNotRunning
 from .RedisConnector import RedisRunConfig, RedisSession
 
