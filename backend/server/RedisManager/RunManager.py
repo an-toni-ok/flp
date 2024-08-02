@@ -35,7 +35,6 @@ class RunManager:
         run_id = RedisRunConfig.create(user_session_id)
         
         return cls(
-            user_session_id, 
             user_session_id=None, 
             run_nr=None, 
             run_id=run_id
