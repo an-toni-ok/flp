@@ -25,7 +25,7 @@ class RunManager:
         self.input = RunInput(run_id=self.run_id)
 
     @classmethod
-    def init_new_run(cls, user_session_id):
+    def create(cls, user_session_id):
         """Creates a new run and returns its associated run manager.
 
         Args:
