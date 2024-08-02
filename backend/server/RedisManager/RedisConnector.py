@@ -76,12 +76,12 @@ class RedisRunConfig(Enum):
         global redis
 
         try:
-            run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
+            run_nr = redis.json().get(session_id, "$.current_run_nr")[0] + 1
             run_id = f"{session_id}_{run_nr}"
         except TypeError:
             raise SessionIdNotSet(session_id)
         
-        redis.json().set(session_id, "$.current_run_nr", run_nr + 1)
+        redis.json().set(session_id, "$.current_run_nr", run_nr)
         redis.json().arrappend(session_id, "$.run_ids", run_id)
 
         redis.json().set(run_id, "$", {
@@ -163,30 +163,6 @@ class RedisSession:
             raise SessionIdNotSet(session_id)
 
         return run_nr
-
-    def create_run(session_id) -> int:
-        """Creates a new run in the redis session data storage.
-
-        Args:
-            session_id (_type_): The session id where the run is created.
-
-        Raises:
-            Exception: Thrown if the Session isn't set.
-
-        Returns:
-            int: The run id of the new run.
-        """
-        global redis
-
-        try:
-            run_nr = redis.json().get(session_id, "$.current_run_nr")[0]
-            run_id = f"{session_id}_{run_nr}"
-        except TypeError:
-            raise SessionIdNotSet(session_id)
-        
-        redis.json().set(session_id, "$.current_run_nr", run_nr + 1)
-        redis.json().arrappend(session_id, "$.run_ids", run_id)
-        return run_id
 
 class RedisIdCounter:
     def incr():
