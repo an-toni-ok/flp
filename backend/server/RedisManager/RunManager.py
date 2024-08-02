@@ -32,8 +32,7 @@ class RunManager:
         Returns:
             RunManager: The run manager for the new run.
         """
-        run_id = RedisSession.create_run(user_session_id)
-        RedisRunConfig.create(run_id)
+        run_id = RedisRunConfig.create(user_session_id)
         
         return cls(
             user_session_id, 
