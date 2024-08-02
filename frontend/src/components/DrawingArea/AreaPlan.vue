@@ -45,7 +45,7 @@ const emits = defineEmits({
             v-for="(machine, index) in areasStore.machines"
             :rect="machine"
             :number="index + 1"
-            @move="$emit('move', index, area)"  />
+            @move="$emit('move', index, machine)"  />
     </svg>
 </template>
 
