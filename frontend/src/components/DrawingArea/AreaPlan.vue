@@ -3,6 +3,7 @@ import { AreaBorder, AreaCorner } from '@/util';
 import { useAreasStore } from '@/stores/areas';
 
 import AreaDisplay from '@/components/DrawingArea/AreaDisplay.vue';
+import MachineDisplay from '@/components/DrawingArea//MachineDisplay.vue';
 import AreaBackground from '@/components/DrawingArea/AreaBackground.vue';
 
 const areasStore = useAreasStore()
@@ -40,9 +41,10 @@ const emits = defineEmits({
             @resize="(position) => $emit('resize', index, area, position)"
             @strech="(position) => $emit('strech', index, area, position)"
             @move="$emit('move', index, area)"  />
-        <AreaDisplay 
+        <MachineDisplay 
             v-for="(machine, index) in areasStore.machines"
             :rect="machine"
+            :number="index + 1"
             @move="$emit('move', index, area)"  />
     </svg>
 </template>
