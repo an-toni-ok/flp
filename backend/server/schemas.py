@@ -103,16 +103,19 @@ objectives = {
                 "cost_per_part": { "type": "boolean" },
                 "used_area": { "type": "boolean" },
                 "number_operators": { "type": "boolean" }
-            }
+            },
+            "required": [
+                "invest",
+                "cost_per_part",
+                "used_area",
+                "number_operators"
+            ]
         },
         "target_cycle_time": { "type": "number" },
         "hourly_operator_cost": { "type": "number" }
     },
     "required": [
-        "invest",
-        "cost_per_part",
-        "used_area",
-        "number_operators",
+        "objectives",
         "target_cycle_time",
         "hourly_operator_cost"
     ],
