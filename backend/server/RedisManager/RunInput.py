@@ -20,6 +20,17 @@ class RunInput:
         status = RunStatus[RedisRunConfig.STATUS.query(self.run_id)]
         if not status == RunStatus.INPUT:
             raise InputNotSettable(status.value)
+        
+    def is_startable(self) -> bool:
+        """Checks if all necessary fields are set for
+        starting the automation.
+
+        Returns:
+            Boolean: The automation is startable.
+        """
+        return (
+            self.areas["areas"] and self.steps and self.machines and self.objectives["objectives"] and self.objectives["target_cycle_time"] and self.objectives["hourly_operator_cost"]
+        )
 
     @property
     def areas(self):
@@ -45,6 +56,9 @@ class RunInput:
         }
 
     def _set_technologies(self):
+        """Collects all the technologies in the
+        machines and production steps and saves them.
+        """
         machines = self.machines
         steps = self.steps
         
