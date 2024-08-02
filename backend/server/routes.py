@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response, session, current_app
+from flask import Blueprint, request, Response, session, current_app, render_template
 from celery.result import AsyncResult
 
 from server.celery_tasks import add_together
@@ -9,6 +9,10 @@ from server.RedisManager.RunManager import RunManager
 from server.RedisManager.SessionManager import SessionManager
 
 routes = Blueprint('routes', __name__)
+
+@routes.get("/")
+def index():
+    return render_template("index.html")
 
 @routes.post("/area")
 @validate(SCHEMA.AREAS)
