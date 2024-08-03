@@ -16,7 +16,7 @@ const props = defineProps({
     <tr>
         <td>{{ machine.name }}</td>
         <td>{{ machine.hourly_rate }}</td>
-        <td>{{ machine.investion_cost }}</td>
+        <td>{{ machine.investment_cost }}</td>
         <td>{{ machine.additional_machine_time }}</td>
         <td>{{ machine.x_dimension }}</td>
         <td>{{ machine.y_dimension }}</td>
