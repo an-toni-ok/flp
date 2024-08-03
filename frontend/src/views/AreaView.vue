@@ -1,15 +1,19 @@
 <script setup>
+import { usePlanningStore } from '@/stores/planning';
+import { PlanningState } from '@/util';
+
 import Toolbar from '@/components/Toolbar.vue'
 import AreaOverlay from '@/components/Overlays/AreaOverlay.vue';
 import DrawingArea from '@/components/DrawingArea.vue';
 
+const planningStore = usePlanningStore();
 </script>
 
 <template>
     <div class="main-display">
         <div class="flow-remover-outer">
             <div class="overlay">
-                <Toolbar />
+                <Toolbar @next="planningStore.setState(PlanningState.Processes)" />
                 <AreaOverlay :is-create="true" />
             </div>
         </div>

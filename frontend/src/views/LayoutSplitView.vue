@@ -16,16 +16,10 @@ const props = defineProps({
     totalNumber: {
         type: Number,
         default: 4
-    },
-    prevState: {
-        type: PlanningState,
-        required: true,
-    },
-    nextState: {
-        type: PlanningState,
-        required: true
     }
 })
+
+defineEmits(['prev', 'next'])
 
 const planningStore = usePlanningStore();
 </script>
@@ -45,8 +39,8 @@ const planningStore = usePlanningStore();
                 <slot name="table"></slot>
             </div>
             <ProgressButtons
-                @prev="planningStore.setState(prevState)"
-                @next="planningStore.setState(nextState)" />
+                @prev="$emit('prev')"
+                @next="$emit('next')" />
         </div>
         <div class="side-content">
             <slot name="side-content"></slot>

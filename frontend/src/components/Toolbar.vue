@@ -1,12 +1,9 @@
 <script setup>
-import { usePlanningStore } from '@/stores/planning';
-import { PlanningState } from '@/util';
-
 import ZoomDisplay from './Toolbar/ZoomDisplay.vue';
 import IconsDisplay from './Toolbar/IconsDisplay.vue';
 import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
 
-const planningStore = usePlanningStore();
+defineEmits(['next'])
 </script>
 
 <template>
@@ -20,7 +17,7 @@ const planningStore = usePlanningStore();
             <ZoomDisplay />
         </div>
         <ProgressButtons 
-            @next="planningStore.setState(PlanningState.Processes)"
+            @next="$emit('next')"
             @prev="" />
     </div>
 </template>

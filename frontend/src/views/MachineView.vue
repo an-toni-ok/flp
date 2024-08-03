@@ -1,5 +1,6 @@
 <script setup>
 import { PlanningState } from '@/util';
+import { usePlanningStore } from '@/stores/planning';
 import { useMachinesStore } from '@/stores/machines';
 
 import LayoutSplitView from './LayoutSplitView.vue';
@@ -12,14 +13,15 @@ import IconPlus from '@/components/icons/IconPlus.vue';
 import IconRemove from '@/components/icons/IconRemove.vue';
 
 const machinesStore = useMachinesStore();
+const planningStore = usePlanningStore();
 </script>
 
 <template>
     <LayoutSplitView
         title="Maschineneingabe" 
         :number="3"
-        :prev-state="PlanningState.Processes"
-        :next-state="PlanningState.Configuration">
+        @prev="planningStore.setState(PlanningState.Processes)"
+        @next="planningStore.setState(PlanningState.Configuration)" >
         <template v-slot:header-buttons>
             <ToolIconButton 
                 help_text="Add a machine" 

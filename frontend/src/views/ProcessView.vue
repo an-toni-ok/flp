@@ -1,5 +1,6 @@
 <script setup>
 import { PlanningState } from '@/util';
+import { usePlanningStore } from '@/stores/planning';
 import LayoutSplitView from './LayoutSplitView.vue';
 
 import ProcessOverlay from '@/components/Overlays/ProcessOverlay.vue';
@@ -12,14 +13,15 @@ import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vu
 import IconRemove from '@/components/icons/IconRemove.vue';
 
 const processesStore = useProcessesStore();
+const planningStore = usePlanningStore();
 </script>
 
 <template>
     <LayoutSplitView
         title="Produktionsprozesseingabe" 
         :number="2"
-        :prev-state="PlanningState.Areas"
-        :next-state="PlanningState.Machines">
+        @prev="planningStore.setState(PlanningState.Areas)"
+        @next="planningStore.setState(PlanningState.Machines)" >
         <template v-slot:header-buttons>
             <ToolIconButton 
                 help_text="Add a process"
