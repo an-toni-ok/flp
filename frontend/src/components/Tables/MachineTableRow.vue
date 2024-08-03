@@ -28,7 +28,7 @@ const props = defineProps({
         <td>
             <ExpandableText 
                 help_text="Show all technologies"
-                :text="machine.set_technologies.join(', ')" />
+                :text="machine.technologies.join(', ')" />
         </td>
         <td v-if="show_actions" class="action">
             <div class="center">

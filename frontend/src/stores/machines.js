@@ -29,7 +29,7 @@ export const useMachinesStore = defineStore('machines', () => {
       investion_cost: input_investion_cost.value,
       additional_machine_time: input_additional_machine_time.value,
       machine_type: input_machine_type.value,
-      set_technologies: Array.from(input_set_technologies.value)
+      technologies: Array.from(input_set_technologies.value)
     }
   }
 
@@ -67,7 +67,7 @@ export const useMachinesStore = defineStore('machines', () => {
     input_additional_machine_time.value = machine.additional_machine_time
     input_machine_type.value = machine.machine_type
     input_technology_value.value = ''
-    input_set_technologies.value = machine.set_technologies
+    input_set_technologies.value = machine.technologies
 
     input_overlay_opened.value = true
   }
