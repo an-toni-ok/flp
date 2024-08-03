@@ -1,19 +1,21 @@
 <script setup>
 import { usePlanningStore } from '@/stores/planning';
-import { PlanningState } from '@/util';
+import { useAreasStore } from '@/stores/areas';
+import { PlanningState, save_and_progress } from '@/util';
 
 import Toolbar from '@/components/Toolbar.vue'
 import AreaOverlay from '@/components/Overlays/AreaOverlay.vue';
 import DrawingArea from '@/components/DrawingArea.vue';
 
 const planningStore = usePlanningStore();
+const areasStore = useAreasStore();
 </script>
 
 <template>
     <div class="main-display">
         <div class="flow-remover-outer">
             <div class="overlay">
-                <Toolbar @next="planningStore.setState(PlanningState.Processes)" />
+                <Toolbar @next="save_and_progress('area', areasStore.json(), planningStore, PlanningState.Processes)" />
                 <AreaOverlay :is-create="true" />
             </div>
         </div>

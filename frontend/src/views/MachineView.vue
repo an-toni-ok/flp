@@ -1,5 +1,5 @@
 <script setup>
-import { PlanningState } from '@/util';
+import { PlanningState, save_and_progress } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 import { useMachinesStore } from '@/stores/machines';
 
@@ -21,7 +21,7 @@ const planningStore = usePlanningStore();
         title="Maschineneingabe" 
         :number="3"
         @prev="planningStore.setState(PlanningState.Processes)"
-        @next="planningStore.setState(PlanningState.Configuration)" >
+        @next="save_and_progress('machines', machinesStore.machines, planningStore, PlanningState.Configuration)" >
         <template v-slot:header-buttons>
             <ToolIconButton 
                 help_text="Add a machine" 

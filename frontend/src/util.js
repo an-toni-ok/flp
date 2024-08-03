@@ -102,3 +102,13 @@ export class PlanningState {
     return this.name == state.name
   }
 }
+
+export function save_and_progress(route, data, planningStore, target) {
+  fetch(`http://localhost:5000/${route}`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  }).then(planningStore.setState(target))
+}

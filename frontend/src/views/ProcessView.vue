@@ -1,5 +1,5 @@
 <script setup>
-import { PlanningState } from '@/util';
+import { PlanningState, save_and_progress } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 import LayoutSplitView from './LayoutSplitView.vue';
 
@@ -21,7 +21,7 @@ const planningStore = usePlanningStore();
         title="Produktionsprozesseingabe" 
         :number="2"
         @prev="planningStore.setState(PlanningState.Areas)"
-        @next="planningStore.setState(PlanningState.Machines)" >
+        @next="save_and_progress('process', processesStore.json(), planningStore, PlanningState.Machines)" >
         <template v-slot:header-buttons>
             <ToolIconButton 
                 help_text="Add a process"

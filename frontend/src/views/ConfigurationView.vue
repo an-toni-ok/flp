@@ -1,6 +1,7 @@
 <script setup>
-import { PlanningState } from '@/util';
+import { PlanningState, save_and_progress } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
+import { useSettingsStore } from '@/stores/settings';
 
 import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
 import ConfigurationForm from '@/components/ConfigurationForm.vue';
@@ -13,6 +14,7 @@ const number = 4;
 const totalNumber = 4;
 
 const planningStore = usePlanningStore();
+const settingsStore = useSettingsStore();
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const planningStore = usePlanningStore();
             </div>
             <ProgressButtons
                 @prev="planningStore.setState(PlanningState.Machines)"
-                @next="planningStore.setState(PlanningState.Waiting)"
+                @next="save_and_progress('objectives', settingsStore.json(), planningStore, PlanningState.Waiting)"
                 :complete="true" />
         </div>
         <div class="side-content">
