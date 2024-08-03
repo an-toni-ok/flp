@@ -27,7 +27,7 @@ export const useMachinesStore = defineStore('machines', () => {
       y_position: 0,
       rotation: 0,
       hourly_rate: input_machine_hourly_cost.value,
-      investion_cost: input_investion_cost.value,
+      investment_cost: input_investion_cost.value,
       additional_machine_time: input_additional_machine_time.value,
       technologies: Array.from(input_set_technologies.value)
     }
@@ -62,7 +62,7 @@ export const useMachinesStore = defineStore('machines', () => {
     input_breite.value = machine.x_dimension
     input_laenge.value = machine.y_dimension
     input_machine_hourly_cost.value = machine.hourly_rate
-    input_investion_cost.value = machine.investion_cost
+    input_investion_cost.value = machine.investment_cost
     input_additional_machine_time.value = machine.additional_machine_time
     input_technology_value.value = ''
     input_set_technologies.value = Array.from(machine.technologies)

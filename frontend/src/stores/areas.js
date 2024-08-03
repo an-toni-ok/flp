@@ -94,7 +94,7 @@ export const useAreasStore = defineStore('areas', () => {
     _update_dimensions()
   }
 
-  function getJson() {
+  function json() {
     let areas_json = []
     let r_areas_json = []
 
@@ -102,13 +102,13 @@ export const useAreasStore = defineStore('areas', () => {
       let grid_corrected = pos - 10
       let scale_corrected = grid_corrected / square_dimension.value / 10
       // Make sure only one number is after the point
-      return scale_corrected.toFixed(1)
+      return parseFloat(scale_corrected.toFixed(1))
     }
 
     const get_dim = (dim) => {
       let scale_corrected = Math.round(dim / square_dimension.value) / 10
       // Make sure only one number is after the point
-      return scale_corrected.toFixed(1)
+      return parseFloat(scale_corrected.toFixed(1))
     }
 
     for (const area of areas.value) {
@@ -143,6 +143,6 @@ export const useAreasStore = defineStore('areas', () => {
     drawing_dimensions,
     addShape,
     delShape,
-    getJson
+    json
   }
 })

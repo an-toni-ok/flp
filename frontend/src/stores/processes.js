@@ -63,6 +63,18 @@ export const useProcessesStore = defineStore('processes', () => {
     processes.value.splice(nr, 1)
   }
 
+  function json() {
+    let json_processes = []
+    for (const process of processes.value) {
+      json_processes.push({
+        technology: process.technology,
+        work_content: process.manual_time,
+        machine_time: process.machine_time
+      })
+    }
+    return json_processes
+  }
+
   return {
     edit_id,
     input_machine_time,
@@ -75,6 +87,7 @@ export const useProcessesStore = defineStore('processes', () => {
     edit,
     move,
     clone,
-    del
+    del,
+    json
   }
 })

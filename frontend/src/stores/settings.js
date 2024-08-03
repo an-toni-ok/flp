@@ -10,18 +10,26 @@ export const useSettingsStore = defineStore('settings', () => {
   const area_usage = ref(false)
   const worker_amount = ref(false)
 
-  // const cycle_time = ref(undefined)
-  // const hourly_operator_cost = ref(undefined)
-  // const investion = ref([])
-  // const cycle_time = ref([])
-  // function add() {}
-  // function remove() {}
+  function json() {
+    return {
+      objectives: {
+        invest: investion.value,
+        cost_per_part: piece_cost.value,
+        used_area: area_usage.value,
+        number_operators: worker_amount.value
+      },
+      target_cycle_time: cycle_target_time.value,
+      hourly_operator_cost: hourly_operator_cost.value
+    }
+  }
+
   return {
     cycle_target_time,
     hourly_operator_cost,
     investion,
     piece_cost,
     area_usage,
-    worker_amount
+    worker_amount,
+    json
   }
 })
