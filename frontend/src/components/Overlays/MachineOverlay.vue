@@ -4,7 +4,6 @@ import { useTechnologiesStore } from '@/stores/technologies';
 import { useMachinesStore } from '@/stores/machines';
 
 import NumberInput from '../Inputs/NumberInput.vue';
-import MachineTypeDropdownInput from '../Inputs/MachineTypeDropdownInput.vue';
 import TechnologyDropdownInput from '../Inputs/TechnologyDropdownInput.vue';
 import IconArrowsRight from '../icons/IconArrowsRight.vue';
 import OverlayIconButton from '../BaseInputs/OverlayIconButton.vue';import InputOptionList from '../BaseInputs/InputOptionList.vue';
@@ -120,8 +119,6 @@ const del_tech = (tech) => {
                                 name="Zusätzliche Maschinenzeit in s"
                                 id="additional-machine-time"
                                 v-model:value="machinesStore.input_additional_machine_time" />
-                            <MachineTypeDropdownInput 
-                                v-model:value="machinesStore.input_machine_type" />
                         </div>
                         <div class="overlay-input-group overlay-input-button">
                             <OverlayButton 

@@ -15,16 +15,11 @@ const props = defineProps({
 <template>
     <tr>
         <td>{{ machine.name }}</td>
-        <td>
-            <ExpandableText 
-                help_text="Show all technologies"
-                :text="machine.machine_type" />
-        </td>
-        <td>{{ machine.machine_hourly_cost }}</td>
+        <td>{{ machine.hourly_rate }}</td>
         <td>{{ machine.investion_cost }}</td>
         <td>{{ machine.additional_machine_time }}</td>
-        <td>{{ machine.breite }}</td>
-        <td>{{ machine.laenge }}</td>
+        <td>{{ machine.x_dimension }}</td>
+        <td>{{ machine.y_dimension }}</td>
         <td>
             <ExpandableText 
                 help_text="Show all technologies"
