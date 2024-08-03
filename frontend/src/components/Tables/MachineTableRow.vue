@@ -14,6 +14,7 @@ const props = defineProps({
 
 <template>
     <tr>
+        <td>{{ machine.name }}</td>
         <td>
             <ExpandableText 
                 help_text="Show all technologies"

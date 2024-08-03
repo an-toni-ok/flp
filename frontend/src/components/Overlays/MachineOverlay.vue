@@ -9,6 +9,7 @@ import TechnologyDropdownInput from '../Inputs/TechnologyDropdownInput.vue';
 import IconArrowsRight from '../icons/IconArrowsRight.vue';
 import OverlayIconButton from '../BaseInputs/OverlayIconButton.vue';import InputOptionList from '../BaseInputs/InputOptionList.vue';
 import OverlayButton from '../Buttons/OverlayButton.vue';
+import StringInput from '../Inputs/StringInput.vue';
 
 const props = defineProps({
     isCreate: {
@@ -65,15 +66,19 @@ const del_tech = (tech) => {
                 <div class="overlay-content" v-show="machinesStore.input_overlay_opened">
                     <div class="overlay-content-column first-column">
                         <div class="overlay-input-group">
-                            <h2>Maße</h2>
+                            <h2>Grunddaten</h2>
                             <div :class="{ 'split': expand }">
+                                <div class="scrollbar-padding">
+                                    <StringInput
+                                        name="Name"
+                                        id="machine-name"
+                                        v-model:value="machinesStore.input_name" />
+                                </div>
                                 <div class="scrollbar-padding">
                                     <NumberInput 
                                         name="Breite in m"
                                         id="machine-breite"
                                         v-model:value="machinesStore.input_breite" />
-                                </div>
-                                <div class="scrollbar-padding">
                                     <NumberInput 
                                         name="Länge in m"
                                         id="machine-laenge"

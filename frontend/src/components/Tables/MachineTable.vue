@@ -24,6 +24,7 @@ const machinesStore = useMachinesStore();
     <div class="table-container" :class="{ 'short': short_table }">
         <table>
             <tr>
+                <th>Name</th>
                 <th>Maschinentyp</th>
                 <th>Stundensatz</th>
                 <th>Investitionskosten</th>

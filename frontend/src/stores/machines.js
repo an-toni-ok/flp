@@ -5,6 +5,7 @@ export const useMachinesStore = defineStore('machines', () => {
   const edit_id = ref(undefined)
   const input_overlay_opened = ref(false)
 
+  const input_name = ref('')
   const input_breite = ref(0)
   const input_laenge = ref(0)
 
@@ -21,6 +22,7 @@ export const useMachinesStore = defineStore('machines', () => {
 
   function _get_input_machine() {
     return {
+      name: input_name.value,
       breite: input_breite.value,
       laenge: input_laenge.value,
       machine_hourly_cost: input_machine_hourly_cost.value,
@@ -32,6 +34,7 @@ export const useMachinesStore = defineStore('machines', () => {
   }
 
   function _unset_inputs() {
+    input_name.value = ''
     input_breite.value = 0
     input_laenge.value = 0
     input_machine_hourly_cost.value = 0
@@ -56,6 +59,7 @@ export const useMachinesStore = defineStore('machines', () => {
     edit_id.value = nr
     var machine = machines.value.at(nr)
 
+    input_name.value = machine.name
     input_breite.value = machine.breite
     input_laenge.value = machine.laenge
     input_machine_hourly_cost.value = machine.machine_hourly_cost
@@ -92,6 +96,7 @@ export const useMachinesStore = defineStore('machines', () => {
     edit_id,
     input_overlay_opened,
     machines,
+    input_name,
     input_breite,
     input_laenge,
     input_machine_hourly_cost,
