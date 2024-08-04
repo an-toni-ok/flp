@@ -63,48 +63,24 @@ const del_tech = (tech) => {
             </div>
             <div class="min-size-container">
                 <div class="overlay-content" v-show="machinesStore.input_overlay_opened">
-                    <div class="overlay-content-column first-column">
+                    <div class="overlay-column first-column">
                         <div class="overlay-input-group">
                             <h2>Grunddaten</h2>
-                            <div :class="{ 'split': expand }">
-                                <div class="scrollbar-padding">
-                                    <StringInput
-                                        name="Name"
-                                        id="machine-name"
-                                        v-model:value="machinesStore.input_name" />
-                                </div>
-                                <div class="scrollbar-padding">
-                                    <NumberInput 
-                                        name="Breite in m"
-                                        id="machine-breite"
-                                        v-model:value="machinesStore.input_breite" />
-                                    <NumberInput 
-                                        name="Länge in m"
-                                        id="machine-laenge"
-                                        v-model:value="machinesStore.input_laenge" />
-                                </div>
+                            <div class="scrollbar-padding">
+                                <StringInput
+                                    name="Name"
+                                    id="machine-name"
+                                    v-model:value="machinesStore.input_name" />
+                                <NumberInput 
+                                    name="Breite in m"
+                                    id="machine-breite"
+                                    v-model:value="machinesStore.input_breite" />
+                                <NumberInput 
+                                    name="Länge in m"
+                                    id="machine-laenge"
+                                    v-model:value="machinesStore.input_laenge" />
                             </div>
                         </div>
-                        <div class="overlay-input-group overlay-input-tech">
-                            <h2>Technologien</h2>
-                            <div :class="{ 'split': expand }">
-                                <InputOptionList 
-                                    base-id="chosen-tech-"
-                                    :deleteable="true"
-                                    :filtered-options="machinesStore.input_set_technologies"
-                                    @delete="del_tech" />
-                                <TechnologyDropdownInput 
-                                    v-model:value="machinesStore.input_technology_value"
-                                    v-model:options="areOptionsShown"
-                                    :is-changeable="true"
-                                    :is-deletable="true"
-                                    :is-multi-input="true"
-                                    :has-label="false"
-                                    @set="set_tech" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="overlay-content-column second-column">
                         <div class="overlay-input-group">
                             <h2>Daten</h2>
                             <NumberInput 
@@ -120,11 +96,30 @@ const del_tech = (tech) => {
                                 id="additional-machine-time"
                                 v-model:value="machinesStore.input_additional_machine_time" />
                         </div>
-                        <div class="overlay-input-group overlay-input-button">
-                            <OverlayButton 
-                                @click="machinesStore.set"
-                                :text="actionType"/>
+                    </div>
+                    <div class="overlay-column second-column" >
+                        <h2>Technologien</h2>
+                        <div class="split"
+                        :class="{ 'no-scrollbar': !expand }">
+                            <TechnologyDropdownInput 
+                                v-model:value="machinesStore.input_technology_value"
+                                v-model:options="areOptionsShown"
+                                :is-changeable="true"
+                                :is-deletable="true"
+                                :is-multi-input="true"
+                                :has-label="false"
+                                @set="set_tech" />
+                            <InputOptionList 
+                                base-id="chosen-tech-"
+                                :deleteable="true"
+                                :filtered-options="machinesStore.input_set_technologies"
+                                @delete="del_tech" />
                         </div>
+                    </div>
+                    <div class="overlay-input-button">
+                        <OverlayButton 
+                            @click="machinesStore.set"
+                            :text="actionType"/>
                     </div>
                 </div>
             </div>
@@ -216,35 +211,50 @@ const del_tech = (tech) => {
 
 .overlay-content {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
+    flex-direction: column;
 }
 
-.overlay-content-column {
+.overlay-column {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
 .first-column {
-    padding-bottom: 4rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
 }
 
 .second-column {
-    justify-content: space-between;
+    gap: 2rem;
 }
 
 .overlay-input-group > *,
-.overlay-input-tech > div > * {
+.overlay-input-tech > div > *,
+.scrollbar-padding > *,
+.scrollbar-padding > div > * {
     margin: 0 0 0.5rem 0;
 }
 
 .split {
     display: flex;
-    gap: 1rem;
-    justify-content: flex-start;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
+.no-scrollbar {
+    gap: 2.5rem;
 }
 
 .split > .scrollbar-padding {
     margin-right: 9px;
+}
+
+.overlay-input-button {
+    align-self: flex-end;
+    margin-right: 9px;
+    margin-top: 1.5rem;
 }
 </style>
