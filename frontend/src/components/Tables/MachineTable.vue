@@ -25,7 +25,6 @@ const machinesStore = useMachinesStore();
         <table>
             <tr>
                 <th>Name</th>
-                <th>Maschinentyp</th>
                 <th>Stundensatz</th>
                 <th>Investitionskosten</th>
                 <th>Maschinenzeit</th>
