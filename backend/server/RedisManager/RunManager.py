@@ -52,7 +52,7 @@ class RunManager:
     def status(self):
         return RunStatus[RedisRunConfig.STATUS.query(self.run_id)]
     
-    @status.setter
+    @output.setter
     def output(self, output: Dict):
         RedisRunConfig.OUTPUT.set(self.run_id, output)
     
