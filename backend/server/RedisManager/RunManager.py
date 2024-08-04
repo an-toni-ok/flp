@@ -51,6 +51,14 @@ class RunManager:
     @property
     def status(self):
         return RunStatus[RedisRunConfig.STATUS.query(self.run_id)]
+    
+    @status.setter
+    def output(self, output: Dict):
+        RedisRunConfig.OUTPUT.set(self.run_id, output)
+    
+    @status.setter
+    def status(self, status: RunStatus):
+        RedisRunConfig.STATUS.set(self.run_id, status.value)
 
     def start(self):
         """Starts the execution of a run.
@@ -64,6 +72,7 @@ class RunManager:
         if not self.input.is_startable(): 
             raise RunNotStartable(run_id=self.run_id, text="Not all fields are set.")
         
+        self.status = RunStatus.RUNNING
         start_optimization.delay(self.run_id)
 
     def finish(self, output: Dict, error: bool):
@@ -80,8 +89,8 @@ class RunManager:
             raise RunNotRunning(run_id=self.run_id)
 
         # Set output data in redis
-        RedisRunConfig.OUTPUT.set(self.run_id, output)
+        self.output = output
         if (error):
-            RedisRunConfig.STATUS.set(self.run_id, RunStatus.ERROR.value)
+            self.status = RunStatus.ERROR
         else:
-            RedisRunConfig.STATUS.set(self.run_id, RunStatus.COMPLETED.value)
+            self.status = RunStatus.COMPLETED
