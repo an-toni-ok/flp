@@ -26,7 +26,8 @@ const total = ref(3);
             </div>
         </div>
         <div class="side-content">
-            <DrawingArea />
+            <DrawingArea 
+                only-machines-movable="true" />
         </div>
     </div>
 </template>
