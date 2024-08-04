@@ -1,5 +1,4 @@
-import json
-from flask import Blueprint, jsonify, request, Response, session, current_app, render_template
+from flask import Blueprint, request, Response, session, current_app, render_template
 from celery.result import AsyncResult
 
 from server.celery_tasks import add_together
