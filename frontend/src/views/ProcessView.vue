@@ -1,5 +1,5 @@
 <script setup>
-import { PlanningState, save_and_progress } from '@/util';
+import { PlanningState, post_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 import LayoutSplitView from './LayoutSplitView.vue';
 
@@ -14,6 +14,15 @@ import IconRemove from '@/components/icons/IconRemove.vue';
 
 const processesStore = useProcessesStore();
 const planningStore = usePlanningStore();
+
+const progress = async () => {
+    const process_result = await post_request(
+        'process', 
+        processesStore.json()
+    );
+    console.log(process_result)
+    planningStore.setState(PlanningState.Machines);
+}
 </script>
 
 <template>
@@ -21,7 +30,7 @@ const planningStore = usePlanningStore();
         title="Produktionsprozesseingabe" 
         :number="2"
         @prev="planningStore.setState(PlanningState.Areas)"
-        @next="save_and_progress('process', processesStore.json(), planningStore, PlanningState.Machines)" >
+        @next="progress" >
         <template v-slot:header-buttons>
             <ToolIconButton 
                 help_text="Add a process"

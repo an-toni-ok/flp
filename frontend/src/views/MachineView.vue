@@ -1,5 +1,5 @@
 <script setup>
-import { PlanningState, save_and_progress } from '@/util';
+import { PlanningState, post_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 import { useMachinesStore } from '@/stores/machines';
 
@@ -14,6 +14,15 @@ import IconRemove from '@/components/icons/IconRemove.vue';
 
 const machinesStore = useMachinesStore();
 const planningStore = usePlanningStore();
+
+const progress = async () => {
+    const machines_result = await post_request(
+        'machines', 
+        machinesStore.machines
+    );
+    console.log(machines_result)
+    planningStore.setState(PlanningState.Configuration);
+}
 </script>
 
 <template>
@@ -21,7 +30,7 @@ const planningStore = usePlanningStore();
         title="Maschineneingabe" 
         :number="3"
         @prev="planningStore.setState(PlanningState.Processes)"
-        @next="save_and_progress('machines', machinesStore.machines, planningStore, PlanningState.Configuration)" >
+        @next="progress" >
         <template v-slot:header-buttons>
             <ToolIconButton 
                 help_text="Add a machine" 

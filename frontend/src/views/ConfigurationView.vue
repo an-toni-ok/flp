@@ -1,5 +1,5 @@
 <script setup>
-import { PlanningState, save_and_progress } from '@/util';
+import { PlanningState, post_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -15,6 +15,20 @@ const totalNumber = 4;
 
 const planningStore = usePlanningStore();
 const settingsStore = useSettingsStore();
+
+const complete = async () => {
+    const objective_result = await post_request(
+        'objectives', 
+        settingsStore.json()
+    );
+    console.log(objective_result)
+    const optimize_result = await post_request(
+        'optimize', 
+        undefined
+    );
+    console.log(optimize_result)
+    planningStore.setState(PlanningState.Waiting)
+}
 </script>
 
 <template>
@@ -31,7 +45,7 @@ const settingsStore = useSettingsStore();
             </div>
             <ProgressButtons
                 @prev="planningStore.setState(PlanningState.Machines)"
-                @next="save_and_progress('objectives', settingsStore.json(), planningStore, PlanningState.Waiting)"
+                @next="complete"
                 :complete="true" />
         </div>
         <div class="side-content">

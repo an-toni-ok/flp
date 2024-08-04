@@ -1,15 +1,11 @@
 <script setup>
 import { computed, onUnmounted, ref } from 'vue';
-import { PlanningState } from '@/util';
+import { PlanningState, get_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
-import { useMachinesStore } from '@/stores/machines';
 
-import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
 import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
-import { useAreasStore } from '@/stores/areas';
 
-const machinesStore = useMachinesStore();
-const areasStore = useAreasStore();
+const planningStore = usePlanningStore()
 
 // Slide information
 const title = "Optimierung wird ausgeführt";
@@ -21,8 +17,18 @@ const timeLabel = computed(() => {
     return hours_text + `${minutes.value % 60} min`
 })
 
+const optimizationFinished = async () => {
+    const optimize_result = await get_request('optimize');
+    const json_result = await optimize_result.json()
+    console.log(json_result)
+    if (json_result.status == "COMPLETED") {
+        planningStore.setState(PlanningState.Result)
+    }
+}
+
 let interval = setInterval(() => {
     minutes.value += 1;
+    optimizationFinished()
 }, 60 * 1000)
 
 onUnmounted(() => {

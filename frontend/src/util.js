@@ -103,12 +103,25 @@ export class PlanningState {
   }
 }
 
-export function save_and_progress(route, data, planningStore, target) {
-  fetch(`http://localhost:5000/${route}`, {
+export function post_request(route, data) {
+  let request_data = {
     method: 'POST',
-    body: JSON.stringify(data),
     headers: {
       'Content-type': 'application/json; charset=UTF-8'
     }
-  }).then(planningStore.setState(target))
+  }
+  if (data !== undefined) {
+    request_data.body = JSON.stringify(data)
+  }
+
+  return fetch(`http://localhost:5000/${route}`, request_data)
+}
+
+export function get_request(route) {
+  return fetch(`http://localhost:5000/${route}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  })
 }
