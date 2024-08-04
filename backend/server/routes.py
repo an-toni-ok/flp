@@ -1,4 +1,5 @@
-from flask import Blueprint, request, Response, session, current_app, render_template
+import json
+from flask import Blueprint, jsonify, request, Response, session, current_app, render_template
 from celery.result import AsyncResult
 
 from server.celery_tasks import add_together
@@ -71,7 +72,10 @@ def optimize_status():
     sm = SessionManager(session["id"])
     rm = RunManager(sm.session_id, sm.current_run_nr)
     
-    return Response(rm.status, status=200)
+    return {
+        "status": rm.status,
+        "output": rm.output
+    }
 
 @routes.get("/add/<num1>/<num2>")
 def add_route(num1: str, num2: str) -> dict[str, object]:

@@ -1,6 +1,6 @@
 from enum import Enum
 
-class RunStatus(Enum):
+class RunStatus(str, Enum):
     INPUT = "INPUT"
     RUNNING = "RUNNING"
     COMPLETED = "COMPLETED"
