@@ -7,7 +7,7 @@ from deap import algorithms, base, creator, tools
 from deap.tools import cxTwoPoint, cxOrdered
 from deap.benchmarks.tools import hypervolume
 
-from digital_twins import Area, MStep, MachineType, Machine, Operator, ProductionSystem
+from .digital_twins import Area, MStep, MachineType, Machine, Operator, ProductionSystem
 
 warnings.filterwarnings('ignore')
 
