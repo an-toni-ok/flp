@@ -8,6 +8,10 @@ import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
 import AreaPlan from './DrawingArea/AreaPlan.vue';
 
 const props = defineProps({
+    machines: {
+        type: Array,
+        default: [],
+    },
     onlyMachinesMovable: {
         type: Boolean,
         default: false,

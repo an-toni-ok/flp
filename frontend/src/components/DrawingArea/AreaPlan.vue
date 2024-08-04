@@ -6,6 +6,13 @@ import AreaDisplay from '@/components/DrawingArea/AreaDisplay.vue';
 import MachineDisplay from '@/components/DrawingArea//MachineDisplay.vue';
 import AreaBackground from '@/components/DrawingArea/AreaBackground.vue';
 
+const props = defineProps({
+    machines: {
+        type: Array,
+        default: [],
+    }
+})
+
 const areasStore = useAreasStore()
 
 const emits = defineEmits({
@@ -42,7 +49,7 @@ const emits = defineEmits({
             @strech="(position) => $emit('strech', index, area, position)"
             @move="$emit('move', index, area)"  />
         <MachineDisplay 
-            v-for="(machine, index) in areasStore.machines"
+            v-for="(machine, index) in machines"
             :rect="machine"
             :number="index + 1"
             @move="$emit('move', index, machine)"  />
