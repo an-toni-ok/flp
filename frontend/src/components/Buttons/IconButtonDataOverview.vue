@@ -37,6 +37,10 @@ buttons is in src/assets/main.css.
     margin-left: -1px;
 }
 
+.icon-button:hover {
+    z-index: 1;
+}
+
 .icon-button::after {
     content: attr(data-tool-tip);
     position: absolute;
@@ -48,7 +52,6 @@ buttons is in src/assets/main.css.
     transform: scale(0);
 }
 
-.icon-button:focus::after,
 .icon-button:hover::after {
     transform: scale(1);
 }
