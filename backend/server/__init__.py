@@ -1,8 +1,7 @@
 from flask import Flask, jsonify, request, session
 
-from server.RedisManager.RunManager import RunManager
 from server.extensions import init_redis, celery_init_app, setup_logger
-from server.RedisManager.SessionManager import SessionManager
+from server.RedisManager import SessionManager
 
 
 def create_app() -> Flask:

@@ -5,8 +5,7 @@ from server.celery_tasks import add_together
 from server.decorators import validate
 from server.schemas import SCHEMA
 
-from server.RedisManager.RunManager import RunManager
-from server.RedisManager.SessionManager import SessionManager
+from server.RedisManager import RunManager, SessionManager
 
 routes = Blueprint('routes', __name__)
 
