@@ -1,0 +1,65 @@
+{
+    "areas": [
+        {
+            "x_position": 1,
+            "y_position": 1,
+            "x_dimension": 7,
+            "y_dimension": 10
+        },
+        {
+            "x_position": 8,
+            "y_position": 1,
+            "x_dimension": 5,
+            "y_dimension": 4
+        }
+    ], 
+    "restricted_areas": [
+        {
+            "x_position": 3,
+            "y_position": 3,
+            "x_dimension": 2,
+            "y_dimension": 2
+        }
+    ], 
+    "technologies": [
+        "schweißen", 
+        "gießen"
+    ], 
+    "production_steps": [
+        {
+          "technology": "schweißen",
+          "work_content": 1,
+          "machine_time": 10
+        },
+        {
+          "technology": "gießen",
+          "work_content": 1, 
+          "machine_time": 10
+        }
+    ], 
+    "machines": [
+        {
+            "name": "elit",
+            "technologies": [
+                "schweißen",
+                "gießen"
+            ],
+            "hourly_rate": 10,
+            "investment_cost": 300000,
+            "additional_machine_time": 50,
+            "x_dimension": 2,
+            "y_dimension": 2,
+            "x_position": 5,
+            "y_position": 5,
+            "rotation": 0
+        }
+    ], 
+    "objectives": {
+        "invest": true,
+        "cost_per_part": false,
+        "used_area": true,
+        "number_operators": true
+    }, 
+    "target_cycle_time": 100, 
+    "hourly_operator_cost": 50
+}
