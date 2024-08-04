@@ -5,9 +5,14 @@ import { useAreasStore } from '@/stores/areas';
 import { Tool, DrawingShape, DrawingState, AreaCorner, AreaBorder } from '@/util';
 
 import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
-import AreaDisplay from '@/components/DrawingArea/AreaDisplay.vue';
-import AreaBackground from '@/components/DrawingArea/AreaBackground.vue';
 import AreaPlan from './DrawingArea/AreaPlan.vue';
+
+const props = defineProps({
+    onlyMachinesMovable: {
+        type: Boolean,
+        default: false,
+    }
+})
 
 const toolbarStore = useToolbarStore();
 const areasStore = useAreasStore()
@@ -144,6 +149,9 @@ const get_grid_point = (x, y) => {
  * Creates a new shape.
  */
 const create_shape_handler = () => {
+    if (props.onlyMachinesMovable) {
+        return
+    }
     if (!(toolbarStore.activeTool == Tool.Area.name || toolbarStore.activeTool == Tool.RestrictedArea.name)) {
         return
     }
@@ -254,6 +262,9 @@ const extract_drawing_shape_from_array = (index, shape) => {
  * @param {*} position The position of the mouse when the shape was clicked
  */
 const action_wrapper = (func, index, shape, position) => {
+    if (props.onlyMachinesMovable && shape.type != DrawingShape.Machine.name) {
+        return
+    }
     if (toolbarStore.activeTool == Tool.Delete.name) {
         areasStore.delShape(index, shape);
         return;
@@ -378,7 +389,8 @@ onMounted(() => {
         <AreaPlan 
             @resize="(index, area, position) => action_wrapper(resize_handler, index, area, position)" 
             @strech="(index, area, position) => action_wrapper(stretch_handler, index, area, position)"
-            @move="(index, area) => action_wrapper(move_handler, index, area)" />
+            @move="(index, area) => action_wrapper(move_handler, index, area)"
+            :machines="machines" />
         <DrawingInput 
             :dimensions="drawing_shape_dimensions" 
             :mouse_down="drawing_state != DrawingState.Waiting.name" />
