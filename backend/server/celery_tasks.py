@@ -22,8 +22,8 @@ def start_optimization(run_id):
     with open(input_file, "w") as file:
         file.write(json.dumps(ri.json()))
 
-    run_optimization(input_file)
+    output = run_optimization(input_file)
     
-    rm.finish({}, False)
+    rm.finish(output, False)
 
     return True
