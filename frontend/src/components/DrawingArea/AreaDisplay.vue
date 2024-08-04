@@ -85,9 +85,9 @@ const height_label = computed(() => {
 })
 
 const border_size = computed(() => {
-    if (props.zoomActivated) {
-        return 10 * (toolbarStore.zoom / 100);
-    }
+    // if (props.zoomActivated) {
+    //     return 10 * (toolbarStore.zoom / 100);
+    // }
     return 10;
 })
 
