@@ -26,6 +26,17 @@ COPY backend/server ./server
 COPY --from=build-stage /frontend/dist/assets/index*.js server/static/index.js
 COPY --from=build-stage /frontend/dist/assets/index*.css server/static/index.css
 
+# Copy the optimization package into the backend
+#
+# This code is not used in the backend itself, but since the
+# celery tasks are code included in the backend
+# server the package needs to be present for everything to
+# workd
+COPY optimization/ ./server/optimization
+
+# Install the optimization requirements
+RUN pip3 install -r server/optimization/requirements.txt
+
 # Expose the port
 EXPOSE 5000
 
