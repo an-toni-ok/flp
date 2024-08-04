@@ -45,7 +45,7 @@ production_steps = {
         "properties": {
             "technology": { "type": "string" },
             "work_content": { "type": "number" },
-            "machine_time": { "type": "string" },
+            "machine_time": { "type": "number" },
         },
         "required": [ 
             "technology", 

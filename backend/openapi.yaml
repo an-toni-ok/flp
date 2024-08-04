@@ -130,7 +130,7 @@ components:
           work_content: 
             type: number
           machine_time:
-            type: string
+            type: number
     machines:
       type: array
       minItems: 1
