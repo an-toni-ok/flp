@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import AreaLabel from '@/components/DrawingArea/AreaLabel.vue';
 import { useAreasStore } from '@/stores/areas';
+import { DrawingShape } from '@/util';
 
 const props = defineProps(['dimensions', 'mouse_down'])
 
@@ -35,7 +36,9 @@ watch(
         class="drawing-shape" 
         ref="shape"
         :class="dimensions.type" >
-        <div class="label-container">
+        <div 
+            class="label-container"
+            v-if="dimensions.type != DrawingShape.Machine.name">
             <AreaLabel 
                 :dimension-nr="label_texts.width"
                 :other-dimension="label_texts.height"
