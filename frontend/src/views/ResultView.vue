@@ -7,6 +7,7 @@ import ResultStats from '@/components/Result/ResultStats.vue';
 import ResultsDisplay from '@/components/Result/ResultsDisplay.vue'
 import DrawingArea from '@/components/DrawingArea.vue';
 import { DrawingShape, get_request } from '@/util';
+import ZoomDisplay from '@/components/Toolbar/ZoomDisplay.vue';
 
 const areasStore = useAreasStore();
 
@@ -103,6 +104,9 @@ onMounted(() => {
             </div>
         </div>
         <div class="side-content">
+            <div class="zoom-container">
+                <ZoomDisplay />
+            </div>
             <DrawingArea 
                 :only-machines-movable="true" />
         </div>
@@ -166,5 +170,12 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     position: relative;
+}
+
+.zoom-container {
+    position: absolute;
+    z-index: 3;
+    top: var(--site-margin-tb);
+    left: var(--site-margin-lr);
 }
 </style>
