@@ -7,10 +7,6 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    number: {
-        type: Number,
-        required: true,
-    },
     zoomActivated: {
         type: Boolean,
         default: true,
@@ -78,7 +74,7 @@ const cssBorderSize = computed(() => {
         <text 
             :x="left + width / 2" 
             :y="top + height /2 + 0.25 * 16"
-            text-anchor="middle">{{ number }}</text>
+            text-anchor="middle">{{ rect.id + 1 }}</text>
     </g>
 </template>
 
