@@ -1,14 +1,79 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useAreasStore } from '@/stores/areas';
 
 import MachineList from '@/components/Result/MachineList.vue';
 import ResultsDisplay from '@/components/Result/ResultsDisplay.vue'
 import DrawingArea from '@/components/DrawingArea.vue';
+import { DrawingShape, get_request } from '@/util';
+
+const areasStore = useAreasStore();
 
 // Slide information
 const title = "Optimierungsergebnisse";
 const number = ref(1);
 const total = ref(3);
+
+const result_machine_list = ref([]);
+const result_stats = ref({})
+const results = ref([])
+
+const get_results = async () => {
+    const optimize_result = await get_request('optimize');
+    const json_result = await optimize_result.json();
+    results.value = json_result.output;
+    total.value = results.value.length;
+    set_current_result(number.value);
+}
+
+const convert_to_grid_size = (measurement) => {
+    return measurement * 10 * areasStore.square_dimension
+}
+
+const extract_machine_drawing_data = (item_machine_list) => {
+    return {
+        height: convert_to_grid_size(
+            item_machine_list.type.y_dimension
+        ),
+        width: convert_to_grid_size(
+            item_machine_list.type.x_dimension
+        ),
+        top: convert_to_grid_size(
+            item_machine_list.y_position
+        ),
+        left: convert_to_grid_size(
+            item_machine_list.x_position
+        ),
+        type: DrawingShape.Machine.name,
+        rotation: item_machine_list.rotation,
+        id: item_machine_list.id
+    }
+}
+
+const set_current_result = (num) => {
+    let index = num - 1;
+    result_stats.value = results.value.at(index);
+    result_machine_list.value = [];
+    for (const machine of result_stats.value.machines) {
+        result_machine_list.value.push(
+            extract_machine_drawing_data(machine)
+        );
+    }
+}
+
+const incr = () => {
+    number.value = number.value == total.value ? 1 : number.value + 1;
+    set_current_result(number.value);
+}
+
+const decr = () => {
+    number.value = number.value == 1 ? total.value : number.value - 1;
+    set_current_result(number.value);
+}
+
+onMounted(() => {
+    get_results();
+})
 </script>
 
 <template>
@@ -21,13 +86,16 @@ const total = ref(3);
                 <!-- Main content -->
                 <ResultsDisplay 
                     v-model:number="number"
-                    :total="3" />
+                    :total="total"
+                    @incr="incr"
+                    @decr="decr" />
                 <MachineList />
             </div>
         </div>
         <div class="side-content">
             <DrawingArea 
-                only-machines-movable="true" />
+                :only-machines-movable="true"
+                :machines="result_machine_list" />
         </div>
     </div>
 </template>

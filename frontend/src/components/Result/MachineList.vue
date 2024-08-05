@@ -1,13 +1,16 @@
 <script setup>
-import { useAreasStore } from '@/stores/areas';
-
-const areasStore = useAreasStore();
+const props = defineProps({
+    machines: {
+        type: Array,
+        default: [],
+    }
+})
 </script>
 
 <template>
     <div class="machines-list">
         <div 
-            v-for="(machine, index) in areasStore.machines"
+            v-for="(machine, index) in machines"
             class="machine" >
             <p class="machine-number">{{ index + 1 }}</p>
             <p class="machine-name">{{ machine.machine_type }}</p>

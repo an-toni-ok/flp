@@ -5,22 +5,17 @@ import IconArrowRight from '@/components/icons/IconArrowRight.vue';
 import IconArrowLeft from '@/components/icons/IconArrowLeft.vue';
 
 const props = defineProps({
+    number: {
+        type: Number,
+        required: true,
+    },
     total: {
         type: Number,
         required: true,
     }
 })
 
-// Slide information
-const number = defineModel('number');
-
-const incr_number = () => {
-    number.value = number.value == props.total ? 1 : number.value + 1
-}
-
-const decr_number = () => {
-    number.value = number.value == 1 ? props.total : number.value - 1
-}
+const emits = defineEmits(['incr', 'decr'])
 </script>
 
 <template>
@@ -28,7 +23,7 @@ const decr_number = () => {
     <div class="result-selection">
         <IconButtonDataOverview
             help_text="Zurück"
-            @click="decr_number">
+            @click="$emit('decr')">
             <IconArrowLeft />
         </IconButtonDataOverview>
         <div class="result-selection-heading-container">
@@ -39,7 +34,7 @@ const decr_number = () => {
         </div>
         <IconButtonDataOverview
             help_text="Weiter"
-            @click="incr_number">
+            @click="$emit('incr')">
             <IconArrowRight />
         </IconButtonDataOverview>
     </div>
