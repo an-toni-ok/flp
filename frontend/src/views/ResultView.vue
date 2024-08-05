@@ -89,7 +89,8 @@ onMounted(() => {
                     :total="total"
                     @incr="incr"
                     @decr="decr" />
-                <MachineList />
+                <MachineList
+                    :machines="result_machine_list" />
             </div>
         </div>
         <div class="side-content">

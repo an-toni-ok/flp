@@ -1,4 +1,6 @@
 <script setup>
+import IconOperator from '../icons/IconOperator.vue';
+
 const props = defineProps({
     machines: {
         type: Array,
@@ -13,21 +15,45 @@ const props = defineProps({
             v-for="(machine, index) in machines"
             class="machine" >
             <p class="machine-number">{{ index + 1 }}</p>
-            <p class="machine-name">{{ machine.machine_type }}</p>
+            <p class="machine-name">{{ machine.name }}</p>
+            <div class="operator-nr">
+                <IconOperator />
+                <p>#{{ machine.operator }}</p>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+.machines-list {
+    --scrollbar-width: 6px;
+    max-height: calc(100vh - 24rem);
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+    border-left: none;
+    border-right: none;
+}
+
+.machines-list::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    border-right: 1px solid var(--color-border);
+}
+
+.machines-list::-webkit-scrollbar-thumb {
+    width: var(--scrollbar-width);
+    border-radius: 50px;
+    background-color: var(--color-border);
+}
+
 .machine {
     display: flex;
     border: 1px solid var(--color-border);
     border-bottom: none;
-    height: 2.5rem;
+    height: calc(2.5rem + 1px);
 }
 
-.machine:last-child {
-    border-bottom: 1px solid var(--color-border);
+.machine:first-child {
+    border-top: none;
 }
 
 .machine-number {
@@ -39,7 +65,23 @@ const props = defineProps({
 }
 
 .machine-name {
+    height: 2.5rem;
     line-height: 2.5rem;
+    width: 100%;
+}
+
+.operator-nr {
+    display: flex;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    align-items: center;
+    gap: 5px;
+    margin-right: 10px;
+}
+
+.operator-nr > svg {
+    height: 1rem;
+    width: 1rem;
 }
 
 .inputs {
