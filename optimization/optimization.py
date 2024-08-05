@@ -366,7 +366,7 @@ def optimization(step_list: list, machine_list: list, hourly_rate_operators: flo
     solutions = []
     solutions.extend(genetic_algorithm(**hyperparameters))
     # Sort all the collected solutions with non-dominated sorting
-    fronts = tools.sortNondominated(solutions, len(solutions))
+    fronts = tools.sortNondominated(solutions, 5)
     results = [create_system(ind) for ind in fronts[0]]
     for system in results:
         system.evaluate()
