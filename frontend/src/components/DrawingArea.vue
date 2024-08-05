@@ -8,10 +8,6 @@ import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
 import AreaPlan from './DrawingArea/AreaPlan.vue';
 
 const props = defineProps({
-    machines: {
-        type: Array,
-        default: [],
-    },
     onlyMachinesMovable: {
         type: Boolean,
         default: false,
@@ -393,8 +389,7 @@ onMounted(() => {
         <AreaPlan 
             @resize="(index, area, position) => action_wrapper(resize_handler, index, area, position)" 
             @strech="(index, area, position) => action_wrapper(stretch_handler, index, area, position)"
-            @move="(index, area) => action_wrapper(move_handler, index, area)"
-            :machines="machines" />
+            @move="(index, area) => action_wrapper(move_handler, index, area)" />
         <DrawingInput 
             :dimensions="drawing_shape_dimensions" 
             :mouse_down="drawing_state != DrawingState.Waiting.name" />

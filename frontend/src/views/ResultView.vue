@@ -62,6 +62,7 @@ const set_current_result = (num) => {
             extract_machine_drawing_data(machine)
         );
     }
+    areasStore.machines = Array.from(result_machine_list.value);
 }
 
 const incr = () => {
@@ -103,8 +104,7 @@ onMounted(() => {
         </div>
         <div class="side-content">
             <DrawingArea 
-                :only-machines-movable="true"
-                :machines="result_machine_list" />
+                :only-machines-movable="true" />
         </div>
     </div>
 </template>
