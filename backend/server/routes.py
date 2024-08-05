@@ -1,7 +1,6 @@
 from flask import Blueprint, request, Response, session, current_app, render_template
 from celery.result import AsyncResult
 
-from server.celery_tasks import add_together
 from server.decorators import validate
 from server.schemas import SCHEMA
 
