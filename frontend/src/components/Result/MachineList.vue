@@ -12,9 +12,9 @@ const props = defineProps({
 <template>
     <div class="machines-list">
         <div 
-            v-for="(machine, index) in machines"
+            v-for="machine in machines"
             class="machine" >
-            <p class="machine-number">{{ index + 1 }}</p>
+            <p class="machine-number">{{ machine.id + 1 }}</p>
             <p class="machine-name">{{ machine.name }}</p>
             <div class="operator-nr">
                 <IconOperator />
