@@ -121,7 +121,7 @@ export const useAreasStore = defineStore('areas', () => {
     }
 
     for (const area of restricted_areas.value) {
-      areas_json.push({
+      r_areas_json.push({
         x_position: get_pos(area.left),
         y_position: get_pos(area.top),
         x_dimension: get_dim(area.width),
