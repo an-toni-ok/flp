@@ -72,9 +72,8 @@ const cssBorderSize = computed(() => {
             :width="width - border_size"
             :x="left + border_size / 2"
             :y="top + border_size / 2"
-            :class="['svg-' + rect.type, 'base-rect', { 'no-cursor-change': displayOnly }]"
+            :class="['svg-machine', 'base-rect', { 'no-cursor-change': displayOnly }]"
             :style="cssBorderSize"
-            fill="transparent"
             @mousedown.stop="$emit('move')" />
         <text 
             :x="left + width / 2" 
