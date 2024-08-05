@@ -274,8 +274,8 @@ class ProductionSystem():
                 position.append(first_line_y + second_line_y + 2*offset + machine.type.y_dimension / 2)
         # write coordinates and rotation to machines and stations
         for machine, pos, rot in zip(self.machine_list, positions, rotations):
-            machine.x_coordinate = pos[0]
-            machine.y_coordinate = pos[1]
+            machine.x_position = pos[0]
+            machine.y_position = pos[1]
             machine.rotation = rot
 
         # Calculate space requirement
