@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useAreasStore } from '@/stores/areas';
 
 import MachineList from '@/components/Result/MachineList.vue';
+import ResultStats from '@/components/Result/ResultStats.vue';
 import ResultsDisplay from '@/components/Result/ResultsDisplay.vue'
 import DrawingArea from '@/components/DrawingArea.vue';
 import { DrawingShape, get_request } from '@/util';
@@ -16,7 +17,7 @@ const total = ref(3);
 
 const result_machine_list = ref([]);
 const result_stats = ref({})
-const results = ref([])
+const results = ref()
 
 const get_results = async () => {
     const optimize_result = await get_request('optimize');
@@ -46,7 +47,9 @@ const extract_machine_drawing_data = (item_machine_list) => {
         ),
         type: DrawingShape.Machine.name,
         rotation: item_machine_list.rotation,
-        id: item_machine_list.id
+        id: item_machine_list.id,
+        name: item_machine_list.name,
+        operator: item_machine_list.assigned_operator
     }
 }
 
@@ -84,11 +87,16 @@ onMounted(() => {
                     <h1>{{ title }}</h1>
                 </div>
                 <!-- Main content -->
-                <ResultsDisplay 
-                    v-model:number="number"
-                    :total="total"
-                    @incr="incr"
-                    @decr="decr" />
+                <div class="align-together">
+                    <ResultsDisplay 
+                        v-model:number="number"
+                        :total="total"
+                        @incr="incr"
+                        @decr="decr"
+                        :stats="result_stats" />
+                    <ResultStats
+                        :stats="result_stats"/>
+                </div>
                 <MachineList
                     :machines="result_machine_list" />
             </div>
@@ -146,6 +154,12 @@ onMounted(() => {
 .view-data-header > p {
     line-height: 1;
     font-size: 0.8rem;
+}
+
+.align-together {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1px;
 }
 
 .side-content {
