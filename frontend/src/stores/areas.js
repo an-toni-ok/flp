@@ -168,7 +168,6 @@ export const useAreasStore = defineStore('areas', () => {
         type: DrawingShape.RestrictedArea.name
       })
     }
-    console.log(areas.value)
   }
 
   return {
