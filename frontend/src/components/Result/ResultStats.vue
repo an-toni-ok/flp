@@ -14,7 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="stats-list" v-if="stats != undefined">
+    <div class="stats-list" v-if="Object.keys(stats).length != 0">
         <div class="stat-display" data-info="Zykluszeit">
             <IconCycleTime />
             <p>{{ props.stats.cycle_time }}</p>
