@@ -90,6 +90,11 @@ export const useMachinesStore = defineStore('machines', () => {
     machines.value.splice(nr, 1)
   }
 
+  function reset() {
+    _unset_inputs()
+    machines.value = []
+  }
+
   return {
     edit_id,
     input_overlay_opened,
@@ -106,6 +111,7 @@ export const useMachinesStore = defineStore('machines', () => {
     edit,
     create,
     clone,
-    del
+    del,
+    reset
   }
 })

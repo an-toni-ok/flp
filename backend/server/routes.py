@@ -13,7 +13,7 @@ def index():
     return render_template("index.html")
 
 @routes.get("/load")
-def g_area():
+def load():
     sm = SessionManager(session["id"])
     rm = RunManager(sm.session_id, sm.current_run_nr)
 
@@ -21,6 +21,13 @@ def g_area():
         "data": rm.input.json(),
         "status": rm.status
     }
+
+@routes.get("/new")
+def run():
+    sm = SessionManager(session["id"])
+    RunManager.create(sm.session_id)
+
+    return Response(status=200)
 
 @routes.post("/area")
 @validate(SCHEMA.AREAS)

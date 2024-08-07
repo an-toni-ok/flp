@@ -85,6 +85,15 @@ export const useProcessesStore = defineStore('processes', () => {
     }
   }
 
+  function reset() {
+    edit_id.value = undefined
+    inputOverlayOpened.value = false
+    input_machine_time.value = 0
+    input_manual_time.value = 0
+    input_technology.value = ''
+    processes.value = []
+  }
+
   return {
     edit_id,
     input_machine_time,
@@ -99,6 +108,7 @@ export const useProcessesStore = defineStore('processes', () => {
     clone,
     del,
     json,
-    from
+    from,
+    reset
   }
 })

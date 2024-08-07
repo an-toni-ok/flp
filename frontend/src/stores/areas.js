@@ -170,6 +170,12 @@ export const useAreasStore = defineStore('areas', () => {
     }
   }
 
+  function reset() {
+    areas.value = []
+    restricted_areas.value = []
+    machines.value = []
+  }
+
   return {
     areas,
     restricted_areas,
@@ -179,6 +185,7 @@ export const useAreasStore = defineStore('areas', () => {
     addShape,
     delShape,
     json,
-    from
+    from,
+    reset
   }
 })
