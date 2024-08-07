@@ -49,7 +49,7 @@ const setup = async () => {
         planningStore.setState(PlanningState.Processes);
         return
     }
-    processesStore.processes = data.production_steps;
+    processesStore.from(data.production_steps);
 
     if (data.machines.length == 0) {
         planningStore.setState(PlanningState.Machines);

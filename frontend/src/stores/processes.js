@@ -75,6 +75,16 @@ export const useProcessesStore = defineStore('processes', () => {
     return json_processes
   }
 
+  function from(json_processes) {
+    for (const process of json_processes) {
+      processes.value.push({
+        technology: process.technology,
+        manual_time: process.work_content,
+        machine_time: process.machine_time
+      })
+    }
+  }
+
   return {
     edit_id,
     input_machine_time,
@@ -88,6 +98,7 @@ export const useProcessesStore = defineStore('processes', () => {
     move,
     clone,
     del,
-    json
+    json,
+    from
   }
 })
