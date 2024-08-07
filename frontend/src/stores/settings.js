@@ -23,6 +23,15 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   }
 
+  function from(objectives, target_cycle_time, operator_cost) {
+    cycle_target_time.value = target_cycle_time
+    hourly_operator_cost.value = operator_cost
+    investion.value = objectives.invest
+    piece_cost.value = objectives.cost_per_part
+    area_usage.value = objectives.used_area
+    worker_amount.value = objectives.number_operators
+  }
+
   return {
     cycle_target_time,
     hourly_operator_cost,
@@ -30,6 +39,7 @@ export const useSettingsStore = defineStore('settings', () => {
     piece_cost,
     area_usage,
     worker_amount,
-    json
+    json,
+    from
   }
 })

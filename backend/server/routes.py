@@ -12,6 +12,16 @@ routes = Blueprint('routes', __name__)
 def index():
     return render_template("index.html")
 
+@routes.get("/load")
+def g_area():
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+
+    return {
+        "data": rm.input.json(),
+        "status": rm.status
+    }
+
 @routes.post("/area")
 @validate(SCHEMA.AREAS)
 def area():

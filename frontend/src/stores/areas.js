@@ -135,6 +135,42 @@ export const useAreasStore = defineStore('areas', () => {
     }
   }
 
+  function from(areas_json, r_areas_json) {
+    const get_pos = (pos) => {
+      let scale_corrected = pos * square_dimension.value * 10
+      let grid_corrected = scale_corrected + 10
+      // Make sure only one number is after the point
+      return parseFloat(grid_corrected.toFixed(1))
+    }
+
+    const get_dim = (dim) => {
+      let scale_corrected = Math.round(dim * square_dimension.value) * 10
+      // Make sure only one number is after the point
+      return parseFloat(scale_corrected.toFixed(1))
+    }
+
+    for (const area of areas_json) {
+      areas.value.push({
+        left: get_pos(area.x_position),
+        top: get_pos(area.y_position),
+        width: get_dim(area.x_dimension),
+        height: get_dim(area.y_dimension),
+        type: DrawingShape.Area.name
+      })
+    }
+
+    for (const area of r_areas_json) {
+      restricted_areas.value.push({
+        left: get_pos(area.x_position),
+        top: get_pos(area.y_position),
+        width: get_dim(area.x_dimension),
+        height: get_dim(area.y_dimension),
+        type: DrawingShape.RestrictedArea.name
+      })
+    }
+    console.log(areas.value)
+  }
+
   return {
     areas,
     restricted_areas,
@@ -143,6 +179,7 @@ export const useAreasStore = defineStore('areas', () => {
     drawing_dimensions,
     addShape,
     delShape,
-    json
+    json,
+    from
   }
 })
