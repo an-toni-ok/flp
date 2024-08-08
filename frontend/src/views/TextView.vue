@@ -21,12 +21,13 @@ const props = defineProps({
 <style scoped>
 .text-site {
     margin: var(--site-margin-tb) auto;
-    max-width: 80ch;
+    width: min(calc(100% - 8rem), 80ch);
 }
 
 .page-title {
     font-size: var(--font-size-h1);
     margin-bottom: 1.5rem;
+    text-align: left;
 }
 
 .page-text {
