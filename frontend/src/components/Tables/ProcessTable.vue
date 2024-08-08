@@ -79,6 +79,7 @@ const processesStore = useProcessesStore();
     --scrollbar-width: 6px;
     max-height: calc(100vh - 15rem);
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid var(--color-border);
     border-left: none;
     border-right: none;
