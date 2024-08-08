@@ -11,7 +11,8 @@ import PlanungView from './views/PlanungView.vue';
 	<div class="site-layout">
 		<!-- <DrawingArea /> -->
 		<Navbar />
-		<PlanungView />
+		<RouterView />
+		<!-- <PlanungView /> -->
 			<!-- <TechnologyDropdownInput 
 				:is-changeable="true"
 				:is-deletable="true" /> -->

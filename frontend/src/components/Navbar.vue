@@ -21,19 +21,19 @@ const opened = ref(false);
 <template>
     <nav class="nav-spacing">
         <ul class="links">
-            <NavLink name="Planung" :opened="opened">
+            <NavLink name="Planung" :opened="opened" location="/">
                 <IconPlanning />
             </NavLink>
-            <NavLink name="Verlauf" :opened="opened">
+            <NavLink name="Verlauf" :opened="opened" location="/">
                 <IconHistory />
             </NavLink>
-            <NavLink name="Informationen" :opened="opened">
+            <NavLink name="Informationen" :opened="opened" location="/info">
                 <IconInformation />
             </NavLink>
-            <NavLink name="Methodik" :opened="opened">
+            <NavLink name="Methodik" :opened="opened" location="/methodik">
                 <IconMethods />
             </NavLink>
-            <NavLink name="Kontakt" :opened="opened">
+            <NavLink name="Kontakt" :opened="opened" location="/contact">
                 <IconContact />
             </NavLink>
         </ul>

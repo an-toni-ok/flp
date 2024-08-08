@@ -4,6 +4,10 @@ const props = defineProps({
         type: String,
         required: true
     },
+    location: {
+        type: String,
+        required: true
+    },
     opened: {
         type: Boolean,
         required: true
@@ -13,11 +17,11 @@ const props = defineProps({
 
 <template>
     <li>
-        <a class="nav-link" href="">
+        <RouterLink class="nav-link" :to="location">
             <!-- Icon goes here -->
             <slot></slot>
             <span v-show="opened">{{ name }}</span>
-        </a>
+        </RouterLink>
     </li>
 </template>
 
