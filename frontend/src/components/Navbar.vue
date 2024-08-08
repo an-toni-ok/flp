@@ -24,7 +24,7 @@ const opened = ref(false);
             <NavLink name="Planung" :opened="opened" location="/">
                 <IconPlanning />
             </NavLink>
-            <NavLink name="Verlauf" :opened="opened" location="/">
+            <NavLink name="Verlauf" :opened="opened" location="/history">
                 <IconHistory />
             </NavLink>
             <NavLink name="Informationen" :opened="opened" location="/info">
