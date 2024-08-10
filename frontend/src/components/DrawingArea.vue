@@ -180,11 +180,10 @@ const create_shape_handler = () => {
 const mouse_move_handler = (event) => {
     mouse.value.x = event.pageX - drawing_area_offset.value.x
     mouse.value.y = event.pageY - drawing_area_offset.value.y
-    if (drawing_state.value == DrawingState.Waiting.name) {
-        return;
-    }
 
     switch (drawing_state.value) {
+        case DrawingState.Waiting.name:
+            break;
         case DrawingState.Drawing.name:
             update_rect()
             break;
