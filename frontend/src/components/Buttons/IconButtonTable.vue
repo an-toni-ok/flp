@@ -18,7 +18,8 @@ defineEmits(['click']);
         @click="$emit('click')"
         class="icon-button" 
         :class="{ 'focus': focus }"
-        :aria-label="help_text" >
+        :aria-label="help_text"
+        :data-tool-tip="help_text" >
         <slot></slot>
     </button>
 </template>
@@ -34,6 +35,24 @@ buttons is in src/assets/main.css.
     justify-content: center;
     border: none;
     width: fit-content;
+    position: relative;
+}
+
+.icon-button::after {
+    content: attr(data-tool-tip);
+    position: absolute;
+    background-color: var(--color-background);
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    top: -100%;
+    right: 0;
+    white-space: nowrap;
+    transform: scale(0);
+    z-index: 1;
+}
+
+.icon-button:hover::after {
+    transform: scale(1);
 }
 
 .focus:focus > * {
