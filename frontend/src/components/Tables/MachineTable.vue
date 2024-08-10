@@ -38,18 +38,18 @@ const machinesStore = useMachinesStore();
                 :machine="item"
                 :show_actions="show_actions" >
                     <IconButtonTable 
-                        help_text="Edit this table row"
+                        help_text="Bearbeiten"
                         @click="machinesStore.edit(index)">
                         <IconEdit />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Duplicate this table row"
+                        help_text="Duplizieren"
                         :focus="false"
                         @click="machinesStore.clone(index)">
                         <IconDuplicate />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Delete this table row"
+                        help_text="Löschen"
                         :focus="false"
                         @click="machinesStore.del(index)">
                         <IconDelete />
