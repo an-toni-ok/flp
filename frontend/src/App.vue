@@ -1,10 +1,14 @@
 <script setup>
 import Navbar from './components/Navbar.vue';
-import TechnologyDropdownInput from './components/Inputs/TechnologyDropdownInput.vue';
-import AreaOverlay from './components/Overlays/AreaOverlay.vue';
-import AreaView from './views/AreaView.vue';
-import DrawingArea from './components/DrawingArea.vue';
-import PlanungView from './views/PlanungView.vue';
+
+const prev_session_token = localStorage.getItem("session")
+if (Boolean(prev_session_token)) {
+	// load previous session token
+	document.cookie = prev_session_token
+} else {
+	// persist current session token
+	localStorage.setItem("session", document.cookie)
+}
 </script>
 
 <template>
