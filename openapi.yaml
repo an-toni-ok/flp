@@ -1,0 +1,247 @@
+openapi: 3.0.2
+info:
+  title: The FLP backend
+  description: |
+    This API allows uploading data for a layout optimization
+    programm, starting the program in a Celery background thread, 
+    checking it's progress status and getting the result of
+    the layout optimization.
+  version: 0.0.1
+servers:
+  - url: http://localhost:5000
+    description: local development server
+paths: 
+  /:
+    get:
+      summary: Returns the Vue SPA
+      responses:
+        200:
+          description: "OK"
+  /load:
+    get:
+      summary: Loads the previous run
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/input_data'
+  /new:
+    get:
+      summary: Starts a new run
+      responses:
+        200:
+          description: "OK"
+  /area:
+    post:
+      summary: Add an array of areas.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/areas'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /process:
+    post:
+      summary: Add a process.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/production_steps'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /machines:
+    post:
+      summary: Add an array of machines.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/machines'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /objectives:
+    post:
+      summary: Add the optimization data.
+      # description:
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settings'
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid data supplied"
+  /optimize:
+    post:
+      summary: Start the optimization process.
+      # description:
+      # parameters:
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Failure"
+    get:
+      summary: Get the status of the optimization process (and it's result if completed).
+      # description:
+      # parameters:
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Failure"
+components:
+  schemas:
+    area:
+      type: object
+      properties:
+        x_position:
+          type: number
+        y_position:
+          type: number
+        x_dimension:
+          type: number
+        y_dimension:
+          type: number
+
+    production_step:
+      type: object
+      properties:
+        technology:
+          type: string
+        work_content: 
+          type: number
+        machine_time:
+          type: number
+
+    machine:
+      type: object
+      properties:
+        name:
+          type: string
+        technologies:
+          type: array
+          items:
+            type: string
+        hourly_rate:
+          type: number
+        investment_cost:
+          type: number
+        additional_machine_time:
+          type: number
+        x_dimension:
+          type: number
+        y_dimension:
+          type: number
+        x_position:
+          type: number
+        y_position:
+          type: number
+        rotation:
+          type: integer
+
+    objectives:
+      type: object
+      properties:
+        invest: 
+          type: boolean
+        cost_per_part: 
+          type: boolean
+        used_area: 
+          type: boolean
+        number_operators: 
+          type: boolean
+
+    areas:
+      type: object
+      properties:
+        areas:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/area"
+        restricted_areas:
+          type: array
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/area"
+
+    production_steps:
+      type: array
+      minItems: 1
+      items:
+        $ref: "#/components/schemas/production_step"
+
+    machines:
+      type: array
+      minItems: 1
+      items:
+        $ref: "#/components/schemas/machine"
+
+    settings:
+      type: object
+      properties:
+        objectives:
+          $ref: "#/components/schemas/objectives"
+        target_cycle_time:
+          type: number
+        hourly_operator_cost:
+          type: number
+
+    input_data:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            areas:
+              type: array
+              minItems: 0
+              items:
+                $ref: "#/components/schemas/area"
+            restricted_areas:
+              type: array
+              minItems: 0
+              items:
+                $ref: "#/components/schemas/area"
+            production_steps:
+              type: array
+              minItems: 0
+              items:
+                $ref: "#/components/schemas/production_step"
+            machines:
+              type: array
+              minItems: 0
+              items:
+                $ref: "#/components/schemas/machine"
+            technologies: 
+              type: array
+              minItems: 0
+              items: 
+                type: string
+            objectives:
+              $ref: "#/components/schemas/objectives"
+            target_cycle_time:
+              type: number
+            hourly_operator_cost:
+              type: number

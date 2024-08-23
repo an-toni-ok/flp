@@ -46,3 +46,5 @@ The three parts are connected by using Dockerfile for [Celery](./Docker/Celery/D
 ## Documentation
 
 The application is documented in the [docs](./docs/) directory and the subsystems of the application contain short README Files in their directories.
+
+The server API is documented with the openAPI standart in [this file](./openapi.yaml).
