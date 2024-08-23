@@ -19,7 +19,7 @@ const toolbar = useToolbarStore();
             :class="{ 'selected': toolbar.isActive(Tool.Area) }" >
             <ToolIconButton 
                 @click="toolbar.setTool(Tool.Area)"
-                help_text="Tool to draw an area." >
+                help_text="Freifläche zeichnen" >
                 <IconArea />
             </ToolIconButton>
         </div>
@@ -27,7 +27,7 @@ const toolbar = useToolbarStore();
             :class="{ 'selected': toolbar.isActive(Tool.RestrictedArea) }" >
             <ToolIconButton 
                 @click="toolbar.setTool(Tool.RestrictedArea)"
-                help_text="Tool to draw a restricted area." >
+                help_text="Sperrfläche zeichnen" >
                 <IconRestrictedArea />
             </ToolIconButton>
         </div>
@@ -35,21 +35,21 @@ const toolbar = useToolbarStore();
             :class="{ 'selected': toolbar.isActive(Tool.Move) }" >
             <ToolIconButton 
                 @click="toolbar.setTool(Tool.Move)"
-                help_text="Tool to move the plan around." >
+                help_text="Flächen bewegen und verändern" >
                 <IconMove />
             </ToolIconButton>
         </div>
         <div :class="{ 'selected': toolbar.isActive(Tool.Delete)}" >
             <ToolIconButton
                 @click="toolbar.setTool(Tool.Delete)"
-                help_text="Delete areas clicked on." >
+                help_text="Flächen löschen" >
                 <IconDelete />
             </ToolIconButton>
         </div>
         <div>
             <ToolIconButton
                 @click="help_expanded = !help_expanded"
-                help_text="Expand the tool help" >
+                help_text="Die Einführung öffnen" >
                 <IconQuestion />
             </ToolIconButton>
         </div>

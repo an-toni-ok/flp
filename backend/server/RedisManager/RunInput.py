@@ -5,7 +5,14 @@ from .Errors import InputNotSettable
 from .util import RunStatus
 
 class RunInput:
+    """Sets and gets input data.
+    """
     def __init__(self, run_id):
+        """Creates a RunInput class for a run
+
+        Args:
+            run_id (_type_): The id of the run
+        """
         self.run_id: str = run_id
 
         self._areas = None
@@ -14,6 +21,11 @@ class RunInput:
         self._objectives = None
 
     def json(self):
+        """Returns the input data as json
+
+        Returns:
+            Dict: The input data
+        """
         return RedisInput.ALL.query(self.run_id)
 
     def _assure_input_settable(self):

@@ -7,6 +7,8 @@ from .Errors import RunNotStartable, RunNotRunning
 from .RedisConnector import RedisRunConfig
 
 class RunManager:
+    """Manages a run.
+    """
     def __init__(self, user_session_id, run_nr, run_id=None):
         """Creates a RunManager.
 
@@ -43,10 +45,6 @@ class RunManager:
     @property
     def output(self):
         return RedisRunConfig.OUTPUT.query(self.run_id)
-    
-    @property
-    def execution_id(self):
-        return RedisRunConfig.EXECUTION_ID.query(self.run_id)
     
     @property
     def status(self):

@@ -38,18 +38,18 @@ const machinesStore = useMachinesStore();
                 :machine="item"
                 :show_actions="show_actions" >
                     <IconButtonTable 
-                        help_text="Edit this table row"
+                        help_text="Bearbeiten"
                         @click="machinesStore.edit(index)">
                         <IconEdit />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Duplicate this table row"
+                        help_text="Duplizieren"
                         :focus="false"
                         @click="machinesStore.clone(index)">
                         <IconDuplicate />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Delete this table row"
+                        help_text="Löschen"
                         :focus="false"
                         @click="machinesStore.del(index)">
                         <IconDelete />
@@ -67,6 +67,7 @@ const machinesStore = useMachinesStore();
     --scrollbar-width: 6px;
     max-height: calc(100vh - 15rem);
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid var(--color-border);
     border-left: none;
     border-right: none;

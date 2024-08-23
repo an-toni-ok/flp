@@ -38,30 +38,30 @@ const processesStore = useProcessesStore();
                 :technology="item.technology"
                 :show_actions="show_actions" >
                     <IconButtonTable 
-                        help_text="Edit this table row"
+                        help_text="Bearbeiten"
                         @click="processesStore.edit(index)">
                         <IconEdit />
                     </IconButtonTable>
                     <IconButtonTable 
-                        help_text="Move this table row down"
+                        help_text="Nach oben verschieben"
                         :focus="false"
                         @click="processesStore.move(index, false)">
                         <IconMoveDown />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Move this table row up"
+                        help_text="Nach unten verschieben"
                         :focus="false"
                         @click="processesStore.move(index, true)">
                         <IconMoveUp />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Duplicate this table row"
+                        help_text="Duplizieren"
                         :focus="false"
                         @click="processesStore.clone(index)">
                         <IconDuplicate />
                     </IconButtonTable>
                     <IconButtonTable
-                        help_text="Delete this table row"
+                        help_text="Löschen"
                         :focus="false"
                         @click="processesStore.del(index)">
                         <IconDelete />
@@ -79,6 +79,7 @@ const processesStore = useProcessesStore();
     --scrollbar-width: 6px;
     max-height: calc(100vh - 15rem);
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid var(--color-border);
     border-left: none;
     border-right: none;

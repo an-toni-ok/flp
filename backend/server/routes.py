@@ -1,5 +1,4 @@
 from flask import Blueprint, request, Response, session, current_app, render_template
-from celery.result import AsyncResult
 
 from server.decorators import validate
 from server.schemas import SCHEMA
@@ -8,9 +7,27 @@ from server.RedisManager import RunManager, SessionManager
 
 routes = Blueprint('routes', __name__)
 
-@routes.get("/")
-def index():
+@routes.get("/", defaults={"path": ""})
+@routes.get("/<path:path>")
+def index(path):
     return render_template("index.html")
+
+@routes.get("/load")
+def load():
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, sm.current_run_nr)
+
+    return {
+        "data": rm.input.json(),
+        "status": rm.status
+    }
+
+@routes.get("/new")
+def run():
+    sm = SessionManager(session["id"])
+    RunManager.create(sm.session_id)
+
+    return Response(status=200)
 
 @routes.post("/area")
 @validate(SCHEMA.AREAS)
@@ -73,13 +90,4 @@ def optimize_status():
     return {
         "status": rm.status,
         "output": rm.output
-    }
-
-@routes.get("/result/<id>")
-def get_result(id: str) -> dict[str, object]:
-    result = AsyncResult(id)
-    return {
-        "ready": result.ready(),
-        "successful": result.successful(),
-        "value": result.result if result.ready() else None,
     }

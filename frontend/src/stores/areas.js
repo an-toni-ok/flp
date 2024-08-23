@@ -15,9 +15,10 @@ export const useAreasStore = defineStore('areas', () => {
     y_end: 0
   })
 
+  const unzoomed_square_dimension = ref(20)
   const square_dimension = computed(() => {
     const toolbarStore = useToolbarStore()
-    return parseInt((20 * toolbarStore.zoom) / 100)
+    return parseInt((unzoomed_square_dimension.value * toolbarStore.zoom) / 100)
   })
 
   function _update_dimensions() {
@@ -121,7 +122,7 @@ export const useAreasStore = defineStore('areas', () => {
     }
 
     for (const area of restricted_areas.value) {
-      areas_json.push({
+      r_areas_json.push({
         x_position: get_pos(area.left),
         y_position: get_pos(area.top),
         x_dimension: get_dim(area.width),
@@ -135,14 +136,58 @@ export const useAreasStore = defineStore('areas', () => {
     }
   }
 
+  function from(areas_json, r_areas_json) {
+    const get_pos = (pos) => {
+      let scale_corrected = pos * square_dimension.value * 10
+      let grid_corrected = scale_corrected + 10
+      // Make sure only one number is after the point
+      return parseFloat(grid_corrected.toFixed(1))
+    }
+
+    const get_dim = (dim) => {
+      let scale_corrected = Math.round(dim * square_dimension.value) * 10
+      // Make sure only one number is after the point
+      return parseFloat(scale_corrected.toFixed(1))
+    }
+
+    for (const area of areas_json) {
+      areas.value.push({
+        left: get_pos(area.x_position),
+        top: get_pos(area.y_position),
+        width: get_dim(area.x_dimension),
+        height: get_dim(area.y_dimension),
+        type: DrawingShape.Area.name
+      })
+    }
+
+    for (const area of r_areas_json) {
+      restricted_areas.value.push({
+        left: get_pos(area.x_position),
+        top: get_pos(area.y_position),
+        width: get_dim(area.x_dimension),
+        height: get_dim(area.y_dimension),
+        type: DrawingShape.RestrictedArea.name
+      })
+    }
+  }
+
+  function reset() {
+    areas.value = []
+    restricted_areas.value = []
+    machines.value = []
+  }
+
   return {
     areas,
     restricted_areas,
     machines,
+    unzoomed_square_dimension,
     square_dimension,
     drawing_dimensions,
     addShape,
     delShape,
-    json
+    json,
+    from,
+    reset
   }
 })

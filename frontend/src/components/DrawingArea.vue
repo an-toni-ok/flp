@@ -180,11 +180,10 @@ const create_shape_handler = () => {
 const mouse_move_handler = (event) => {
     mouse.value.x = event.pageX - drawing_area_offset.value.x
     mouse.value.y = event.pageY - drawing_area_offset.value.y
-    if (drawing_state.value == DrawingState.Waiting.name) {
-        return;
-    }
 
     switch (drawing_state.value) {
+        case DrawingState.Waiting.name:
+            break;
         case DrawingState.Drawing.name:
             update_rect()
             break;
@@ -205,11 +204,9 @@ const mouse_move_handler = (event) => {
  * if the area is not in a Waiting State.
  */
 const mouse_up_handler = () => {
-    if (drawing_state.value == DrawingState.Waiting.name) {
-        return;
-    }
-
     switch (drawing_state.value) {
+        case DrawingState.Waiting.name:
+            return;
         case DrawingState.Drawing.name:
             if (drawing_shape_dimensions.value.height > 10 || drawing_shape_dimensions.value.width > 10) {
                 storeCurrentShape();

@@ -3,10 +3,9 @@ from celery import shared_task
 @shared_task(ignore_result=False)
 def start_optimization(run_id):
     import json
-    from server.RedisManager import RunInput, RunManager
+    from server.RedisManager import RunManager
     from server.optimization import run_optimization
 
-    ri = RunInput(run_id)
     rm = RunManager(
         user_session_id=None, 
         run_nr=None,
@@ -16,7 +15,7 @@ def start_optimization(run_id):
     input_file = f"{run_id}.json"
 
     with open(input_file, "w") as file:
-        file.write(json.dumps(ri.json()))
+        file.write(json.dumps(rm.input.json()))
 
     output = run_optimization(input_file)
     

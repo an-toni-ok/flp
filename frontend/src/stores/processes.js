@@ -75,6 +75,25 @@ export const useProcessesStore = defineStore('processes', () => {
     return json_processes
   }
 
+  function from(json_processes) {
+    for (const process of json_processes) {
+      processes.value.push({
+        technology: process.technology,
+        manual_time: process.work_content,
+        machine_time: process.machine_time
+      })
+    }
+  }
+
+  function reset() {
+    edit_id.value = undefined
+    inputOverlayOpened.value = false
+    input_machine_time.value = 0
+    input_manual_time.value = 0
+    input_technology.value = ''
+    processes.value = []
+  }
+
   return {
     edit_id,
     input_machine_time,
@@ -88,6 +107,8 @@ export const useProcessesStore = defineStore('processes', () => {
     move,
     clone,
     del,
-    json
+    json,
+    from,
+    reset
   }
 })

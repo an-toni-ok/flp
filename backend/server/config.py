@@ -13,4 +13,6 @@ class Config:
     )
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT') or True
     LOG_FILE = os.environ.get('LOG_FILE') or 'app.log'
+    # Set the session cookie duration
+    SESSION_COOKIE_HTTPONLY = False
     LOG_LEVEL = logging.WARN

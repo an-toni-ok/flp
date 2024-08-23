@@ -33,7 +33,7 @@ const toolbar = useToolbarStore();
 
 .zoom > p {
     display: inline;
-    width: calc(5ch + 2 * var(--tool-area-padding));
+    width: fit-content;
     line-height: 1;
     font-size: var(--tool-area-height);
     font-weight: 500;
@@ -46,7 +46,7 @@ const toolbar = useToolbarStore();
 .zoom-display {
     /* Make sure the zoom display doesn't change size. */
     display: inline-block;
-    width: 3ch;
+    min-width: 3ch;
     text-align: right;
 }
 </style>

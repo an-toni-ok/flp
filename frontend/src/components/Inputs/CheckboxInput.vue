@@ -60,4 +60,8 @@ inputs is in src/assets/main.css.
     width: 15px;
     height: 15px;
 }
+
+label:focus-within > .fake-checkbox {
+    border: 1px solid var(--color-text-primary);
+}
 </style>

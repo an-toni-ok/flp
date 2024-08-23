@@ -12,11 +12,11 @@ const settingsStore = useSettingsStore();
             <h2>Optimierungskonfiguration</h2>
             <NumberInput 
                 id="cycle_target_time"
-                name="Zielzykluszeit"
+                name="Zielzykluszeit in s"
                 v-model:value="settingsStore.cycle_target_time"/>
             <NumberInput 
                 id="hourly_operator_cost"
-                name="Stündliche Werkerlöhne"
+                name="Stündliche Werkerlöhne (&#8364;)"
                 v-model:value="settingsStore.hourly_operator_cost"/>
         </div>
         <div class="checkboxes">

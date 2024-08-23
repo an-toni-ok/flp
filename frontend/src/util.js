@@ -114,11 +114,11 @@ export function post_request(route, data) {
     request_data.body = JSON.stringify(data)
   }
 
-  return fetch(`http://localhost:5000/${route}`, request_data)
+  return fetch(`${route}`, request_data)
 }
 
 export function get_request(route) {
-  return fetch(`http://localhost:5000/${route}`, {
+  return fetch(`${route}`, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json; charset=UTF-8'

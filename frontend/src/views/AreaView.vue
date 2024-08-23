@@ -25,7 +25,6 @@ const progress = async () => {
         <div class="flow-remover-outer">
             <div class="overlay">
                 <Toolbar @next="progress" />
-                <AreaOverlay :is-create="true" />
             </div>
         </div>
         <DrawingArea />
