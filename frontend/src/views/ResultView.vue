@@ -35,7 +35,7 @@ const get_results = async () => {
 }
 
 const convert_to_grid_size = (measurement) => {
-    return measurement * 10 * areasStore.square_dimension
+    return measurement * 10 * areasStore.unzoomed_square_dimension;
 }
 
 const extract_machine_drawing_data = (item_machine_list) => {

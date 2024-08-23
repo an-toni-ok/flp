@@ -15,9 +15,10 @@ export const useAreasStore = defineStore('areas', () => {
     y_end: 0
   })
 
+  const unzoomed_square_dimension = ref(20)
   const square_dimension = computed(() => {
     const toolbarStore = useToolbarStore()
-    return parseInt((20 * toolbarStore.zoom) / 100)
+    return parseInt((unzoomed_square_dimension.value * toolbarStore.zoom) / 100)
   })
 
   function _update_dimensions() {
@@ -180,6 +181,7 @@ export const useAreasStore = defineStore('areas', () => {
     areas,
     restricted_areas,
     machines,
+    unzoomed_square_dimension,
     square_dimension,
     drawing_dimensions,
     addShape,
