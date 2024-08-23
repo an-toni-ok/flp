@@ -6,6 +6,10 @@ from .util import RunStatus
 from .Errors import InvalidChangeMethod, RunAlreadyExists, RunNotCreated, SessionIdNotSet
 
 class RedisInput(Enum):
+    """Interaction with the Redis Run data input storage.
+
+    Allows setting and querying input fields of a run. The chosen enum option is set or queried.
+    """
     ALL = "all"
     AREAS = "areas"
     R_AREAS = "restricted_areas"
@@ -17,32 +21,76 @@ class RedisInput(Enum):
     OPERATOR_COST = "hourly_operator_cost"
 
     def query(self, run_id):
+        """Gets the value of the key corresponding to the Enum key.
+
+        Args:
+            run_id (_type_): The id of the run
+
+        Returns:
+            _type_: The value of the key corresponding to the Enum key
+        """
         global redis
 
         return redis.json().get(run_id, str(self))[0]
     
     def set(self, run_id, data):
+        """Sets the value of the key corresponding to the Enum key
+
+        Args:
+            run_id (_type_): The id of the run
+            data (Dict): The data to set the value to
+
+        Raises:
+            RunNotCreated: No run with the id run_id exists
+            InvalidChangeMethod: Setting input data with this function is not allowed
+        """
         global redis
  
         redis.json().set(run_id, str(self), data)
     
     def __str__(self) -> str:
+        """The string formatting method of the class
+
+        Returns:
+            str: The value returned when formatting the class as a string.
+        """
         if self.value == RedisInput.ALL.value:
             return f"$.input"
         return f"$.input.{self.value}"
     
 class RedisRunConfig(Enum):
+    """Interaction with the Redis Run data storage (with the exception of the input, use RedisInput for this).
+
+    Allows setting or quering management data of a run or for creation of a new run. The chosen enum option is set or queried.
+    """
     ALL = "all"
     OUTPUT = "output"
-    EXECUTION_ID = "execution_id"
     STATUS = "status"
 
     def query(self, run_id):
+        """Gets the value of the key corresponding to the Enum key.
+
+        Args:
+            run_id (_type_): The id of the run
+
+        Returns:
+            _type_: The value of the key corresponding to the Enum key
+        """
         global redis
  
         return redis.json().get(run_id, str(self))[0]
     
     def set(self, run_id, data: Dict):
+        """Sets the value of the key corresponding to the Enum key
+
+        Args:
+            run_id (_type_): The id of the run
+            data (Dict): The data to set the value to
+
+        Raises:
+            RunNotCreated: No run with the id run_id exists
+            InvalidChangeMethod: Setting input data with this function is not allowed
+        """
         global redis
 
         try:
@@ -96,24 +144,43 @@ class RedisRunConfig(Enum):
                 'hourly_operator_cost': None
             }, 
             'output': {}, 
-            'execution_id': None, 
             'status': RunStatus.INPUT.value
         })
 
         return run_id
     
     def __str__(self) -> str:
+        """The string formatting method of the class
+
+        Returns:
+            str: The value returned when formatting the class as a string.
+        """
         if self.value == RedisRunConfig.ALL.value:
             return f"$"
         return f"$.{self.value}"
 
 class RedisSession:
+    """Contains methods for interaction with the Redis Session data storage.
+    """
     def contains(session_id):
+        """Checks if session_id is already used.
+
+        Args:
+            session_id (_type_): The session id to check for
+
+        Returns:
+            Bool: Is the session id saved
+        """
         global redis
  
         return bool(redis.sismember("session_ids", session_id))
 
     def create_session(session_id):
+        """Creates an entry in Redis for the session id.
+
+        Args:
+            session_id (_type_): The session id
+        """
         global redis
  
         redis.sadd("session_ids", session_id)
@@ -165,7 +232,17 @@ class RedisSession:
         return run_nr
 
 class RedisIdCounter:
+    """Wraps the incr Function for the Redis key 'session_id_counter'.
+    """
+
     def incr():
+        """Returns the value of the Redis field 'session_id_counter' and increments it.
+
+        This funcion is atomic.
+
+        Returns:
+            _type_: The value of the session_id_counter before the increment.
+        """
         global redis
 
         return redis.incr("session_id_counter")
