@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build the frontend static files.
-FROM node:20 as build-stage
+FROM node:20.17 as build-stage
 
 WORKDIR /frontend
 
