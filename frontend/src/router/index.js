@@ -32,6 +32,12 @@ const router = createRouter({
       path: '/contact',
       name: 'contact',
       component: ContactView
+    },
+    {
+      path: '/run/:id',
+      name: 'run',
+      component: PlanungView,
+      props: true
     }
   ]
 })

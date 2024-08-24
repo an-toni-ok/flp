@@ -15,6 +15,16 @@ import ConfigurationView from './ConfigurationView.vue';
 import WaitingView from './WaitingView.vue';
 import ResultView from './ResultView.vue';
 
+// The id prop gets passed by the router 
+// (and is only supplied if a specific run is 
+// opened from the history view.)
+const props = defineProps({
+    id: {
+        type: Number,
+        default: undefined,
+    }
+})
+
 const planningStore = usePlanningStore();
 
 const areasStore = useAreasStore();
@@ -22,8 +32,16 @@ const processesStore = useProcessesStore();
 const machinesStore = useMachinesStore();
 const settingsStore = useSettingsStore();
 
-const setup = async () => {
-    const saved_data_req = await get_request('load');
+const setup = async (load_id) => {
+    // Load specified run or current if none is specified.
+    let route = undefined;
+    if (load_id != undefined) {
+        route = `/input/${load_id}`;
+    } else {
+        route = 'load'
+    }
+
+    const saved_data_req = await get_request(route);
     const req_json = await saved_data_req.json();
     const status = req_json.status
     const data = req_json.data
@@ -70,17 +88,24 @@ const setup = async () => {
 }
 
 onMounted(() => {
-    setup()
+    setup(props.id)
 })
 </script>
 
 <template>
-    <AreaView v-if="planningStore.isActive(PlanningState.Areas)" />
-    <ProcessView v-if="planningStore.isActive(PlanningState.Processes)" />
-    <MachineView v-if="planningStore.isActive(PlanningState.Machines)" />
-    <ConfigurationView v-if="planningStore.isActive(PlanningState.Configuration)" />
-    <WaitingView v-if="planningStore.isActive(PlanningState.Waiting)" />
-    <ResultView v-if="planningStore.isActive(PlanningState.Result)" />
+    <AreaView 
+        v-if="planningStore.isActive(PlanningState.Areas)" />
+    <ProcessView 
+        v-if="planningStore.isActive(PlanningState.Processes)" />
+    <MachineView 
+        v-if="planningStore.isActive(PlanningState.Machines)" />
+    <ConfigurationView 
+        v-if="planningStore.isActive(PlanningState.Configuration)" />
+    <WaitingView 
+        v-if="planningStore.isActive(PlanningState.Waiting)" />
+    <ResultView 
+        v-if="planningStore.isActive(PlanningState.Result)"
+        :result_id="id" />
 </template>
 
 <style scoped>

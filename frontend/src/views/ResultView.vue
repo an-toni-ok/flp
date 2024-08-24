@@ -15,6 +15,13 @@ import { useProcessesStore } from '@/stores/processes';
 import { useMachinesStore } from '@/stores/machines';
 import { useSettingsStore } from '@/stores/settings';
 
+const props = defineProps({
+    result_id: {
+        type: Number,
+        default: undefined,
+    }
+})
+
 const areasStore = useAreasStore();
 
 // Slide information
@@ -27,7 +34,15 @@ const result_stats = ref({})
 const results = ref()
 
 const get_results = async () => {
-    const optimize_result = await get_request('optimize');
+    let route = undefined;
+    if (props.result_id != undefined) {
+        route = `/output/${props.result_id}`;
+    } else {
+        route = 'optimize'
+    }
+
+    console.log(route)
+    const optimize_result = await get_request(route);
     const json_result = await optimize_result.json();
     results.value = json_result.output;
     total.value = results.value.length;
@@ -108,7 +123,8 @@ onMounted(() => {
         <div class="view-content">
             <div class="view-data">
                 <div class="view-data-header">
-                    <h1>{{ title }}</h1>
+                    <h1 v-if="result_id != undefined">Optimierungslauf {{ result_id }}</h1>
+                    <h1 v-else>{{ title }}</h1>
 
                     <IconButtonDataOverview
                         help_text="Neuen Durchlauf starten"
