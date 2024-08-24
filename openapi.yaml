@@ -27,6 +27,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/input_data'
+  /input/{nr}:
+    get:
+      summary: Loads the input data of the run with the nr `nr` of the current user.
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/input_data'
+  /output/{nr}:
+    get:
+      summary: Loads the output data of the run with the nr `nr` of the current user.
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Failure"
   /new:
     get:
       summary: Starts a new run

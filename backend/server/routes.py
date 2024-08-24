@@ -36,12 +36,24 @@ def runs():
 
     return completed_runs
 
-@routes.get("/run/<int:nr>")
-def run_nr(nr):
+@routes.get("/input/<int:nr>")
+def input(nr):
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, nr)
+
+    return {
+        "data": rm.input.json(),
+        "status": rm.status
+    }
+
+@routes.get("/output/<int:nr>")
+def output(nr):
     sm = SessionManager(session["id"])
     rm = RunManager(sm.session_id, nr)
     
-    return rm.json()
+    return {
+        "output": rm.output
+    }
 
 @routes.get("/new")
 def run():
