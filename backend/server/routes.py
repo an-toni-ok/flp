@@ -1,5 +1,6 @@
 from flask import Blueprint, request, Response, session, current_app, render_template
 
+from server.RedisManager.util import RunStatus
 from server.decorators import validate
 from server.schemas import SCHEMA
 
@@ -21,6 +22,26 @@ def load():
         "data": rm.input.json(),
         "status": rm.status
     }
+
+@routes.get('/runs')
+def runs():
+    sm = SessionManager(session["id"])
+
+    completed_runs = []
+    for id in sm.run_ids:
+        rm = RunManager(None, None, run_id=id)
+        if (rm.status == RunStatus.COMPLETED):
+            run_nr = id.split("_")[1]
+            completed_runs.append(run_nr)
+
+    return completed_runs
+
+@routes.get("/run/<int:nr>")
+def run_nr(nr):
+    sm = SessionManager(session["id"])
+    rm = RunManager(sm.session_id, nr)
+    
+    return rm.json()
 
 @routes.get("/new")
 def run():

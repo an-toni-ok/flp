@@ -58,6 +58,14 @@ class RunManager:
     def status(self, status: RunStatus):
         RedisRunConfig.STATUS.set(self.run_id, status.value)
 
+    def json(self):
+        """Returns the complete data of a run as json.
+
+        Returns:
+            Dict: The input data
+        """
+        return RedisRunConfig.ALL.query(self.run_id)
+
     def start(self):
         """Starts the execution of a run.
 
