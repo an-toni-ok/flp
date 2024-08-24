@@ -199,12 +199,12 @@ class RedisSession:
             Exception: Thrown if the Session isn't set.
 
         Returns:
-            int: The run id of the new run.
+            Array: All run ids associated with the session id.
         """
         global redis
 
         try:
-            run_ids = redis.json().get(session_id, "$.run_ids")
+            run_ids = redis.json().get(session_id, "$.run_ids")[0]
         except TypeError:
             raise SessionIdNotSet(session_id)
 
