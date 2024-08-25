@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onActivated, onMounted } from 'vue';
 
 import { PlanningState, get_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
@@ -33,6 +33,12 @@ const machinesStore = useMachinesStore();
 const settingsStore = useSettingsStore();
 
 const setup = async (load_id) => {
+    // Reset data of history run.
+    areasStore.reset();
+    processesStore.reset();
+    machinesStore.reset();
+    settingsStore.reset();
+
     // Load specified run or current if none is specified.
     let route = undefined;
     if (load_id != undefined) {
