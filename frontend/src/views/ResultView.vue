@@ -41,7 +41,6 @@ const get_results = async () => {
         route = 'optimize'
     }
 
-    console.log(route)
     const optimize_result = await get_request(route);
     const json_result = await optimize_result.json();
     results.value = json_result.output;
