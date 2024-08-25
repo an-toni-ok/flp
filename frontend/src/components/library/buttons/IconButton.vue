@@ -63,14 +63,9 @@ buttons is in src/assets/main.css.
     border: 1px solid var(--color-border);
 }
 
-.icon-wrapper {
-    width: 1.125rem;
-    height: 1.125rem;
-}
-
 .icon-wrapper > :deep(svg) {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1rem;
+    height: 1rem;
 }
 
 .icon-button-wide {
