@@ -12,6 +12,10 @@ const props = defineProps({
     wide: {
         type: Boolean,
         default: false,
+    },
+    borders: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -24,6 +28,7 @@ defineEmits(['click']);
         class="icon-button"
         :class="[
             'icon-button',
+            borders ? 'icon-button-borders' : '',
             'tooltip-pos-' + tooltipPosition, 
             'tooltip-align-' + tooltipAlignment,
             wide ? 'icon-button-wide' : ''
@@ -51,6 +56,11 @@ buttons is in src/assets/main.css.
     width: 2.5rem;
     height: 2.5rem;
     padding: 0.75rem;
+    border: none;
+}
+
+.icon-button-borders {
+    border: 1px solid var(--color-border);
 }
 
 .icon-wrapper {
@@ -58,7 +68,7 @@ buttons is in src/assets/main.css.
     height: 1.125rem;
 }
 
-.icon-wrapper > * {
+.icon-wrapper > :deep(svg) {
     width: 1.125rem;
     height: 1.125rem;
 }
@@ -75,9 +85,12 @@ buttons is in src/assets/main.css.
 
 .icon-button:focus {
     outline: none;
-    border-color: var(--color-text-primary);
     color: var(--color-text-primary);
     z-index: 1;
+}
+
+.icon-button-borders:focus {
+    border-color: var(--color-text-primary);
 }
 
 .icon-button::after {
