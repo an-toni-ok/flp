@@ -1,23 +1,33 @@
 # syntax=docker/dockerfile:1
 
-# Build the frontend static files.
-FROM node:20.17 as build-stage
-
-WORKDIR /frontend
-
-COPY frontend .
-
-RUN npm install
-RUN npm run build
-
-# Setup the backend server
-FROM python:3.10-slim-buster
+# Install the backend requirements
+# This is done here so that it only needs to run again
+# if the requirements change.
+FROM python:3.10-slim-buster AS python-prep
 
 WORKDIR /backend
 
 # Install the backend requirements
 COPY backend/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
+
+# Install the optimization requirements
+COPY optimization/requirements.txt ./server/optimization/requirements.txt
+RUN pip3 install -r server/optimization/requirements.txt
+
+# Build the frontend static files.
+FROM node:20.17 AS build-stage
+
+WORKDIR /frontend
+
+COPY frontend/package.json ./package.json
+RUN npm install
+
+COPY frontend .
+RUN npm run build
+
+# Setup the backend server
+FROM python-prep
 
 # Copy the backend code
 COPY backend/server ./server
@@ -33,9 +43,6 @@ COPY --from=build-stage /frontend/dist/assets/index*.css server/static/index.css
 # server the package needs to be present for everything to
 # workd
 COPY optimization/ ./server/optimization
-
-# Install the optimization requirements
-RUN pip3 install -r server/optimization/requirements.txt
 
 # Expose the port
 EXPOSE 5000
