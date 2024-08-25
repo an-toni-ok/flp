@@ -29,7 +29,14 @@ paths:
                 $ref: '#/components/schemas/input_data'
   /input/{nr}:
     get:
-      summary: Loads the input data of the run with the nr `nr` of the current user.
+      summary: Loads the input data of the specified nr.
+      parameters:
+        - name: nr
+          in: path
+          description: Run nr
+          required: true
+          schema: 
+            type: integer
       responses:
         200:
           description: "OK"
@@ -39,7 +46,14 @@ paths:
                 $ref: '#/components/schemas/input_data'
   /output/{nr}:
     get:
-      summary: Loads the output data of the run with the nr `nr` of the current user.
+      summary: Loads the output data of the specified nr.
+      parameters:
+        - name: nr
+          in: path
+          description: Run nr
+          required: true
+          schema: 
+            type: integer
       responses:
         200:
           description: "OK"
@@ -51,6 +65,16 @@ paths:
       responses:
         200:
           description: "OK"
+  /runs:
+    get:
+      summary: Returns the users runs.
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/run_data_list'
   /area:
     post:
       summary: Add an array of areas.
@@ -224,42 +248,58 @@ components:
         hourly_operator_cost:
           type: number
 
+    input:
+      type: object
+      properties:
+        areas:
+          type: array
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/area"
+        restricted_areas:
+          type: array
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/area"
+        production_steps:
+          type: array
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/production_step"
+        machines:
+          type: array
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/machine"
+        technologies: 
+          type: array
+          minItems: 0
+          items: 
+            type: string
+        objectives:
+          $ref: "#/components/schemas/objectives"
+        target_cycle_time:
+          type: number
+        hourly_operator_cost:
+          type: number
+
     input_data:
       type: object
       properties:
         status:
           type: string
         data:
-          type: object
-          properties:
-            areas:
-              type: array
-              minItems: 0
-              items:
-                $ref: "#/components/schemas/area"
-            restricted_areas:
-              type: array
-              minItems: 0
-              items:
-                $ref: "#/components/schemas/area"
-            production_steps:
-              type: array
-              minItems: 0
-              items:
-                $ref: "#/components/schemas/production_step"
-            machines:
-              type: array
-              minItems: 0
-              items:
-                $ref: "#/components/schemas/machine"
-            technologies: 
-              type: array
-              minItems: 0
-              items: 
-                type: string
-            objectives:
-              $ref: "#/components/schemas/objectives"
-            target_cycle_time:
-              type: number
-            hourly_operator_cost:
-              type: number
+          $ref: "#/components/schemas/input"
+    
+    run_data_list:
+      type: array
+      minItems: 0
+      items:
+        type: object
+        properties:
+          status:
+            type: string
+          nr:
+            type: string
+          input:
+            $ref: "#/components/schemas/input"

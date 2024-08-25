@@ -27,14 +27,17 @@ def load():
 def runs():
     sm = SessionManager(session["id"])
 
-    completed_runs = []
+    run_list = []
     for id in sm.run_ids:
         rm = RunManager(None, None, run_id=id)
-        if (rm.status == RunStatus.COMPLETED):
-            run_nr = id.split("_")[1]
-            completed_runs.append(run_nr)
+        run_nr = id.split("_")[1]
+        run_list.append({
+            "nr": run_nr,
+            "status": rm.status,
+            "input": rm.input.json()
+        })
 
-    return completed_runs
+    return run_list
 
 @routes.get("/input/<int:nr>")
 def input(nr):
