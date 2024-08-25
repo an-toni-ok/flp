@@ -103,6 +103,30 @@ export class PlanningState {
   }
 }
 
+export class RunStatus {
+  constructor(status) {
+    this.state = undefined
+    switch (status) {
+      case 'INPUT':
+        this.state = 'Eingabe'
+        break
+      case 'RUNNING':
+        this.state = 'Laufend'
+        break
+      case 'COMPLETED':
+        this.state = 'Abgeschlossen'
+        break
+      case 'ERROR':
+        this.state = 'Fehler'
+        break
+    }
+  }
+
+  toString() {
+    return `${this.state}`
+  }
+}
+
 export function post_request(route, data) {
   let request_data = {
     method: 'POST',
