@@ -95,4 +95,9 @@ const scroll_start = "8.5rem";
 .option-container:last-child > :deep(.icon-button) {
     border-bottom: none;
 }
+
+.option-container:last-child > .option-text:focus,
+.option-container:last-child > :deep(.icon-button:focus) {
+    border-bottom: 1px solid var(--color-text-primary);
+}
 </style>
