@@ -31,12 +31,12 @@ const machinesStore = useMachinesStore();
         <td>{{ machine.additional_machine_time }}</td>
         <td>{{ machine.x_dimension }}</td>
         <td>{{ machine.y_dimension }}</td>
-        <td>
+        <td class="reduce-height">
             <ExpandableText 
                 help_text="Show all technologies"
                 :text="machine.technologies.join(', ')" />
         </td>
-        <td v-if="show_actions" class="center">
+        <td v-if="show_actions" class="center reduce-height">
             <IconButton 
                 text="Bearbeiten"
                 :borders="false"

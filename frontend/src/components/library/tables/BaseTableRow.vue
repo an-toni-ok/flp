@@ -33,7 +33,7 @@ tr > :deep(th) {
     text-align: center;
 }
 
-.actions, .technologies {
+tr > :deep(.reduce-height) {
     padding-block: 0.25rem;
 }
 

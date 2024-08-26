@@ -27,7 +27,7 @@ const processesStore = useProcessesStore();
         <td>{{ process.technology }}</td>
         <td>{{ process.machine_time }}</td>
         <td>{{ process.manual_time }}</td>
-        <td v-if="show_actions" class="center">
+        <td v-if="show_actions" class="center reduce-height">
             <IconButton 
                 text="Bearbeiten"
                 :borders="false"
