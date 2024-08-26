@@ -13,7 +13,8 @@ const props = defineProps({
 
 <template>
     <tr>
-        <slot name="data"></slot>
+        <slot></slot>
+        <!-- <slot name="data"></slot>
         <td class="technologies">
             <slot name="tech"></slot>
         </td>
@@ -21,7 +22,7 @@ const props = defineProps({
             <div class="center">
                 <slot name="actions"></slot>
             </div>
-        </td>
+        </td> -->
     </tr>
 </template>
 

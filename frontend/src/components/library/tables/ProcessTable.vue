@@ -1,6 +1,6 @@
 <script setup>
-import { useMachinesStore } from '@/stores/machines';
-import { BaseTable, BaseTableRow, MachineTableRow } from '@/components/library/tables';
+import { useProcessesStore } from '@/stores/processes';
+import { BaseTable, BaseTableHeading, ProcessTableRow, BaseTableRow } from '@/components/library/tables';
 
 const props = defineProps({
     scroll_start: {
@@ -13,34 +13,30 @@ const props = defineProps({
     }
 })
 
-const machinesStore = useMachinesStore();
+const processesStore = useProcessesStore();
 
 </script>
 
 <template>
     <BaseTable 
-        :is_empty="machinesStore.machines.length == 0"
+        :is_empty="processesStore.processes.length == 0"
         :scroll_start="scroll_start">
         <template v-slot:table-head>
             <!-- Never show action icons for the header -->
             <BaseTableRow>
-                <th>Name</th>
-                <th>Stundensatz</th>
-                <th>Investitionskosten</th>
-                <th>Maschinenzeit</th>
-                <th>Breite</th>
-                <th>Länge</th>
-                <th>Technologien</th>
+                <th>Technologie</th>
+                <th>Extrazeit Maschine</th>
+                <th>Extrazeit Manuell</th>
                 <th v-if="show_actions">Aktionen</th>
             </BaseTableRow>
         </template>
         <template v-slot:table-rows>
-            <MachineTableRow
-                v-for="(machine, index) in machinesStore.machines"
+            <ProcessTableRow
+                v-for="(process, index) in processesStore.processes"
                 :show_actions="show_actions"
-                :machine="machine"
+                :process="process"
                 :index="index">
-            </MachineTableRow>
+            </ProcessTableRow>
         </template>
     </BaseTable>
 </template>
