@@ -53,6 +53,13 @@ const scroll_start = "8.5rem";
     width: var(--input-width);
 }
 
+.option-list {
+    /* 
+    Without these two pixels an overflow is caused regardless
+    of the height of the container. do not remove! */
+    padding: 1px 0;
+}
+
 .option-display > :deep(.scrollbar) {
     border-top: none;
 }
