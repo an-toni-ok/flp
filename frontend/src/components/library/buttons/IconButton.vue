@@ -13,6 +13,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    small: {
+        type: Boolean,
+        default: false,
+    },
     borders: {
         type: Boolean,
         default: true
@@ -25,12 +29,12 @@ defineEmits(['click']);
 <template>
     <button
         @click="$emit('click')"
-        class="icon-button"
         :class="[
             'icon-button',
             borders ? 'icon-button-borders' : '',
             'tooltip-pos-' + tooltipPosition, 
-            wide ? 'icon-button-wide' : ''
+            wide ? 'icon-button-wide' : '',
+            small ? 'icon-button-small' : ''
         ]"
         :aria-label="text"
         :data-tool-tip="text" >
@@ -75,6 +79,17 @@ buttons is in src/assets/main.css.
     width: 7rem;
     display: flex;
     justify-content: flex-end;
+}
+
+.icon-button-small {
+    width: 2rem;
+    height: 2rem;
+    padding: 0.5rem;
+}
+
+.icon-button-small > .icon-wrapper > :deep(svg) {
+    width: 1rem;
+    height: 1rem;
 }
 
 .icon-button:focus {
