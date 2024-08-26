@@ -30,7 +30,6 @@ defineEmits(['click']);
             'icon-button',
             borders ? 'icon-button-borders' : '',
             'tooltip-pos-' + tooltipPosition, 
-            'tooltip-align-' + tooltipAlignment,
             wide ? 'icon-button-wide' : ''
         ]"
         :aria-label="text"
