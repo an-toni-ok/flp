@@ -58,8 +58,11 @@ buttons is in src/assets/main.css.
     justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
-    padding: 0.75rem;
     border: none;
+}
+
+.icon-button:hover {
+    cursor: pointer;
 }
 
 .icon-button-borders {
@@ -84,7 +87,6 @@ buttons is in src/assets/main.css.
 .icon-button-small {
     width: 2rem;
     height: 2rem;
-    padding: 0.5rem;
 }
 
 .icon-button-small > .icon-wrapper > :deep(svg) {
