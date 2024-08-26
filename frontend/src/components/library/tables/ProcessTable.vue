@@ -1,6 +1,6 @@
 <script setup>
 import { useProcessesStore } from '@/stores/processes';
-import { BaseTable, BaseTableHeading, ProcessTableRow, BaseTableRow } from '@/components/library/tables';
+import { BaseTable, ProcessTableRow, BaseTableRow } from '@/components/library/tables';
 
 const props = defineProps({
     scroll_start: {
