@@ -1,4 +1,5 @@
 export { default as InputDropdownHeader } from './InputDropdownHeader.vue'
+export { default as InputDropdown } from './InputDropdown.vue'
 export { default as InputError } from './InputError.vue'
 export { default as InputLabel } from './InputLabel.vue'
 export { default as InputNumber } from './InputNumber.vue'
