@@ -27,7 +27,7 @@ const props = defineProps({
     --scrollbar-width: 6px;
     overflow-y: auto;
     overflow-x: hidden;
-    width: 100%;
+    width: fit-content;
     border-bottom: 1px solid var(--color-border);
 }
 

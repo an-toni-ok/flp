@@ -41,7 +41,6 @@ table {
     padding: var(--table-padding);
     border-collapse: collapse;
     border-spacing: 0;
-    width: 100%;
 }
 
 table > :deep(tr:not(:first-child)) {
