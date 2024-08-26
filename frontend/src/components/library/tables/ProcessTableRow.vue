@@ -27,42 +27,44 @@ const processesStore = useProcessesStore();
         <td>{{ process.technology }}</td>
         <td>{{ process.machine_time }}</td>
         <td>{{ process.manual_time }}</td>
-        <td v-if="show_actions" class="center reduce-height">
-            <IconButton 
-                text="Bearbeiten"
-                :borders="false"
-                tooltip-position="top"
-                @click="processesStore.edit(index)">
-                <IconEdit />
-            </IconButton>
-            <IconButton
-                text="Nach oben verschieben"
-                :borders="false"
-                tooltip-position="top"
-                @click="processesStore.move(index, false)">
-                <IconMoveDown />
-            </IconButton>
-            <IconButton
-                text="Nach unten verschieben"
-                :borders="false"
-                tooltip-position="top"
-                @click="processesStore.move(index, true)">
-                <IconMoveUp />
-            </IconButton>
-            <IconButton
-                text="Duplizieren"
-                :borders="false"
-                tooltip-position="top"
-                @click="processesStore.clone(index)">
-                <IconDuplicate />
-            </IconButton>
-            <IconButton
-                text="Löschen"
-                :borders="false"
-                tooltip-position="top"
-                @click="processesStore.del(index)">
-                <IconDelete />
-            </IconButton>
+        <td v-if="show_actions" class="reduce-height">
+            <div class="center">
+                <IconButton 
+                    text="Bearbeiten"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="processesStore.edit(index)">
+                    <IconEdit />
+                </IconButton>
+                <IconButton
+                    text="Nach oben verschieben"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="processesStore.move(index, false)">
+                    <IconMoveDown />
+                </IconButton>
+                <IconButton
+                    text="Nach unten verschieben"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="processesStore.move(index, true)">
+                    <IconMoveUp />
+                </IconButton>
+                <IconButton
+                    text="Duplizieren"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="processesStore.clone(index)">
+                    <IconDuplicate />
+                </IconButton>
+                <IconButton
+                    text="Löschen"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="processesStore.del(index)">
+                    <IconDelete />
+                </IconButton>
+            </div>
         </td>
     </BaseTableRow>
 </template>

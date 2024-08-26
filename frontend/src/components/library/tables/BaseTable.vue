@@ -31,14 +31,9 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.table-display {
-    --table-padding: 0.5rem 1rem;
-}
-
 table {
     border: 1px solid var(--color-border);
     border-bottom: none;
-    padding: var(--table-padding);
     border-collapse: collapse;
     border-spacing: 0;
 }

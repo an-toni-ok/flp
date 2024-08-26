@@ -14,22 +14,13 @@ const props = defineProps({
 <template>
     <tr>
         <slot></slot>
-        <!-- <slot name="data"></slot>
-        <td class="technologies">
-            <slot name="tech"></slot>
-        </td>
-        <td v-if="show_actions" class="actions">
-            <div class="center">
-                <slot name="actions"></slot>
-            </div>
-        </td> -->
     </tr>
 </template>
 
 <style scoped>
 tr > :deep(td),
 tr > :deep(th) {
-    padding: 0.75rem 0.5rem;
+    padding: 0.75rem 0.625rem;
     text-align: center;
 }
 
@@ -39,15 +30,14 @@ tr > :deep(.reduce-height) {
 
 tr > :deep(td:first-child),
 tr > :deep(th:first-child) {
-    padding-inline: 1rem;
+    padding-left: 1rem;
+}
+tr > :deep(td:last-child),
+tr > :deep(th:last-child) {
+    padding-right: 1rem;
 }
 
 tr > :deep(th) {
     font-weight: 700;
-}
-
-.center {
-    display: flex;
-    justify-content: center;
 }
 </style>

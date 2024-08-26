@@ -36,28 +36,30 @@ const machinesStore = useMachinesStore();
                 help_text="Show all technologies"
                 :text="machine.technologies.join(', ')" />
         </td>
-        <td v-if="show_actions" class="center reduce-height">
-            <IconButton 
-                text="Bearbeiten"
-                :borders="false"
-                tooltip-position="top"
-                @click="machinesStore.edit(index)">
-                <IconEdit />
-            </IconButton>
-            <IconButton
-                text="Duplizieren"
-                :borders="false"
-                tooltip-position="top"
-                @click="machinesStore.clone(index)">
-                <IconDuplicate />
-            </IconButton>
-            <IconButton
-                text="Löschen"
-                :borders="false"
-                tooltip-position="top"
-                @click="machinesStore.del(index)">
-                <IconDelete />
-            </IconButton>
+        <td v-if="show_actions" class="reduce-height">
+            <div class="center">
+                <IconButton 
+                    text="Bearbeiten"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="machinesStore.edit(index)">
+                    <IconEdit />
+                </IconButton>
+                <IconButton
+                    text="Duplizieren"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="machinesStore.clone(index)">
+                    <IconDuplicate />
+                </IconButton>
+                <IconButton
+                    text="Löschen"
+                    :borders="false"
+                    tooltip-position="top"
+                    @click="machinesStore.del(index)">
+                    <IconDelete />
+                </IconButton>
+            </div>
         </td>
     </BaseTableRow>
 </template>
