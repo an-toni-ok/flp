@@ -88,8 +88,8 @@ buttons is in src/assets/main.css.
 }
 
 .icon-button-small > .icon-wrapper > :deep(svg) {
-    width: 1rem;
-    height: 1rem;
+    width: 0.875rem;
+    height: 0.875rem;
 }
 
 .icon-button:focus {
