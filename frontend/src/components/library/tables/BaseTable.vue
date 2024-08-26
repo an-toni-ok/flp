@@ -36,6 +36,7 @@ table {
     border-bottom: none;
     border-collapse: collapse;
     border-spacing: 0;
+    width: 100%;
 }
 
 table > :deep(tr:not(:first-child)) {
