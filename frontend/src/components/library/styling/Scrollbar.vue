@@ -28,6 +28,7 @@ const props = defineProps({
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
+    border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
 }
 

@@ -34,6 +34,7 @@ const props = defineProps({
 table {
     border: 1px solid var(--color-border);
     border-bottom: none;
+    border-top: none;
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
