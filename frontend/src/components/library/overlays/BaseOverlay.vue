@@ -18,7 +18,10 @@ const text = computed(() => {
 
 <template>
     <div class="overlay">
-        <div class="toggle-icon">
+        <div :class="[
+            'toggle-icon', 
+            opened ? '' : 'toggle-icon-closed'
+            ]">
             <IconButton 
                 :text="text" 
                 tooltip-position="left" 
@@ -29,7 +32,9 @@ const text = computed(() => {
         </div>
         <div :class="['data', opened ? 'data-open' : 'data-closed']">
             <h2 class="overlay-title">{{ title }}</h2>
-            <slot></slot>
+            <div v-if="opened">
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
@@ -58,6 +63,15 @@ const text = computed(() => {
     right: 0;
 }
 
+.toggle-icon > :deep(button > div > svg) {
+    transition: rotate 0.3s ease;
+}
+
+.toggle-icon-closed > :deep(button > div > svg) {
+    rotate: 180deg;
+    transition: rotate 0.3s ease;
+}
+
 .data {
     height: 100%;
     display: flex;
@@ -70,8 +84,10 @@ const text = computed(() => {
 
 .data-open {
     padding: 0 3rem;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    gap: 2rem;
 }
 
 .overlay-title {
