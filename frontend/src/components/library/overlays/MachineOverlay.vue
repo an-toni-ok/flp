@@ -4,7 +4,6 @@ import { useMachinesStore } from '@/stores/machines';
 import { BaseOverlay } from '@/components/library/overlays';
 import { MachineForm } from '@/components/library/forms';
 
-const opened = ref(true);
 const machinesStore = useMachinesStore();
 
 const action_type = computed(() => {
