@@ -1,21 +1,10 @@
 <script setup>
-defineProps(['active'])
-
 import { ref } from 'vue';
-
-import NavLink from './Navbar/NavLink.vue';
-
-import IconLogo from './icons/IconLogo.vue';
-import IconArrowsRight from './icons/IconArrowsRight.vue';
-import IconHistory from './icons/IconHistory.vue';
-import IconInformation from './icons/IconInformation.vue';
-import IconPlanning from './icons/IconPlanning.vue';
-import IconMethods from './icons/IconMethods.vue';
-import IconContact from './icons/IconContact.vue';
-import IconButtonNav from './Buttons/IconButtonNav.vue';
+import { NavLink } from '@/components/library/links';
+import { IconButton } from '@/components/library/buttons'
+import { IconLogo, IconArrowsRight, IconHistory, IconInformation, IconPlanning, IconMethods, IconContact } from '@/components/icons';
 
 const opened = ref(false);
-
 </script>
 
 <template>
@@ -39,13 +28,16 @@ const opened = ref(false);
         </ul>
         <div class="interaction">
             <IconLogo />
-            <IconButtonNav
+            <IconButton
                 @click="opened = !opened" 
                 :class="opened ? 'rotate' : ''"
                 :no-border="true"
-                help_text="Expand the navigation.">
+                text="Expand the navigation."
+                tooltip-position="right"
+                :borders="false"
+                :small="true">
                 <IconArrowsRight />
-            </IconButtonNav>
+            </IconButton>
         </div>
     </nav>
 </template>
@@ -88,7 +80,8 @@ nav {
     align-self: flex-start;
 }
 
-.interaction > svg {
+.interaction > :deep(button) {
     width: 20px;
+    height: 20px;
 }
 </style>
