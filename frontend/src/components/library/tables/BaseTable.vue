@@ -49,5 +49,7 @@ table > :deep(tr:not(:first-child)) {
     border-bottom: none;
     padding: var(--table-padding);
     text-align: center;
+    height: calc(3rem + 2px);
+    line-height: 3rem;
 }
 </style>
