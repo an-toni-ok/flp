@@ -69,6 +69,7 @@ buttons is in src/assets/main.css.
     border: 1px solid var(--color-border);
 }
 
+.icon-wrapper,
 .icon-wrapper > :deep(svg) {
     width: 1rem;
     height: 1rem;
