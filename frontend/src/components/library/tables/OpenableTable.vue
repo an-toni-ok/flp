@@ -7,32 +7,34 @@ const props = defineProps({
     name: {
         type: String,
         required: true,
+    },
+    opened: {
+        type: Boolean,
+        required: true
     }
 });
 
-const model = defineModel({
-    type: Boolean,
-    required: true
-});
+const emits = defineEmits(['click'])
+
 
 const help_text = computed(() => {
-    let state = model.value ? 'schließen' : 'öffnen';
+    let state = props.opened ? 'schließen' : 'öffnen';
     return `Die Tabelle ${props.name} ${state}`;
 })
 </script>
 
 <template>
     <div class="wrapper">
-        <div :class="['header', model ? '' : 'close-header' ]">
+        <div :class="['header', opened ? '' : 'close-header' ]">
             <IconButton 
                 :text="help_text"
                 tooltip-position="bottom"
-                @click="model = !model">
+                @click="$emit('click')">
                 <IconArrowDown />
             </IconButton>
             <h3>{{ name }}</h3>
         </div>
-        <div v-show="model" class="toggleable-table">
+        <div v-show="opened" class="toggleable-table">
             <slot></slot>
         </div>
     </div>
