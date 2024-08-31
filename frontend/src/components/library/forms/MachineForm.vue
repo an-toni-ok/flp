@@ -77,6 +77,7 @@ const del_tech = (tech) => {
                     v-if="machinesStore.input_set_technologies.length > 0"
                     base-id="chosen-tech-"
                     :deleteable="true"
+                    :is_disabled="true"
                     :filtered-options="machinesStore.input_set_technologies"
                     @delete="del_tech" />
             </div>
