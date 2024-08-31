@@ -11,8 +11,8 @@ defineEmits(['next'])
         <div class="tool-area">
             <InputHeading 
                 title="Flächeneingabe" 
-                nr="1"
-                max="4" />
+                :nr="1"
+                :max="4" />
             <IconsDisplay />
             <ZoomDisplay />
         </div>
