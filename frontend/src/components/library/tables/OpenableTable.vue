@@ -19,7 +19,7 @@ const emits = defineEmits(['click'])
 
 const help_text = computed(() => {
     let state = props.opened ? 'schließen' : 'öffnen';
-    return `Die Tabelle ${props.name} ${state}`;
+    return `Tabelle ${props.name} ${state}`;
 })
 </script>
 
@@ -28,7 +28,7 @@ const help_text = computed(() => {
         <div :class="['header', opened ? '' : 'close-header' ]">
             <IconButton 
                 :text="help_text"
-                tooltip-position="bottom"
+                tooltip-position="right"
                 @click="$emit('click')">
                 <IconArrowDown />
             </IconButton>

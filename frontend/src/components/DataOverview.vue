@@ -32,13 +32,13 @@ const toggle_process_table = () => {
         <OpenableTable name="Prozesse" 
             :opened="process_table_open"
             @click="toggle_process_table">
-            <ProcessTable scroll_start="12rem" :show_actions="false" />
+            <ProcessTable scroll_start="12.5rem" :show_actions="false" />
         </OpenableTable>
         
         <OpenableTable name="Maschinen" 
             :opened="machine_table_open"
             @click="toggle_machine_table">
-            <MachineTable scroll_start="15rem" :show_actions="false" />
+            <MachineTable scroll_start="12.5rem" :show_actions="false" />
         </OpenableTable>
     </div>
 </template>
