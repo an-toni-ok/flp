@@ -42,7 +42,7 @@ const emits = defineEmits(['incr', 'decr'])
     </div>
 
     <!-- Stats -->
-    <div class="stats-list" v-if="Object.keys(stats).length != 0">
+    <div class="stats-list" v-if="stats != undefined">
         <StatDisplay :text="props.stats.cycle_time" 
             info_name="Zykluszeit">
             <IconCycleTime />
