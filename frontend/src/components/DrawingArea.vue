@@ -4,8 +4,7 @@ import { useToolbarStore } from '@/stores/toolbar';
 import { useAreasStore } from '@/stores/areas';
 import { Tool, DrawingShape, DrawingState, AreaCorner, AreaBorder } from '@/util';
 
-import DrawingInput from '@/components/DrawingArea/DrawingInput.vue';
-import AreaPlan from './DrawingArea/AreaPlan.vue';
+import { DrawingInput, AreaPlan } from '@/components/library/drawing';
 
 const props = defineProps({
     onlyMachinesMovable: {
