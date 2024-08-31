@@ -15,6 +15,10 @@ const props = defineProps({
     filteredOptions: {
         type: Array,
         required: true
+    },
+    is_disabled: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -36,12 +40,15 @@ const scroll_start = "8.5rem";
                         text="Entfernen" >
                         <IconRemove />
                     </IconButton>      
-                    <button 
+                    <button v-if="!is_disabled"
                         class="option-text"
                         @click="$emit('selected', option)"
                         :data-option="option + ' auswählen'" >
                         <p>{{ option }}</p>
-                    </button>      
+                    </button>
+                    <div v-if="is_disabled" class="option-text">
+                        <p>{{ option }}</p>
+                    </div>
                 </li>
             </ul>
         </Scrollbar>
@@ -75,6 +82,7 @@ const scroll_start = "8.5rem";
 
 .option-text {
     position: relative;
+    width: 100%;
     height: var(--input-height);
     font-size: var(--font-size);
     border: 1px solid var(--color-border);
@@ -83,11 +91,11 @@ const scroll_start = "8.5rem";
     margin-left: -1px;
 }
 
-.option-text:hover {
+.option-container > button:hover {
     cursor: pointer;
 }
 
-.option-text:focus {
+.option-container > button:focus {
     outline: none;
     border-color: var(--color-text-primary);
     z-index: 1;
