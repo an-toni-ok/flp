@@ -49,6 +49,9 @@ const text = computed(() => {
     flex-direction: column;
     padding: 2rem 0.5rem;
     border-left: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    /* Make sure the overlay is over the edit button when it's focused. */
+    z-index: 2; 
 }
 
 .toggle-icon {
