@@ -12,7 +12,7 @@ const props = defineProps({
 
 <template>
     <BaseList 
-        scroll_start="25rem"
+        scroll_start="calc(100% - 8rem)"
         empty_text="Keine Maschinen wurden erstellt"
         :is_empty="machines.length == 0"
         width="18rem">
