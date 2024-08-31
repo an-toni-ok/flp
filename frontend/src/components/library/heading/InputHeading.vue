@@ -18,7 +18,7 @@ const props = defineProps({
 <template>
     <div class="input-heading">
         <h1>{{ title}}</h1>
-        <p><span>{{ nr }}</span> von <span>{{ max }}</span></p>
+        <p>{{ nr }} von {{ max }}</p>
     </div>
 </template>
 
@@ -44,5 +44,6 @@ const props = defineProps({
     line-height: 1;
     font-size: 0.8rem;
     text-wrap: nowrap;
+    word-wrap: none;
 }
 </style>
