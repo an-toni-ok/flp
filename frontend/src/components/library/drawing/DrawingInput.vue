@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import AreaLabel from '@/components/DrawingArea/AreaLabel.vue';
+import { AreaLabel } from '@/components/library/drawing';
 import { DrawingShape } from '@/util';
 import { useAreasStore } from '@/stores/areas';
 
