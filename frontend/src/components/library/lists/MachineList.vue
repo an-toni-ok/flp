@@ -1,6 +1,7 @@
 <script setup>
 import { BaseList } from '@/components/library/lists';
 import { IconOperator } from '@/components/icons';
+import { computed } from 'vue';
 
 const props = defineProps({
     machines: {
@@ -8,13 +9,17 @@ const props = defineProps({
         default: [],
     }
 })
+
+const is_machines_empty = computed(() => {
+    return (props.machines.length == 0)
+})
 </script>
 
 <template>
     <BaseList 
-        scroll_start="calc(100% - 8rem)"
+        scroll_start="calc(100vh - 17rem)"
         empty_text="Keine Maschinen wurden erstellt"
-        :is_empty="machines.length == 0"
+        :is_empty="is_machines_empty"
         width="18rem">
         <div v-for="machine in machines" class="machine" >
             <p class="machine-number">{{ machine.id + 1 }}</p>
