@@ -3,9 +3,8 @@ import { usePlanningStore } from '@/stores/planning';
 import { useAreasStore } from '@/stores/areas';
 import { PlanningState, post_request } from '@/util';
 
-import Toolbar from '@/components/Toolbar.vue'
-import AreaOverlay from '@/components/Overlays/AreaOverlay.vue';
-import DrawingArea from '@/components/DrawingArea.vue';
+import { Toolbar } from '@/components/library/toolbar';
+import { DrawingArea } from '@/components';
 
 const planningStore = usePlanningStore();
 const areasStore = useAreasStore();

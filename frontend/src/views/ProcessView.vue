@@ -1,16 +1,14 @@
 <script setup>
 import { PlanningState, post_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
+import { useProcessesStore } from '@/stores/processes';
 import LayoutSplitView from './LayoutSplitView.vue';
 
-import ProcessOverlay from '@/components/Overlays/ProcessOverlay.vue';
-import ToolIconButton from '@/components/Toolbar/ToolIconButton.vue';
-import IconPlus from '@/components/icons/IconPlus.vue';
-
-import { useProcessesStore } from '@/stores/processes';
-import ProcessTable from '@/components/Tables/ProcessTable.vue';
-import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
-import IconRemove from '@/components/icons/IconRemove.vue';
+import { ProcessOverlay } from '@/components/library/overlays';
+import { ProcessTable } from '@/components/library/tables';
+import { IconButton } from '@/components/library/buttons';
+import { IconPlus, IconRemove } from '@/components/icons';
+import { AreaPlanUnchangable } from '@/components/library/drawing';
 
 const processesStore = useProcessesStore();
 const planningStore = usePlanningStore();
@@ -32,18 +30,18 @@ const progress = async () => {
         @prev="planningStore.setState(PlanningState.Areas)"
         @next="progress" >
         <template v-slot:header-buttons>
-            <ToolIconButton 
-                help_text="Add a process"
+            <IconButton 
+                text="Prozessschritt erstellen"
                 @click="processesStore.create"
                 v-show="!processesStore.inputOverlayOpened">
                 <IconPlus />
-            </ToolIconButton>
-            <ToolIconButton 
-                help_text="Close the process input"
+            </IconButton>
+            <IconButton 
+                text="Eingabedialog schließen"
                 @click="processesStore.inputOverlayOpened = false"
                 v-show="processesStore.inputOverlayOpened">
                 <IconRemove />
-            </ToolIconButton>
+            </IconButton>
         </template>
         <template v-slot:table>
             <ProcessTable />

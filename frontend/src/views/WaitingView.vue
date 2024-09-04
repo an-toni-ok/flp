@@ -3,7 +3,7 @@ import { computed, onUnmounted, ref } from 'vue';
 import { PlanningState, get_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 
-import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
+import { AreaPlanUnchangable } from '@/components/library/drawing';
 
 const planningStore = usePlanningStore()
 

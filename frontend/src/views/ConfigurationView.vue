@@ -3,10 +3,10 @@ import { PlanningState, post_request } from '@/util';
 import { usePlanningStore } from '@/stores/planning';
 import { useSettingsStore } from '@/stores/settings';
 
-import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
-import ConfigurationForm from '@/components/ConfigurationForm.vue';
-import DataOverview from '@/components/DataOverview.vue'
-import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
+import { ProgressButton } from '@/components/library/buttons';
+import { ConfigurationForm } from '@/components/library/forms';
+import { DataOverview } from '@/components';
+import { AreaPlanUnchangable } from '@/components/library/drawing';
 
 // Slide information
 const title = "Optimierungkonfiguration";
@@ -43,7 +43,7 @@ const complete = async () => {
                 <ConfigurationForm />
                 <DataOverview />
             </div>
-            <ProgressButtons
+            <ProgressButton
                 @prev="planningStore.setState(PlanningState.Machines)"
                 @next="complete"
                 :complete="true" />

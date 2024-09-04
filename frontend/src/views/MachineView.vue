@@ -4,13 +4,11 @@ import { usePlanningStore } from '@/stores/planning';
 import { useMachinesStore } from '@/stores/machines';
 
 import LayoutSplitView from './LayoutSplitView.vue';
-import MachineTable from '@/components/Tables/MachineTable.vue';
-import MachineOverlay from '@/components/Overlays/MachineOverlay.vue';
-import ToolIconButton from '@/components/Toolbar/ToolIconButton.vue';
-import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
-
-import IconPlus from '@/components/icons/IconPlus.vue';
-import IconRemove from '@/components/icons/IconRemove.vue';
+import { MachineTable } from '@/components/library/tables';
+import { MachineOverlay } from '@/components/library/overlays';
+import { IconButton } from '@/components/library/buttons';
+import { AreaPlanUnchangable } from '@/components/library/drawing';
+import { IconPlus, IconRemove } from '@/components/icons';
 
 const machinesStore = useMachinesStore();
 const planningStore = usePlanningStore();
@@ -32,18 +30,18 @@ const progress = async () => {
         @prev="planningStore.setState(PlanningState.Processes)"
         @next="progress" >
         <template v-slot:header-buttons>
-            <ToolIconButton 
-                help_text="Add a machine" 
+            <IconButton 
+                text="Maschine erstellen" 
                 v-show="!machinesStore.input_overlay_opened"
                 @click="machinesStore.create">
                 <IconPlus />
-            </ToolIconButton>
-            <ToolIconButton 
-                help_text="Close the machine input"
+            </IconButton>
+            <IconButton 
+                text="Eingabedialog schließen"
                 v-show="machinesStore.input_overlay_opened"
                 @click="machinesStore.input_overlay_opened = false">
                 <IconRemove />
-            </ToolIconButton>
+            </IconButton>
         </template>
         <template v-slot:table>
             <MachineTable />

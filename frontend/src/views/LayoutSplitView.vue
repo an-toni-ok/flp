@@ -1,8 +1,6 @@
 <script setup>
-import { PlanningState } from '@/util';
-import ProgressButtons from '@/components/Buttons/ProgressButtons.vue';
-
-import { usePlanningStore } from '@/stores/planning';
+import { ProgressButton } from '@/components/library/buttons';
+import { InputHeading } from '@/components/library/heading';
 
 const props = defineProps({
     title: {
@@ -20,8 +18,6 @@ const props = defineProps({
 })
 
 defineEmits(['prev', 'next'])
-
-const planningStore = usePlanningStore();
 </script>
 
 <template>
@@ -29,16 +25,20 @@ const planningStore = usePlanningStore();
         <div class="view-content">
             <div class="view-data">
                 <div class="view-data-header">
-                    <div class="view-data-name">
+                    <!-- <div class="view-data-name">
                         <h1>{{ title }}</h1>
                         <p>{{ number }} von {{ totalNumber }}</p>
-                    </div>
+                    </div> -->
+                    <InputHeading 
+                        :title="title" 
+                        :nr="number"
+                        :max="totalNumber"/>
                     <slot name="header-buttons"></slot>
                 </div>
 
                 <slot name="table"></slot>
             </div>
-            <ProgressButtons
+            <ProgressButton
                 @prev="$emit('prev')"
                 @next="$emit('next')" />
         </div>
@@ -73,6 +73,7 @@ const planningStore = usePlanningStore();
     display: flex;
     justify-content: space-between;
     margin-bottom: calc(var(--input-height) + var(--tool-area-padding));
+    gap: 4rem;
 }
 
 .view-data-name {

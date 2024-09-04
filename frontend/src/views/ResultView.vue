@@ -1,19 +1,18 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useAreasStore } from '@/stores/areas';
-
-import MachineList from '@/components/Result/MachineList.vue';
-import ResultStats from '@/components/Result/ResultStats.vue';
-import ResultsDisplay from '@/components/Result/ResultsDisplay.vue'
-import IconButtonDataOverview from '@/components/Buttons/IconButtonDataOverview.vue';
-import DrawingArea from '@/components/DrawingArea.vue';
 import { DrawingShape, PlanningState, get_request } from '@/util';
-import ZoomDisplay from '@/components/Toolbar/ZoomDisplay.vue';
-import IconPlus from '@/components/icons/IconPlus.vue';
+import { useAreasStore } from '@/stores/areas';
 import { usePlanningStore } from '@/stores/planning';
 import { useProcessesStore } from '@/stores/processes';
 import { useMachinesStore } from '@/stores/machines';
 import { useSettingsStore } from '@/stores/settings';
+
+import { MachineList } from '@/components/library/lists';
+import { ResultStatDisplay } from '@/components/library/util';
+import { IconButton } from '@/components/library/buttons';
+import { DrawingArea } from '@/components';
+import { ZoomDisplay } from '@/components/library/toolbar';
+import { IconPlus } from '@/components/icons';
 
 const props = defineProps({
     result_id: {
@@ -125,25 +124,22 @@ onMounted(() => {
                     <h1 v-if="result_id != undefined">Optimierungslauf {{ result_id }}</h1>
                     <h1 v-else>{{ title }}</h1>
 
-                    <IconButtonDataOverview
-                        help_text="Neuen Durchlauf starten"
+                    <IconButton
+                        text="Neuen Durchlauf starten"
                         @click="restart">
                         <IconPlus />
-                    </IconButtonDataOverview>
+                    </IconButton>
                 </div>
                 <!-- Main content -->
-                <div class="align-together">
-                    <ResultsDisplay 
-                        v-model:number="number"
-                        :total="total"
-                        @incr="incr"
-                        @decr="decr"
-                        :stats="result_stats" />
-                    <ResultStats
-                        :stats="result_stats"/>
-                </div>
+                <ResultStatDisplay 
+                    :number="number"
+                    :total="total"
+                    :stats="stats"
+                    @incr="incr"
+                    @decr="decr" />
                 <MachineList
-                    :machines="result_machine_list" />
+                    :machines="result_machine_list"
+                    width="100%" />
             </div>
         </div>
         <div class="side-content">
@@ -202,12 +198,6 @@ onMounted(() => {
 .view-data-header > p {
     line-height: 1;
     font-size: 0.8rem;
-}
-
-.align-together {
-    display: flex;
-    flex-direction: column;
-    margin-left: 1px;
 }
 
 .side-content {
