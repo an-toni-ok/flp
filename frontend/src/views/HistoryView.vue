@@ -1,7 +1,7 @@
 <script setup>
-import DataOverview from '@/components/DataOverview.vue'
-import AreaPlanUnchangable from '@/components/DrawingArea/AreaPlanUnchangable.vue';
-import RunList from '@/components/History/RunList.vue';
+import { DataOverview } from '@/components';
+import { AreaPlanUnchangable } from '@/components/library/drawing';
+import { RunList } from '@/components/library/lists';
 import { useAreasStore } from '@/stores/areas';
 import { useProcessesStore } from '@/stores/processes';
 import { useMachinesStore } from '@/stores/machines';
