@@ -44,7 +44,7 @@ a:focus {
 */
 button {
     width: 100%;
-    height: var(--input-height);
+    /* height: var(--input-height); */
     font-size: var(--font-size);
     line-height: 1;
     padding: 0 calc((var(--input-height) - var(--font-size)) / 2);
