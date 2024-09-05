@@ -17,10 +17,10 @@ defineEmits(['click'])
 
 <template>
     <BaseList 
-        scroll_start="25rem"
+        scroll_start="calc(100vh - 11rem)"
         empty_text="Keine Durchläufe wurden erstellt"
         :is_empty="run_list.length == 0"
-        width="18rem">
+        width="22rem">
         <button 
             v-for="(run, index) in run_list"
             class="run"
