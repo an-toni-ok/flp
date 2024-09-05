@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { DrawingShape, PlanningState, get_request } from '@/util';
 import { useAreasStore } from '@/stores/areas';
 import { usePlanningStore } from '@/stores/planning';
@@ -22,6 +23,7 @@ const props = defineProps({
 })
 
 const areasStore = useAreasStore();
+const router = useRouter();
 
 // Slide information
 const title = "Optimierungsergebnisse";
@@ -109,6 +111,7 @@ const restart = async () => {
 
     const planningStore = usePlanningStore();
     planningStore.setState(PlanningState.Areas);
+    router.push('/');
 }
 
 onMounted(() => {
