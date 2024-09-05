@@ -2,6 +2,17 @@
 import { ref } from 'vue';
 import { MachineTable, ProcessTable, OpenableTable } from '@/components/library/tables';
 
+const props = defineProps({
+    bottom_border_only: {
+        type: Boolean,
+        default: false
+    },
+    heading: {
+        type: Boolean,
+        default: true
+    }
+})
+
 const machine_table_open = ref(false)
 const process_table_open = ref(false)
 
@@ -26,8 +37,8 @@ const toggle_process_table = () => {
 </script>
 
 <template>
-    <div class="tables">
-        <h2 class="tables-heading">Datenübersicht</h2>
+    <div :class="['tables', bottom_border_only ? 'bottom-border-only' : '']">
+        <h2 v-if="heading" class="tables-heading">Datenübersicht </h2>
 
         <OpenableTable name="Prozesse" 
             :opened="process_table_open"
@@ -46,8 +57,13 @@ const toggle_process_table = () => {
 <style scoped>
 .tables {
     padding: 1.5rem;
-    border: 1px solid var(--color-border);
     height: fit-content;
+    border: 1px solid var(--color-border);
+}
+
+.bottom-border-only {
+    border: none;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .tables-heading {
