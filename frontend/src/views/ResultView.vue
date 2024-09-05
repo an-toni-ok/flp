@@ -48,7 +48,7 @@ const get_results = async () => {
 }
 
 const convert_to_grid_size = (measurement) => {
-    return measurement * 10 * areasStore.unzoomed_square_dimension + 10;
+    return measurement * 10 * areasStore.unzoomed_square_dimension;
 }
 
 const extract_machine_drawing_data = (item_machine_list) => {
@@ -61,10 +61,10 @@ const extract_machine_drawing_data = (item_machine_list) => {
         ),
         top: convert_to_grid_size(
             item_machine_list.y_position
-        ),
+        ) + 10, // offset of grid
         left: convert_to_grid_size(
             item_machine_list.x_position
-        ),
+        ) + 10, // offset of grid
         type: DrawingShape.Machine.name,
         rotation: item_machine_list.rotation,
         id: item_machine_list.id,
